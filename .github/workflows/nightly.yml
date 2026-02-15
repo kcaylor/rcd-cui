@@ -24,8 +24,14 @@ jobs:
       - name: Build execution environment
         uses: ./.github/actions/setup-ee
 
+      - name: Install Python dependencies
+        shell: bash
+        run: pip install -r requirements.txt
+
       - name: Run nightly assessment
         shell: bash
+        env:
+          CONTAINER_RUNTIME: docker
         run: ./scripts/run_nightly_assessment.sh
 
       - name: Generate audience documentation
