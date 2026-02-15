@@ -1,0 +1,35 @@
+<article class="card">
+  <h2>Control Narratives</h2>
+  <ul>
+    {% for narrative in narratives %}
+    <li><a href="{{ narrative.path }}">{{ narrative.name }}</a></li>
+    {% endfor %}
+  </ul>
+</article>
+
+<article class="card">
+  <h2>Evidence Links</h2>
+  <ul>
+    {% for evidence in evidence_links %}
+    <li><a href="{{ evidence.path }}">{{ evidence.label }}</a></li>
+    {% endfor %}
+  </ul>
+</article>
+
+<article class="card">
+  <h2>Verification Output Highlights</h2>
+  <table>
+    <thead>
+      <tr><th>Control</th><th>Status</th><th>Summary</th></tr>
+    </thead>
+    <tbody>
+      {% for d in breakdown.deductions[:25] %}
+      <tr>
+        <td>{{ d.control_id }}</td>
+        <td>{{ d.status }}</td>
+        <td>{{ d.plain_language }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</article>

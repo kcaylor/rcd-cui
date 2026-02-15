@@ -10,7 +10,7 @@ EE_IMAGE ?= rcd-cui-ee:latest
 PROJECT_DIR := $(shell pwd)
 EE_RUN = $(CONTAINER_RUNTIME) run --rm -v $(PROJECT_DIR):/workspace -w /workspace $(EE_IMAGE)
 
-.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check
+.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check assess evidence sprs poam dashboard report auditor-package
 
 env:
 	./scripts/bootstrap-env.sh
@@ -62,3 +62,23 @@ ee-yamllint: container-check
 
 ee-syntax-check: container-check
 	$(EE_RUN) ansible-playbook --syntax-check playbooks/site.yml
+
+assess: container-check
+	$(EE_RUN) ansible-playbook playbooks/assess.yml -i inventory/hosts.yml --check
+
+evidence: container-check
+	$(EE_RUN) ansible-playbook playbooks/ssp_evidence.yml -i inventory/hosts.yml
+
+sprs:
+	$(PYTHON) scripts/generate_sprs_report.py
+
+poam:
+	$(PYTHON) scripts/generate_poam_report.py
+
+dashboard:
+	$(PYTHON) scripts/generate_dashboard.py --output-dir reports/dashboard
+
+report: sprs poam dashboard
+
+auditor-package: report
+	$(PYTHON) scripts/generate_auditor_package.py --output-dir docs/auditor_packages

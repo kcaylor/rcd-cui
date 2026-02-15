@@ -1,0 +1,37 @@
+<div class="grid leadership-grid">
+  <article class="card score-card">
+    <h2>SPRS Score</h2>
+    <canvas id="sprsGauge" width="280" height="280"></canvas>
+    <p class="score-number">{{ breakdown.total_score }} / {{ breakdown.baseline_score }}</p>
+  </article>
+
+  <article class="card">
+    <h2>Compliance Snapshot</h2>
+    <p class="metric">{{ compliance_percent }}%</p>
+    <p>Controls passing across assessed scope.</p>
+    {% if first_run %}
+    <p class="hint">First-run snapshot: historical trend is not available yet.</p>
+    {% endif %}
+  </article>
+
+  <article class="card family-status">
+    <h2>Family Status</h2>
+    <ul>
+      {% for family, item in breakdown.by_family.items() %}
+      <li>
+        <span class="status-dot status-{{ family_status[family] }}"></span>
+        {{ family }}: {{ item.controls_passing }}/{{ item.controls_total }} passing
+      </li>
+      {% endfor %}
+    </ul>
+  </article>
+</div>
+
+<article class="card chart-card">
+  <h2>SPRS Trend</h2>
+  {% if trend %}
+  <canvas id="trendChart" width="720" height="280"></canvas>
+  {% else %}
+  <p>No historical assessments found. Run additional assessments to populate trend charts.</p>
+  {% endif %}
+</article>

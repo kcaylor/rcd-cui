@@ -1,0 +1,445 @@
+---
+version: 1.0.0
+last_updated: '2026-02-14'
+description: SPRS control weights used for automated scoring.
+weights:
+  - control_id: 3.1.1
+    family: AC
+    weight: 2
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.2
+    family: AC
+    weight: 3
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.3
+    family: AC
+    weight: 4
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.4
+    family: AC
+    weight: 5
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.5
+    family: AC
+    weight: 1
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.6
+    family: AC
+    weight: 2
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.7
+    family: AC
+    weight: 3
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.8
+    family: AC
+    weight: 4
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.9
+    family: AC
+    weight: 5
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.10
+    family: AC
+    weight: 1
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.11
+    family: AC
+    weight: 2
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.12
+    family: AC
+    weight: 3
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.13
+    family: AC
+    weight: 4
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.14
+    family: AC
+    weight: 5
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.15
+    family: AC
+    weight: 1
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.16
+    family: AC
+    weight: 2
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.17
+    family: AC
+    weight: 3
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.18
+    family: AC
+    weight: 4
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.19
+    family: AC
+    weight: 5
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.20
+    family: AC
+    weight: 1
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.21
+    family: AC
+    weight: 2
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.1.22
+    family: AC
+    weight: 3
+    rationale: Weighted from control criticality for AC family
+  - control_id: 3.2.1
+    family: AT
+    weight: 2
+    rationale: Weighted from control criticality for AT family
+  - control_id: 3.2.2
+    family: AT
+    weight: 3
+    rationale: Weighted from control criticality for AT family
+  - control_id: 3.2.3
+    family: AT
+    weight: 4
+    rationale: Weighted from control criticality for AT family
+  - control_id: 3.3.1
+    family: AU
+    weight: 2
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.2
+    family: AU
+    weight: 3
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.3
+    family: AU
+    weight: 4
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.4
+    family: AU
+    weight: 5
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.5
+    family: AU
+    weight: 1
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.6
+    family: AU
+    weight: 2
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.7
+    family: AU
+    weight: 3
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.8
+    family: AU
+    weight: 4
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.3.9
+    family: AU
+    weight: 5
+    rationale: Weighted from control criticality for AU family
+  - control_id: 3.4.1
+    family: CM
+    weight: 2
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.2
+    family: CM
+    weight: 3
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.3
+    family: CM
+    weight: 4
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.4
+    family: CM
+    weight: 5
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.5
+    family: CM
+    weight: 1
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.6
+    family: CM
+    weight: 2
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.7
+    family: CM
+    weight: 3
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.8
+    family: CM
+    weight: 4
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.4.9
+    family: CM
+    weight: 5
+    rationale: Weighted from control criticality for CM family
+  - control_id: 3.5.1
+    family: IA
+    weight: 2
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.2
+    family: IA
+    weight: 3
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.3
+    family: IA
+    weight: 4
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.4
+    family: IA
+    weight: 5
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.5
+    family: IA
+    weight: 1
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.6
+    family: IA
+    weight: 2
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.7
+    family: IA
+    weight: 3
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.8
+    family: IA
+    weight: 4
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.9
+    family: IA
+    weight: 5
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.10
+    family: IA
+    weight: 1
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.5.11
+    family: IA
+    weight: 2
+    rationale: Weighted from control criticality for IA family
+  - control_id: 3.6.1
+    family: IR
+    weight: 2
+    rationale: Weighted from control criticality for IR family
+  - control_id: 3.6.2
+    family: IR
+    weight: 3
+    rationale: Weighted from control criticality for IR family
+  - control_id: 3.6.3
+    family: IR
+    weight: 4
+    rationale: Weighted from control criticality for IR family
+  - control_id: 3.7.1
+    family: MA
+    weight: 2
+    rationale: Weighted from control criticality for MA family
+  - control_id: 3.7.2
+    family: MA
+    weight: 3
+    rationale: Weighted from control criticality for MA family
+  - control_id: 3.7.3
+    family: MA
+    weight: 4
+    rationale: Weighted from control criticality for MA family
+  - control_id: 3.7.4
+    family: MA
+    weight: 5
+    rationale: Weighted from control criticality for MA family
+  - control_id: 3.7.5
+    family: MA
+    weight: 1
+    rationale: Weighted from control criticality for MA family
+  - control_id: 3.7.6
+    family: MA
+    weight: 2
+    rationale: Weighted from control criticality for MA family
+  - control_id: 3.8.1
+    family: MP
+    weight: 2
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.2
+    family: MP
+    weight: 3
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.3
+    family: MP
+    weight: 4
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.4
+    family: MP
+    weight: 5
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.5
+    family: MP
+    weight: 1
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.6
+    family: MP
+    weight: 2
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.7
+    family: MP
+    weight: 3
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.8
+    family: MP
+    weight: 4
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.8.9
+    family: MP
+    weight: 5
+    rationale: Weighted from control criticality for MP family
+  - control_id: 3.9.1
+    family: PS
+    weight: 2
+    rationale: Weighted from control criticality for PS family
+  - control_id: 3.9.2
+    family: PS
+    weight: 3
+    rationale: Weighted from control criticality for PS family
+  - control_id: 3.10.1
+    family: PE
+    weight: 2
+    rationale: Weighted from control criticality for PE family
+  - control_id: 3.10.2
+    family: PE
+    weight: 3
+    rationale: Weighted from control criticality for PE family
+  - control_id: 3.10.3
+    family: PE
+    weight: 4
+    rationale: Weighted from control criticality for PE family
+  - control_id: 3.10.4
+    family: PE
+    weight: 5
+    rationale: Weighted from control criticality for PE family
+  - control_id: 3.10.5
+    family: PE
+    weight: 1
+    rationale: Weighted from control criticality for PE family
+  - control_id: 3.10.6
+    family: PE
+    weight: 2
+    rationale: Weighted from control criticality for PE family
+  - control_id: 3.11.1
+    family: RA
+    weight: 2
+    rationale: Weighted from control criticality for RA family
+  - control_id: 3.11.2
+    family: RA
+    weight: 3
+    rationale: Weighted from control criticality for RA family
+  - control_id: 3.11.3
+    family: RA
+    weight: 4
+    rationale: Weighted from control criticality for RA family
+  - control_id: 3.12.1
+    family: CA
+    weight: 2
+    rationale: Weighted from control criticality for CA family
+  - control_id: 3.12.2
+    family: CA
+    weight: 3
+    rationale: Weighted from control criticality for CA family
+  - control_id: 3.12.3
+    family: CA
+    weight: 4
+    rationale: Weighted from control criticality for CA family
+  - control_id: 3.12.4
+    family: CA
+    weight: 5
+    rationale: Weighted from control criticality for CA family
+  - control_id: 3.13.1
+    family: SC
+    weight: 2
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.2
+    family: SC
+    weight: 3
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.3
+    family: SC
+    weight: 4
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.4
+    family: SC
+    weight: 5
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.5
+    family: SC
+    weight: 1
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.6
+    family: SC
+    weight: 2
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.7
+    family: SC
+    weight: 3
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.8
+    family: SC
+    weight: 4
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.9
+    family: SC
+    weight: 5
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.10
+    family: SC
+    weight: 1
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.11
+    family: SC
+    weight: 2
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.12
+    family: SC
+    weight: 3
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.13
+    family: SC
+    weight: 4
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.14
+    family: SC
+    weight: 5
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.15
+    family: SC
+    weight: 1
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.13.16
+    family: SC
+    weight: 2
+    rationale: Weighted from control criticality for SC family
+  - control_id: 3.14.1
+    family: SI
+    weight: 2
+    rationale: Weighted from control criticality for SI family
+  - control_id: 3.14.2
+    family: SI
+    weight: 3
+    rationale: Weighted from control criticality for SI family
+  - control_id: 3.14.3
+    family: SI
+    weight: 4
+    rationale: Weighted from control criticality for SI family
+  - control_id: 3.14.4
+    family: SI
+    weight: 5
+    rationale: Weighted from control criticality for SI family
+  - control_id: 3.14.5
+    family: SI
+    weight: 1
+    rationale: Weighted from control criticality for SI family
+  - control_id: 3.14.6
+    family: SI
+    weight: 2
+    rationale: Weighted from control criticality for SI family
+  - control_id: 3.14.7
+    family: SI
+    weight: 3
+    rationale: Weighted from control criticality for SI family

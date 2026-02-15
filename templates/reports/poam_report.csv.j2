@@ -1,0 +1,3 @@
+id,control_id,control_title,weakness_plain_language,milestone,target_date,milestone_status,item_status,resources,risk_level,days_overdue,sprs_credit
+{% for item in items %}{% for milestone in item.milestones %}{{ item.id }},{{ item.control_id }},"{{ item.control_title | replace('"', '""') }}","{{ item.weakness.plain_language | replace('"', '""') }}","{{ milestone.description | replace('"', '""') }}",{{ milestone.target_date }},{{ milestone.status }},{{ item.status }},"{{ item.resource_summary | replace('"', '""') }}",{{ item.risk_level }},{{ item.days_overdue if item.days_overdue is not none else '' }},{{ 'yes' if item.sprs_credit else 'no' }}
+{% endfor %}{% endfor %}

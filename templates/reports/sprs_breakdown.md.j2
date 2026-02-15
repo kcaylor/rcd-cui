@@ -1,0 +1,62 @@
+# SPRS Score Breakdown
+
+Generated: {{ generated_at }}
+Assessment ID: {{ assessment.assessment_id }}
+Enclave: {{ assessment.enclave_name }}
+
+## Score Summary
+
+- Total score: **{{ breakdown.total_score }} / {{ breakdown.baseline_score }}**
+- Total deductions: **{{ breakdown.total_deductions }}**
+- POA&M credit items: **{{ breakdown.poam_adjustments.items_with_credit }}**
+- Points saved by POA&M: **{{ breakdown.poam_adjustments.total_credit }}**
+
+## Family Breakdown
+
+| Family | Controls | Passing | Failing | Deduction Points |
+|---|---:|---:|---:|---:|
+{% for family, item in breakdown.by_family.items() %}| {{ family }} | {{ item.controls_total }} | {{ item.controls_passing }} | {{ item.controls_failing }} | {{ item.deduction_points }} |
+{% endfor %}
+
+## Deductions
+
+{% if breakdown.deductions %}
+| Control | Family | Weight | Effective | Explanation |
+|---|---|---:|---:|---|
+{% for d in breakdown.deductions %}| {{ d.control_id }} | {{ d.family }} | {{ d.weight }} | {{ d.effective_deduction }} | {{ d.plain_language }}{% if d.poam_credit %} (POA&M credit applied){% endif %} |
+{% endfor %}
+{% else %}
+No deductions. All assessed controls passed.
+{% endif %}
+
+## Remediation Recommendations
+
+{% if breakdown.recommendations %}
+{% for rec in breakdown.recommendations %}
+1. {{ rec.control_id }} ({{ rec.weight }} points, effort {{ rec.effort_estimate }}): {{ rec.impact_description }}
+{% endfor %}
+{% else %}
+No remediation recommendations generated.
+{% endif %}
+
+## POA&M Adjustments
+
+{% if poam_items %}
+| POA&M ID | Control | Status | SPRS Credit |
+|---|---|---|---|
+{% for item in poam_items %}| {{ item.id }} | {{ item.control_id }} | {{ item.status }} | {{ "yes" if item.sprs_credit else "no" }} |
+{% endfor %}
+{% else %}
+No POA&M items supplied.
+{% endif %}
+
+## Historical Trend
+
+{% if trend %}
+| Timestamp | Score |
+|---|---:|
+{% for row in trend %}| {{ row.timestamp }} | {{ row.score }} |
+{% endfor %}
+{% else %}
+No historical assessment data found. Current assessment shown as first snapshot.
+{% endif %}

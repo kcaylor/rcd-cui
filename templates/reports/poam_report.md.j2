@@ -1,0 +1,43 @@
+# POA&M Status Report
+
+Generated: {{ generated_at }}
+
+## Overdue Items
+
+{% if grouped.overdue %}
+| ID | Control | Risk | Days Overdue | Weakness | Next Milestone |
+|---|---|---|---:|---|---|
+{% for item in grouped.overdue %}| {{ item.id }} | {{ item.control_id }} | {{ item.risk_level }} | {{ item.days_overdue }} | {{ item.weakness.plain_language }} | {{ item.next_milestone }} |
+{% endfor %}
+{% else %}
+No overdue items.
+{% endif %}
+
+## In Progress Items
+
+{% if grouped.in_progress %}
+| ID | Control | Risk | Target Date | Weakness |
+|---|---|---|---|---|
+{% for item in grouped.in_progress %}| {{ item.id }} | {{ item.control_id }} | {{ item.risk_level }} | {{ item.target_date }} | {{ item.weakness.plain_language }} |
+{% endfor %}
+{% else %}
+No items currently in progress.
+{% endif %}
+
+## Completed Items
+
+{% if grouped.completed %}
+| ID | Control | Completed On | Weakness Addressed |
+|---|---|---|---|
+{% for item in grouped.completed %}| {{ item.id }} | {{ item.control_id }} | {{ item.completion_date or "n/a" }} | {{ item.weakness.plain_language }} |
+{% endfor %}
+{% else %}
+No completed items yet.
+{% endif %}
+
+## Milestone Timeline
+
+| POA&M ID | Milestone | Target Date | Status | Notes |
+|---|---|---|---|---|
+{% for item in items %}{% for milestone in item.milestones %}| {{ item.id }} | {{ milestone.description }} | {{ milestone.target_date }} | {{ milestone.status }} | {{ milestone.notes or "" }} |
+{% endfor %}{% endfor %}

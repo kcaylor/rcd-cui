@@ -1,0 +1,48 @@
+---
+version: "1.0.0"
+last_updated: "2026-02-15"
+description: >-
+  POA&M tracking data for unmet or partially implemented controls.
+poam_items:
+  - id: "POAM-001"
+    control_id: "3.5.3"
+    control_title: >-
+      Use multifactor authentication for local and network access
+    weakness:
+      description: >-
+        MFA has not been fully rolled out on all interactive entry points.
+      plain_language: >-
+        Some users can still sign in with only a password, which increases
+        account-takeover risk.
+      root_cause: >-
+        Legacy SSH login path not yet migrated to Duo PAM stack
+    risk_level: "high"
+    risk_justification: >-
+      Credential theft remains a realistic path to unauthorized access.
+    milestones:
+      - id: "M1"
+        description: "Deploy Duo configuration to remaining login nodes"
+        target_date: "2026-03-15"
+        actual_completion_date: null
+        status: "in_progress"
+        notes: "Pilot validated on two nodes"
+        blocker: "Change window approval"
+      - id: "M2"
+        description: >-
+          Validate MFA bypass behavior for batch job certificate flows
+        target_date: "2026-03-30"
+        actual_completion_date: null
+        status: "open"
+        notes: "Test plan drafted"
+        blocker: null
+    resources:
+      - name: "System Administrator"
+        allocation: "20 hours"
+      - name: "Security Engineer"
+        allocation: "12 hours"
+    status: "in_progress"
+    days_overdue: null
+    created_date: "2026-02-01"
+    last_updated: "2026-02-15"
+    completion_date: null
+    sprs_credit: true

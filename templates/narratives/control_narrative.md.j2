@@ -1,0 +1,21 @@
+# Control {{ control.control_id }} - {{ control.title }}
+
+## Control Context
+
+- Control ID: {{ control.control_id }}
+- Control Family: {{ control.family }}
+- Implementation Roles: {{ control.ansible_roles | join(', ') if control.ansible_roles else 'documented process' }}
+
+## Implementation Description
+
+{{ implementation_description }}
+
+## Evidence References
+
+{% if evidence_references %}
+{% for ref in evidence_references %}
+- `{{ ref.file_path }}`: {{ ref.description }}
+{% endfor %}
+{% else %}
+- Evidence is collected in the SSP package under `by_system/` and `by_family/` folders for this control family.
+{% endif %}
