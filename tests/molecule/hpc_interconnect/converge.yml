@@ -1,0 +1,9 @@
+---
+- name: Converge hpc_interconnect
+  hosts: all
+  gather_facts: true
+  become: false
+  vars:
+    hpc_interconnect_enabled: false
+  roles:
+    - hpc_interconnect

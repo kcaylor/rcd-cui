@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -lt 2 ]; then
+  echo "Usage: apptainer-cui <run|exec|shell> <image.sif> [args...]" >&2
+  exit 2
+fi
+
+SUBCOMMAND="$1"
+shift
+IMAGE="$1"
+shift
+
+KEY_PATH="{{ hpc_container_security_org_public_key }}"
+LOG_PATH="{{ hpc_container_security_log_path }}"
+LOG_DIR="$(dirname "${LOG_PATH}")"
+
+ALLOWED_PREFIXES=(
+{% for path in hpc_container_security_bind_allowlist %}
+  "{{ path }}"
+{% endfor %}
+)
+
+is_allowed_bind() {
+  local source_path="$1"
+  for prefix in "${ALLOWED_PREFIXES[@]}"; do
+    if [[ "${source_path}" == "${prefix}"* ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+validate_bind_spec() {
+  local bind_spec="$1"
+  local src="${bind_spec%%:*}"
+  if ! is_allowed_bind "${src}"; then
+    echo "Bind mount source ${src} is not in the CUI allowlist." >&2
+    exit 1
+  fi
+}
+
+ARGS=("$@")
+idx=0
+while [ "${idx}" -lt "${#ARGS[@]}" ]; do
+  arg="${ARGS[$idx]}"
+  if [ "${arg}" = "--bind" ] || [ "${arg}" = "-B" ]; then
+    idx=$((idx + 1))
+    bind_arg="${ARGS[$idx]:-}"
+    IFS=',' read -r -a bind_items <<< "${bind_arg}"
+    for item in "${bind_items[@]}"; do
+      validate_bind_spec "${item}"
+    done
+  elif [[ "${arg}" == --bind=* ]]; then
+    bind_arg="${arg#--bind=}"
+    IFS=',' read -r -a bind_items <<< "${bind_arg}"
+    for item in "${bind_items[@]}"; do
+      validate_bind_spec "${item}"
+    done
+  fi
+  idx=$((idx + 1))
+done
+
+if ! apptainer verify --key "${KEY_PATH}" "${IMAGE}" >/dev/null 2>&1; then
+  mkdir -p "${LOG_DIR}"
+  printf '{"timestamp":"%s","result":"blocked_unsigned","user":"%s","image":"%s"}\n' \
+    "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "${USER:-unknown}" "${IMAGE}" >> "${LOG_PATH}"
+  echo "Container not signed. Use the approved signing workflow before execution." >&2
+  exit 1
+fi
+
+BASE_ARGS=(--net --network=none --cleanenv)
+for bind_path in "${ALLOWED_PREFIXES[@]}"; do
+  BASE_ARGS+=(--bind "${bind_path}")
+done
+
+if [ -e "{{ hpc_container_security_ib_device_path }}" ]; then
+  # Default InfiniBand passthrough path is /dev/infiniband.
+  BASE_ARGS+=(--bind "{{ hpc_container_security_ib_device_path }}:{{ hpc_container_security_ib_device_path }}")
+fi
+
+mkdir -p "${LOG_DIR}"
+start_ts="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+set +e
+apptainer "${SUBCOMMAND}" "${BASE_ARGS[@]}" "${IMAGE}" "$@"
+rc=$?
+set -e
+end_ts="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+printf '{"timestamp_start":"%s","timestamp_end":"%s","result":"%s","user":"%s","image":"%s","subcommand":"%s","network":"none","binds":"%s"}\n' \
+  "${start_ts}" "${end_ts}" "${rc}" "${USER:-unknown}" "${IMAGE}" "${SUBCOMMAND}" "{{ hpc_container_security_bind_allowlist | join(',') }}" >> "${LOG_PATH}"
+
+exit "${rc}"

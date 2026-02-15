@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: localhost
+provisioner:
+  name: ansible
+  inventory:
+    hosts:
+      all:
+        hosts:
+          localhost:
+            ansible_connection: local
+            cui_zone: restricted
+  playbooks:
+    converge: converge.yml
+scenario:
+  name: default
+verifier:
+  name: ansible

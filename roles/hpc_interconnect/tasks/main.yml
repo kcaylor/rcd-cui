@@ -1,0 +1,52 @@
+---
+- name: Validate CUI zone assignment for hpc_interconnect
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_interconnect_role_tags
+    - r2_3.13.8
+    - r2_3.13.11
+    - r3_03.13.08
+    - r3_03.13.11
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Ensure interconnect documentation output directory exists
+  ansible.builtin.file:
+    path: "{{ hpc_interconnect_output_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  when: hpc_interconnect_enabled | bool
+  tags: *hpc_interconnect_role_tags
+
+- name: Generate RDMA exception document
+  ansible.builtin.template:
+    src: rdma_exception.md.j2
+    dest: "{{ hpc_interconnect_rdma_exception_path }}"
+    owner: root
+    group: root
+    mode: '0640'
+  when: hpc_interconnect_enabled | bool
+  tags: *hpc_interconnect_role_tags
+
+- name: Generate compensating controls matrix
+  ansible.builtin.template:
+    src: compensating_controls.md.j2
+    dest: "{{ hpc_interconnect_controls_matrix_path }}"
+    owner: root
+    group: root
+    mode: '0640'
+  when: hpc_interconnect_enabled | bool
+  tags: *hpc_interconnect_role_tags
+
+- name: Generate future encryption placeholder template
+  ansible.builtin.template:
+    src: future_encryption.md.j2
+    dest: "{{ hpc_interconnect_future_encryption_path }}"
+    owner: root
+    group: root
+    mode: '0640'
+  when: hpc_interconnect_enabled | bool
+  tags: *hpc_interconnect_role_tags

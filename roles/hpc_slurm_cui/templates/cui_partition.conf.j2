@@ -1,0 +1,9 @@
+# Managed by Ansible: hpc_slurm_cui
+PartitionName={{ hpc_slurm_cui_partition_name }} \
+  Nodes={{ hpc_slurm_cui_partition_nodes }} \
+  Default=NO \
+  State=UP \
+  Oversubscribe=EXCLUSIVE \
+  AllowAccounts={{ hpc_slurm_cui_allow_accounts | join(',') }} \
+  PriorityTier=200 \
+  QoS={{ hpc_slurm_cui_qos }}

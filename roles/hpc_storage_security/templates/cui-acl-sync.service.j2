@@ -1,0 +1,17 @@
+[Unit]
+Description=CUI FreeIPA ACL synchronization daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart={{ hpc_storage_security_acl_sync_script_path }} --project-root {{ hpc_storage_security_project_root }} --group-prefix {{ hpc_storage_security_acl_sync_group_prefix }}
+Restart=always
+RestartSec=10
+User=root
+Group=root
+WorkingDirectory={{ hpc_storage_security_project_root }}
+RuntimeDirectory=cui-acl-sync
+
+[Install]
+WantedBy=multi-user.target

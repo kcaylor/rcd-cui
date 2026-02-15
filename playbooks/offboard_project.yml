@@ -1,0 +1,133 @@
+---
+- name: Offboard a CUI research project
+  hosts: localhost
+  gather_facts: true
+  vars_files:
+    - vars/onboarding_defaults.yml
+  vars:
+    project_id: "{{ project_id }}"
+    data_disposition: "{{ data_disposition | default('sanitize') }}"
+    force: "{{ force | default(false) | bool }}"
+    check_only: "{{ check_only | default(false) | bool }}"
+    freeipa_group: "{{ freeipa_group | default(onboarding_defaults_freeipa_group_prefix ~ project_id) }}"
+    slurm_account: "{{ slurm_account | default(onboarding_defaults_slurm_account_prefix ~ (project_id | replace('-', '_'))) }}"
+    project_storage_path: "{{ project_storage_path | default(onboarding_defaults_project_root ~ '/' ~ project_id) }}"
+    offboarding_started: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ') }}"
+    offboarding_date: "{{ lookup('pipe', 'date +%F') }}"
+    grace_seconds: "{{ (onboarding_defaults_grace_period_hours | int) * 3600 }}"
+    grace_marker_path: "{{ onboarding_defaults_evidence_root }}/offboarding/{{ project_id }}-grace.json"
+  tasks:
+    - name: Validate required offboarding inputs
+      ansible.builtin.assert:
+        that:
+          - project_id is match('^cui-[a-z0-9]{4,20}$')
+          - data_disposition in ['sanitize', 'archive']
+        fail_msg: "Provide project_id and data_disposition (sanitize|archive)."
+
+    - name: Ensure offboarding evidence directory exists
+      ansible.builtin.file:
+        path: "{{ onboarding_defaults_evidence_root }}/offboarding"
+        state: directory
+        mode: '0755'
+
+    - name: Block new job submissions immediately for project account
+      ansible.builtin.command: "sacctmgr -i modify account {{ slurm_account }} set GrpSubmit=0"
+      register: offboard_block_submit
+      changed_when: offboard_block_submit.rc == 0
+      failed_when: false
+
+    - name: Query active jobs for project account
+      ansible.builtin.command: "squeue -h -A {{ slurm_account }} -o %i"
+      register: offboard_active_jobs
+      changed_when: false
+      failed_when: false
+
+    - name: Build active job list
+      ansible.builtin.set_fact:
+        offboard_active_job_ids: "{{ offboard_active_jobs.stdout_lines | default([]) }}"
+
+    - name: Write grace-period marker when active jobs remain and force is false
+      ansible.builtin.copy:
+        dest: "{{ grace_marker_path }}"
+        mode: '0644'
+        content: |
+          {{
+            {
+              'project_id': project_id,
+              'started_at': offboarding_started,
+              'grace_period_hours': onboarding_defaults_grace_period_hours,
+              'active_jobs': offboard_active_job_ids,
+              'note': 'New submissions blocked. Existing jobs allowed to complete during grace period.'
+            } | to_nice_json
+          }}
+      when:
+        - not force
+        - offboard_active_job_ids | length > 0
+
+    - name: End play in check-only mode
+      ansible.builtin.meta: end_play
+      when: check_only
+
+    - name: End play after setting grace marker when active jobs remain
+      ansible.builtin.meta: end_play
+      when:
+        - not force
+        - offboard_active_job_ids | length > 0
+
+    - name: Revoke FreeIPA group access
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+        ipaadmin_password: "{{ ipaadmin_password | default(omit) }}"
+        name: "{{ freeipa_group }}"
+        state: absent
+
+    - name: Disable Slurm account
+      ansible.builtin.command: "sacctmgr -i modify account {{ slurm_account }} set Description=OFFBOARDED"
+      register: offboard_slurm_disable
+      changed_when: offboard_slurm_disable.rc == 0
+      failed_when: false
+
+    - name: Remove ACL entry for project group
+      ansible.posix.acl:
+        path: "{{ project_storage_path }}"
+        entity: "{{ freeipa_group }}"
+        etype: group
+        state: absent
+      failed_when: false
+
+    - name: Archive project data when selected
+      community.general.archive:
+        path: "{{ project_storage_path }}"
+        dest: "{{ onboarding_defaults_archive_root }}/{{ project_id }}-{{ offboarding_date }}.tar.gz"
+        format: gz
+        mode: '0640'
+      register: offboard_archive_data
+      when: data_disposition == 'archive'
+
+    - name: Sanitize project data when selected
+      ansible.builtin.command: "/usr/local/sbin/sanitize_project.sh {{ project_storage_path }}"
+      register: offboard_sanitize_data
+      changed_when: offboard_sanitize_data.rc == 0
+      failed_when: false
+      when: data_disposition == 'sanitize'
+
+    - name: Write offboarding completion evidence artifact
+      ansible.builtin.copy:
+        dest: "{{ onboarding_defaults_evidence_root }}/offboarding/{{ project_id }}-{{ offboarding_date }}.json"
+        mode: '0644'
+        content: |
+          {{
+            {
+              'project_id': project_id,
+              'slurm_account': slurm_account,
+              'freeipa_group': freeipa_group,
+              'project_storage_path': project_storage_path,
+              'data_disposition': data_disposition,
+              'blocked_new_submissions': true,
+              'active_jobs_at_check': offboard_active_job_ids,
+              'force': force,
+              'completed_at': offboarding_started,
+              'archive_result': offboard_archive_data.stdout | default('not_requested'),
+              'sanitize_result': offboard_sanitize_data.stdout | default('not_requested')
+            } | to_nice_json
+          }}

@@ -1,0 +1,8 @@
+---
+hpc_interconnect_compensating_controls:
+  - control: Physical security
+    evidence: Data center badge logs and visitor records
+  - control: Boundary encryption
+    evidence: Firewall/IPsec policy exports
+  - control: Port monitoring
+    evidence: SIEM alerts from fabric switch mirror ports

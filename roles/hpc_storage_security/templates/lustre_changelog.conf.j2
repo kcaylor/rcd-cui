@@ -1,0 +1,10 @@
+# Managed by Ansible: hpc_storage_security (Lustre)
+[general]
+filesystem_type=lustre
+project_root={{ hpc_storage_security_project_root }}
+log_file={{ hpc_storage_security_changelog_output_dir }}/changelog.log
+
+[lustre]
+mdt=MDT0000
+poll_interval_seconds=5
+event_types=CREATE,UNLINK,SETATTR,RENAME

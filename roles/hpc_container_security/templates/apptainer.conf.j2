@@ -1,0 +1,22 @@
+# Managed by Ansible: hpc_container_security
+# Enforce signature verification in CUI enclave.
+allow unsigned = {{ hpc_container_security_allow_unsigned }}
+always use nv = yes
+enable overlay = no
+allow setuid = no
+allow user ns = no
+mount dev = yes
+mount proc = yes
+mount sys = yes
+mount home = no
+
+# Restrict bind mounts to explicit CUI-approved paths.
+bind path = {{ hpc_container_security_bind_allowlist | join(',') }}
+
+# Enforce network isolation for container runs.
+allow net users = no
+allow net groups = no
+allow net network = none
+
+# Allow InfiniBand passthrough only for MPI inside enclave.
+# Wrapper adds /dev/infiniband bind for approved executions.

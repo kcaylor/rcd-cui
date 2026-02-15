@@ -2,4 +2,5 @@
 collections:
   - name: freeipa.ansible_freeipa
   - name: community.general
+  - name: community.crypto
   - name: ansible.posix

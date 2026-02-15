@@ -1,0 +1,9 @@
+---
+- name: Converge hpc_node_lifecycle
+  hosts: all
+  gather_facts: true
+  become: false
+  vars:
+    hpc_node_lifecycle_enabled: false
+  roles:
+    - hpc_node_lifecycle

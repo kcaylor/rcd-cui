@@ -1,0 +1,4 @@
+---
+hpc_node_lifecycle_state_dir: /var/lib/cui-node
+hpc_node_lifecycle_log_dir: /var/log/cui-node
+hpc_node_lifecycle_first_boot_marker: /var/lib/cui-node/first_boot.complete

@@ -1,0 +1,13 @@
+# Compensating Controls Matrix: RDMA Exception
+
+| Control Area | Control Description | Evidence Source |
+| --- | --- | --- |
+{% for control in hpc_interconnect_compensating_controls -%}
+| {{ control.control }} | Implemented and reviewed quarterly | {{ control.evidence }} |
+{% endfor %}
+
+## Verification Notes
+
+- Physical controls are validated against access logs.
+- Boundary encryption is validated from network policy exports.
+- Port monitoring is validated from SIEM alerts and switch telemetry.

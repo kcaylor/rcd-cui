@@ -1,0 +1,25 @@
+---
+hpc_storage_security_enabled: true
+hpc_storage_security_filesystem_type: auto
+hpc_storage_security_project_root: /cui/projects
+hpc_storage_security_changelog_output_dir: /var/log/cui-storage
+hpc_storage_security_lustre_changelog_path: /etc/cui/lustre_changelog.conf
+hpc_storage_security_beegfs_changelog_path: /etc/cui/beegfs_changelog.conf
+hpc_storage_security_acl_sync_script_path: /usr/local/sbin/cui-acl-sync.py
+hpc_storage_security_acl_sync_service_path: /etc/systemd/system/cui-acl-sync.service
+hpc_storage_security_acl_sync_group_prefix: cuiproj-
+hpc_storage_security_quota_default_gb: 5000
+hpc_storage_security_quota_readonly_flag: .quota_readonly
+hpc_storage_security_sanitize_script_path: /usr/local/sbin/sanitize_project.sh
+hpc_storage_security_verify_commands:
+  - id: acl_sync_service_enabled
+    command: "systemctl is-enabled cui-acl-sync"
+  - id: sanitize_script_exists
+    command: "test -x {{ hpc_storage_security_sanitize_script_path }}"
+hpc_storage_security_evidence_files:
+  - "{{ hpc_storage_security_lustre_changelog_path }}"
+  - "{{ hpc_storage_security_beegfs_changelog_path }}"
+  - "{{ hpc_storage_security_acl_sync_service_path }}"
+hpc_storage_security_evidence_commands:
+  - id: changelog_tail
+    command: "tail -n 100 {{ hpc_storage_security_changelog_output_dir }}/changelog.log"

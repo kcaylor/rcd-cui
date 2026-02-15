@@ -1,0 +1,9 @@
+---
+- name: Converge hpc_slurm_cui
+  hosts: all
+  gather_facts: true
+  become: false
+  vars:
+    hpc_slurm_cui_enabled: false
+  roles:
+    - hpc_slurm_cui

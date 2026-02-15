@@ -1147,3 +1147,101 @@ terms:
         posture.
     see_also: []
     context: null
+  Apptainer:
+    term: Apptainer
+    full_name: Apptainer Container Runtime
+    plain_language: Apptainer runs scientific containers on HPC systems with configurable security restrictions.
+    who_cares:
+      pi: PIs rely on Apptainer context to communicate compliance expectations clearly.
+      researcher: Researchers use Apptainer guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor Apptainer-related controls.
+      ciso: CISO teams track Apptainer in risk and compliance reporting.
+      leadership: Leadership reviews Apptainer implications for institutional posture.
+    see_also:
+    - Signed Container
+    - Slurm
+    context: null
+  BeeGFS:
+    term: BeeGFS
+    full_name: BeeGFS Parallel Filesystem
+    plain_language: BeeGFS is a high-performance parallel filesystem used for large-scale research data workloads.
+    who_cares:
+      pi: PIs rely on BeeGFS context to communicate compliance expectations clearly.
+      researcher: Researchers use BeeGFS guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor BeeGFS-related controls.
+      ciso: CISO teams track BeeGFS in risk and compliance reporting.
+      leadership: Leadership reviews BeeGFS implications for institutional posture.
+    see_also:
+    - ACL
+    - CUI
+    context: null
+  Epilog:
+    term: Epilog
+    full_name: Slurm Epilog Script
+    plain_language: An epilog script runs after a job finishes and can sanitize memory and temporary files.
+    who_cares:
+      pi: PIs rely on Epilog context to communicate compliance expectations clearly.
+      researcher: Researchers use Epilog guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor Epilog-related controls.
+      ciso: CISO teams track Epilog in risk and compliance reporting.
+      leadership: Leadership reviews Epilog implications for institutional posture.
+    see_also:
+    - Slurm
+    - Prolog
+    context: null
+  Lustre:
+    term: Lustre
+    full_name: Lustre Parallel Filesystem
+    plain_language: Lustre is a distributed parallel filesystem commonly used for HPC workloads.
+    who_cares:
+      pi: PIs rely on Lustre context to communicate compliance expectations clearly.
+      researcher: Researchers use Lustre guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor Lustre-related controls.
+      ciso: CISO teams track Lustre in risk and compliance reporting.
+      leadership: Leadership reviews Lustre implications for institutional posture.
+    see_also:
+    - ACL
+    - CUI
+    context: null
+  Prolog:
+    term: Prolog
+    full_name: Slurm Prolog Script
+    plain_language: A prolog script runs before a job starts and can block execution if authorization checks fail.
+    who_cares:
+      pi: PIs rely on Prolog context to communicate compliance expectations clearly.
+      researcher: Researchers use Prolog guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor Prolog-related controls.
+      ciso: CISO teams track Prolog in risk and compliance reporting.
+      leadership: Leadership reviews Prolog implications for institutional posture.
+    see_also:
+    - Slurm
+    - Epilog
+    context: null
+  RDMA:
+    term: RDMA
+    full_name: Remote Direct Memory Access
+    plain_language: RDMA allows direct memory transfer across nodes with low latency and high throughput.
+    who_cares:
+      pi: PIs rely on RDMA context to communicate compliance expectations clearly.
+      researcher: Researchers use RDMA guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor RDMA-related controls.
+      ciso: CISO teams track RDMA in risk and compliance reporting.
+      leadership: Leadership reviews RDMA implications for institutional posture.
+    see_also:
+    - InfiniBand
+    - MPI
+    context: null
+  Signed Container:
+    term: Signed Container
+    full_name: Cryptographically Signed Container Image
+    plain_language: A signed container includes a trusted signature that proves image origin and integrity.
+    who_cares:
+      pi: PIs rely on Signed Container context to communicate compliance expectations clearly.
+      researcher: Researchers use Signed Container guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor Signed Container-related controls.
+      ciso: CISO teams track Signed Container in risk and compliance reporting.
+      leadership: Leadership reviews Signed Container implications for institutional posture.
+    see_also:
+    - Apptainer
+    - CUI
+    context: null

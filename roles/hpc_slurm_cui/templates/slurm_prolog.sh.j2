@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+JOB_ID="${SLURM_JOB_ID:-unknown}"
+JOB_USER="${SLURM_JOB_USER:-unknown}"
+JOB_ACCOUNT="${SLURM_JOB_ACCOUNT:-unknown}"
+JOB_PARTITION="${SLURM_JOB_PARTITION:-unknown}"
+JOB_NODES="${SLURM_JOB_NODELIST:-unknown}"
+
+AUTH_GROUP="{{ hpc_slurm_cui_authorized_group }}"
+LDAP_URI="{{ hpc_slurm_cui_ldap_uri }}"
+LDAP_BASE_DN="{{ hpc_slurm_cui_ldap_base_dn }}"
+TRAINING_ATTR="{{ hpc_slurm_cui_training_attribute }}"
+# Default expected FreeIPA user attribute: cuiTrainingExpiry
+AUTH_TIMEOUT="{{ hpc_slurm_cui_auth_timeout_seconds }}"
+AUDIT_LOG="{{ hpc_slurm_cui_audit_log_path }}"
+RETRY_MSG="{{ hpc_slurm_cui_retry_error_message }}"
+# Retry-safe timeout message: Authorization service temporarily unavailable - please resubmit job
+
+log_event() {
+  local outcome="$1"
+  local detail="$2"
+  local timestamp
+  timestamp="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+  local message
+  message="${timestamp} CUI_TAG={{ hpc_slurm_cui_log_tag }} outcome=${outcome} job_id=${JOB_ID} user=${JOB_USER} account=${JOB_ACCOUNT} partition=${JOB_PARTITION} nodelist=${JOB_NODES} detail=${detail}"
+  printf '%s\n' "${message}" >> "${AUDIT_LOG}"
+  logger -t slurm-cui-prolog "${message}"
+}
+
+fail_retry() {
+  log_event "timeout" "authorization_timeout"
+  echo "${RETRY_MSG}" >&2
+  exit 2
+}
+
+ldap_result=""
+if ! ldap_result="$(timeout "${AUTH_TIMEOUT}s" ldapsearch -LLL -Y GSSAPI -H "${LDAP_URI}" -b "${LDAP_BASE_DN}" "(uid=${JOB_USER})" memberOf "${TRAINING_ATTR}" 2>/dev/null)"; then
+  fail_retry
+fi
+
+if ! printf '%s\n' "${ldap_result}" | grep -q "cn=${AUTH_GROUP},cn=groups,cn=accounts"; then
+  log_event "deny" "missing_group_membership"
+  echo "User ${JOB_USER} is not authorized for CUI partition access." >&2
+  exit 1
+fi
+
+training_expiry="$(printf '%s\n' "${ldap_result}" | awk -F': ' -v attr="${TRAINING_ATTR}" '$1==attr {print $2; exit}')"
+if [ -z "${training_expiry}" ]; then
+  log_event "deny" "missing_training_attribute"
+  echo "CUI training status not found. Contact HPC security support." >&2
+  exit 1
+fi
+
+if ! training_expiry_epoch="$(date -d "${training_expiry}" +%s 2>/dev/null)"; then
+  log_event "deny" "invalid_training_attribute"
+  echo "CUI training date is invalid. Contact HPC security support." >&2
+  exit 1
+fi
+
+now_epoch="$(date +%s)"
+if [ "${training_expiry_epoch}" -lt "${now_epoch}" ]; then
+  log_event "deny" "training_expired"
+  echo "CUI training is expired. Please renew training before submitting jobs." >&2
+  exit 1
+fi
+
+log_event "allow" "authorization_and_training_verified"
+exit 0

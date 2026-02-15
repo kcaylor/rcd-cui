@@ -1,0 +1,37 @@
+# Welcome to the CUI HPC Environment
+
+Hello {{ pi_name | default(pi_username) }},
+
+Your project **{{ project_name }}** (`{{ project_id }}`) is now onboarded for CUI processing.
+
+## Plain-language summary
+
+Your team can now run jobs in a protected cluster area designed for CUI work. Access is limited to approved users, and security checks run automatically before and after each job.
+
+## What your team must do
+
+1. Complete and keep CUI training current.
+2. Use Duo MFA for all cluster access.
+3. Submit jobs to the `{{ cui_partition | default('cui') }}` partition with account `{{ slurm_account }}`.
+4. Keep project data under `{{ project_storage_path }}`.
+5. Use signed containers when running container workflows.
+
+## What the system does automatically
+
+- Verifies user authorization before job start
+- Logs CUI job and container events for audit evidence
+- Sanitizes temporary memory areas when jobs end
+- Enforces storage ACLs and project quotas
+
+## Common commands
+
+```bash
+sbatch --partition={{ cui_partition | default('cui') }} --account={{ slurm_account }} job.sh
+apptainer-cui run /cui/containers/approved-image.sif
+```
+
+## Support contacts
+
+- HPC Operations: {{ support_email | default('hpc-ops@example.edu') }}
+- Security Team: {{ security_email | default('security@example.edu') }}
+

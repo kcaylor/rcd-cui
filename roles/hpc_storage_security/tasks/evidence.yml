@@ -1,0 +1,62 @@
+---
+- name: Validate CUI zone assignment for hpc_storage_security evidence collection
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_storage_security_evidence_tags
+    - r2_3.3.1
+    - r2_3.8.3
+    - r3_03.03.01
+    - r3_03.08.03
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Ensure host evidence directory exists for hpc_storage_security
+  ansible.builtin.file:
+    path: "{{ (evidence_output_dir | default('/tmp/cui-evidence')) ~ '/' ~ inventory_hostname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  tags: *hpc_storage_security_evidence_tags
+
+- name: Collect hpc_storage_security evidence file metadata
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop: "{{ hpc_storage_security_evidence_files }}"
+  register: hpc_storage_security_evidence_file_stats
+  changed_when: false
+  when: hpc_storage_security_evidence_files | length > 0
+  tags: *hpc_storage_security_evidence_tags
+
+- name: Collect hpc_storage_security evidence command outputs
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ hpc_storage_security_evidence_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: hpc_storage_security_evidence_command_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: hpc_storage_security_evidence_commands | length > 0
+  tags: *hpc_storage_security_evidence_tags
+
+- name: Build hpc_storage_security evidence payload
+  ansible.builtin.set_fact:
+    hpc_storage_security_evidence_payload:
+      role: hpc_storage_security
+      host: "{{ inventory_hostname }}"
+      zone: "{{ cui_zone }}"
+      file_stats: "{{ hpc_storage_security_evidence_file_stats.results | default([]) }}"
+      command_results: "{{ hpc_storage_security_evidence_command_results.results | default([]) }}"
+  changed_when: false
+  tags: *hpc_storage_security_evidence_tags
+
+- name: Write hpc_storage_security evidence payload
+  ansible.builtin.copy:
+    dest: "{{ (evidence_output_dir | default('/tmp/cui-evidence')) ~ '/' ~ inventory_hostname ~ '/hpc_storage_security_evidence.json' }}"
+    owner: root
+    group: root
+    mode: '0640'
+    content: "{{ hpc_storage_security_evidence_payload | to_nice_json }}"
+  tags: *hpc_storage_security_evidence_tags

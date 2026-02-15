@@ -1,0 +1,60 @@
+---
+- name: Validate CUI zone assignment for hpc_container_security
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_container_security_role_tags
+    - r2_3.4.8
+    - r2_3.13.1
+    - r3_03.04.08
+    - r3_03.13.01
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Ensure directory structure exists for container security artifacts
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  loop:
+    - "{{ hpc_container_security_apptainer_conf_path | dirname }}"
+    - "{{ hpc_container_security_org_public_key | dirname }}"
+    - "{{ hpc_container_security_log_dir }}"
+  when: hpc_container_security_enabled | bool
+  tags: *hpc_container_security_role_tags
+
+- name: Deploy Apptainer CUI security configuration
+  ansible.builtin.template:
+    src: apptainer.conf.j2
+    dest: "{{ hpc_container_security_apptainer_conf_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+  when: hpc_container_security_enabled | bool
+  tags: *hpc_container_security_role_tags
+
+- name: Create placeholder organization signing key if missing
+  ansible.builtin.copy:
+    dest: "{{ hpc_container_security_org_public_key }}"
+    owner: root
+    group: root
+    mode: '0644'
+    force: false
+    content: |
+      -----BEGIN PUBLIC KEY-----
+      PLACEHOLDER-REPLACE-WITH-ORG-KEY
+      -----END PUBLIC KEY-----
+  when: hpc_container_security_enabled | bool
+  tags: *hpc_container_security_role_tags
+
+- name: Deploy container execution wrapper with logging
+  ansible.builtin.template:
+    src: container_wrapper.sh.j2
+    dest: "{{ hpc_container_security_wrapper_path }}"
+    owner: "{{ hpc_container_security_wrapper_owner }}"
+    group: "{{ hpc_container_security_wrapper_group }}"
+    mode: "{{ hpc_container_security_wrapper_mode }}"
+  when: hpc_container_security_enabled | bool
+  tags: *hpc_container_security_role_tags

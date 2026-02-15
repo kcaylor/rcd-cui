@@ -1,0 +1,43 @@
+---
+- name: Validate CUI zone assignment for hpc_container_security verification
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_container_security_verify_tags
+    - r2_3.4.8
+    - r3_03.04.08
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Execute hpc_container_security verification commands
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ hpc_container_security_verify_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: hpc_container_security_verify_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: hpc_container_security_verify_commands | length > 0
+  tags: *hpc_container_security_verify_tags
+
+- name: Build hpc_container_security verification summary
+  ansible.builtin.set_fact:
+    hpc_container_security_verify_summary:
+      role: hpc_container_security
+      zone: "{{ cui_zone }}"
+      compliant: >-
+        {{
+          (hpc_container_security_verify_results.results | default([])
+          | selectattr('rc', 'equalto', 0) | list | length)
+          == (hpc_container_security_verify_commands | length)
+        }}
+      checks: "{{ hpc_container_security_verify_results.results | default([]) }}"
+  changed_when: false
+  tags: *hpc_container_security_verify_tags
+
+- name: Show hpc_container_security verification summary
+  ansible.builtin.debug:
+    var: hpc_container_security_verify_summary
+  changed_when: false
+  tags: *hpc_container_security_verify_tags

@@ -1,0 +1,19 @@
+---
+hpc_interconnect_enabled: true
+hpc_interconnect_output_dir: /var/lib/cui-interconnect
+hpc_interconnect_rdma_exception_path: /var/lib/cui-interconnect/rdma_exception.md
+hpc_interconnect_controls_matrix_path: /var/lib/cui-interconnect/compensating_controls.md
+hpc_interconnect_future_encryption_path: /var/lib/cui-interconnect/future_in_network_encryption.md
+hpc_interconnect_enclave_name: research-enclave
+hpc_interconnect_verify_commands:
+  - id: rdma_exception_document_exists
+    command: "test -s {{ hpc_interconnect_rdma_exception_path }}"
+  - id: controls_matrix_exists
+    command: "test -s {{ hpc_interconnect_controls_matrix_path }}"
+hpc_interconnect_evidence_files:
+  - "{{ hpc_interconnect_rdma_exception_path }}"
+  - "{{ hpc_interconnect_controls_matrix_path }}"
+  - "{{ hpc_interconnect_future_encryption_path }}"
+hpc_interconnect_evidence_commands:
+  - id: ib_link_state
+    command: "ibstat || true"

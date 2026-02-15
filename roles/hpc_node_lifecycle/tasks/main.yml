@@ -1,0 +1,56 @@
+---
+- name: Validate CUI zone assignment for hpc_node_lifecycle
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_node_lifecycle_role_tags
+    - r2_3.4.1
+    - r2_3.8.3
+    - r3_03.04.01
+    - r3_03.08.03
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Ensure node lifecycle directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  loop:
+    - "{{ hpc_node_lifecycle_state_dir }}"
+    - "{{ hpc_node_lifecycle_log_dir }}"
+    - "{{ hpc_node_lifecycle_first_boot_path | dirname }}"
+  when: hpc_node_lifecycle_enabled | bool
+  tags: *hpc_node_lifecycle_role_tags
+
+- name: Deploy first boot compliance scan script
+  ansible.builtin.template:
+    src: first_boot.sh.j2
+    dest: "{{ hpc_node_lifecycle_first_boot_path }}"
+    owner: root
+    group: root
+    mode: '0750'
+  when: hpc_node_lifecycle_enabled | bool
+  tags: *hpc_node_lifecycle_role_tags
+
+- name: Deploy inter-job health check script
+  ansible.builtin.template:
+    src: health_check.sh.j2
+    dest: "{{ hpc_node_lifecycle_health_check_path }}"
+    owner: root
+    group: root
+    mode: '0750'
+  when: hpc_node_lifecycle_enabled | bool
+  tags: *hpc_node_lifecycle_role_tags
+
+- name: Deploy node sanitization script
+  ansible.builtin.template:
+    src: sanitize_node.sh.j2
+    dest: "{{ hpc_node_lifecycle_sanitize_node_path }}"
+    owner: root
+    group: root
+    mode: '0750'
+  when: hpc_node_lifecycle_enabled | bool
+  tags: *hpc_node_lifecycle_role_tags

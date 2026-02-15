@@ -1,0 +1,17 @@
+---
+- name: Verify node sanitization completion
+  hosts: "{{ hostname | default('all') }}"
+  become: true
+  gather_facts: true
+  vars:
+    log_path: /var/log/cui-node/sanitize_node.log
+  tasks:
+    - name: Validate sanitization log includes verification message
+      ansible.builtin.command: "grep -q 'Sanitization verified' {{ log_path }}"
+      register: sanitization_verify
+      changed_when: false
+      failed_when: sanitization_verify.rc != 0
+
+    - name: Report sanitization verification result
+      ansible.builtin.debug:
+        msg: "Sanitization verification passed on {{ inventory_hostname }}"

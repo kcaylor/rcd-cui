@@ -1,0 +1,23 @@
+---
+hpc_node_lifecycle_enabled: true
+hpc_node_lifecycle_first_boot_path: /usr/local/sbin/cui-first-boot.sh
+hpc_node_lifecycle_health_check_path: /usr/local/sbin/hpc-node-health-check
+hpc_node_lifecycle_sanitize_node_path: /usr/local/sbin/cui-sanitize-node.sh
+hpc_node_lifecycle_scan_timeout_seconds: 900
+hpc_node_lifecycle_quarantine_flag_path: /var/lib/cui-node/quarantine.flag
+hpc_node_lifecycle_quarantine_reason: "Compliance scan failed"
+hpc_node_lifecycle_scan_command: "/usr/local/bin/run-cui-compliance-scan"
+hpc_node_lifecycle_verify_commands:
+  - id: first_boot_script_exists
+    command: "test -x {{ hpc_node_lifecycle_first_boot_path }}"
+  - id: health_check_script_exists
+    command: "test -x {{ hpc_node_lifecycle_health_check_path }}"
+  - id: sanitize_script_exists
+    command: "test -x {{ hpc_node_lifecycle_sanitize_node_path }}"
+hpc_node_lifecycle_evidence_files:
+  - "{{ hpc_node_lifecycle_first_boot_path }}"
+  - "{{ hpc_node_lifecycle_health_check_path }}"
+  - "{{ hpc_node_lifecycle_sanitize_node_path }}"
+hpc_node_lifecycle_evidence_commands:
+  - id: quarantine_state
+    command: "test -f {{ hpc_node_lifecycle_quarantine_flag_path }} && echo quarantined || echo compliant"

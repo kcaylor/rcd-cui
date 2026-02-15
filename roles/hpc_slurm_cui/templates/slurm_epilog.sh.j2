@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+JOB_ID="${SLURM_JOB_ID:-unknown}"
+JOB_USER="${SLURM_JOB_USER:-unknown}"
+NODE_NAME="${SLURMD_NODENAME:-$(hostname -s)}"
+AUDIT_LOG="{{ hpc_slurm_cui_audit_log_path }}"
+HEALTH_CHECK="{{ hpc_slurm_cui_health_check_program }}"
+
+log_event() {
+  local outcome="$1"
+  local detail="$2"
+  local timestamp
+  timestamp="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+  local message
+  message="${timestamp} CUI_TAG={{ hpc_slurm_cui_log_tag }} outcome=${outcome} job_id=${JOB_ID} user=${JOB_USER} node=${NODE_NAME} detail=${detail}"
+  printf '%s\n' "${message}" >> "${AUDIT_LOG}"
+  logger -t slurm-cui-epilog "${message}"
+}
+
+if mountpoint -q /dev/shm; then
+  sanitize_file="/dev/shm/.cui_sanitize_${JOB_ID}"
+  dd if=/dev/zero of="${sanitize_file}" bs=1M count=32 conv=fsync status=none || true
+  rm -f "${sanitize_file}"
+  log_event "ok" "dev_shm_cleared"
+fi
+
+find /tmp -maxdepth 1 -user "${JOB_USER}" -print0 2>/dev/null | while IFS= read -r -d '' path; do
+  [ -f "${path}" ] || continue
+  file_size="$(stat -c '%s' "${path}" 2>/dev/null || echo 0)"
+  if [ "${file_size}" -gt 0 ]; then
+    dd if=/dev/zero of="${path}" bs=1M count=$(( (file_size + 1048575) / 1048576 )) conv=fsync status=none || true
+  fi
+  rm -f "${path}" || true
+done
+log_event "ok" "tmp_cleaned"
+
+if command -v nvidia-smi >/dev/null 2>&1; then
+  gpu_list="$(nvidia-smi --query-gpu=index --format=csv,noheader 2>/dev/null || true)"
+  if [ -n "${gpu_list}" ]; then
+    while IFS= read -r gpu_idx; do
+      [ -n "${gpu_idx}" ] || continue
+      if ! timeout 20s nvidia-smi --gpu-reset -i "${gpu_idx}" >/dev/null 2>&1; then
+        log_event "fail" "gpu_reset_failed_${gpu_idx}"
+        scontrol update NodeName="${NODE_NAME}" State=DRAIN Reason="CUI GPU reset failed for job ${JOB_ID}" || true
+        exit 1
+      fi
+    done <<< "${gpu_list}"
+    log_event "ok" "gpu_memory_reset"
+  fi
+fi
+
+journalctl --flush >/dev/null 2>&1 || true
+sync
+log_event "ok" "audit_flushed"
+
+if [ -x "${HEALTH_CHECK}" ]; then
+  if ! "${HEALTH_CHECK}"; then
+    log_event "fail" "health_check_failed"
+    scontrol update NodeName="${NODE_NAME}" State=DRAIN Reason="CUI health check failed after job ${JOB_ID}" || true
+    exit 1
+  fi
+fi
+
+log_event "ok" "epilog_complete"
+exit 0

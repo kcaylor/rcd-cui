@@ -1,0 +1,8 @@
+---
+hpc_slurm_cui_log_tag: CUI_SLURM
+hpc_slurm_cui_prolog_owner: root
+hpc_slurm_cui_prolog_group: root
+hpc_slurm_cui_prolog_mode: "0700"
+hpc_slurm_cui_epilog_owner: root
+hpc_slurm_cui_epilog_group: root
+hpc_slurm_cui_epilog_mode: "0700"

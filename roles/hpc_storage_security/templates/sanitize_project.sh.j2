@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: sanitize_project.sh <project_directory>" >&2
+  exit 2
+fi
+
+PROJECT_DIR="$1"
+if [ ! -d "${PROJECT_DIR}" ]; then
+  echo "Project directory does not exist: ${PROJECT_DIR}" >&2
+  exit 1
+fi
+
+find "${PROJECT_DIR}" -type f -print0 | while IFS= read -r -d '' file_path; do
+  if [ -s "${file_path}" ]; then
+    shred -vzn 1 "${file_path}" || {
+      echo "Failed to sanitize ${file_path}" >&2
+      exit 1
+    }
+  fi
+  rm -f "${file_path}"
+done
+
+find "${PROJECT_DIR}" -depth -type d -empty -delete
+
+echo "Sanitization complete for ${PROJECT_DIR}"

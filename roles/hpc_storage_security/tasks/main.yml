@@ -1,0 +1,144 @@
+---
+- name: Validate CUI zone assignment for hpc_storage_security
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_storage_security_role_tags
+    - r2_3.1.3
+    - r2_3.8.1
+    - r2_3.8.3
+    - r3_03.01.03
+    - r3_03.08.01
+    - r3_03.08.03
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Ensure required directories exist for storage security
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  loop:
+    - "{{ hpc_storage_security_changelog_output_dir }}"
+    - "{{ hpc_storage_security_project_root }}"
+    - "{{ hpc_storage_security_log_dir }}"
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Detect parallel filesystem type from mounts when auto mode is enabled
+  ansible.builtin.set_fact:
+    hpc_storage_security_detected_fs: >-
+      {{
+        'lustre' if (ansible_mounts | map(attribute='fstype') | list | select('equalto', 'lustre') | list | length) > 0
+        else (
+          'beegfs' if (ansible_mounts | map(attribute='fstype') | list | select('equalto', 'beegfs') | list | length) > 0
+          else 'lustre'
+        )
+      }}
+  when:
+    - hpc_storage_security_enabled | bool
+    - hpc_storage_security_filesystem_type == 'auto'
+  tags: *hpc_storage_security_role_tags
+
+- name: Select effective filesystem type
+  ansible.builtin.set_fact:
+    hpc_storage_security_effective_fs: >-
+      {{ hpc_storage_security_detected_fs if hpc_storage_security_filesystem_type == 'auto' else hpc_storage_security_filesystem_type }}
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Deploy Lustre changelog monitoring configuration
+  ansible.builtin.template:
+    src: lustre_changelog.conf.j2
+    dest: "{{ hpc_storage_security_lustre_changelog_path }}"
+    owner: root
+    group: root
+    mode: '0640'
+  when:
+    - hpc_storage_security_enabled | bool
+    - hpc_storage_security_effective_fs == 'lustre'
+  tags: *hpc_storage_security_role_tags
+
+- name: Deploy BeeGFS changelog monitoring configuration
+  ansible.builtin.template:
+    src: beegfs_changelog.conf.j2
+    dest: "{{ hpc_storage_security_beegfs_changelog_path }}"
+    owner: root
+    group: root
+    mode: '0640'
+  when:
+    - hpc_storage_security_enabled | bool
+    - hpc_storage_security_effective_fs == 'beegfs'
+  tags: *hpc_storage_security_role_tags
+
+- name: Deploy ACL sync daemon script
+  ansible.builtin.copy:
+    src: acl_sync.py
+    dest: "{{ hpc_storage_security_acl_sync_script_path }}"
+    owner: root
+    group: root
+    mode: '0750'
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Deploy ACL sync systemd service
+  ansible.builtin.template:
+    src: cui-acl-sync.service.j2
+    dest: "{{ hpc_storage_security_acl_sync_service_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Deploy project sanitization helper script
+  ansible.builtin.template:
+    src: sanitize_project.sh.j2
+    dest: "{{ hpc_storage_security_sanitize_script_path }}"
+    owner: root
+    group: root
+    mode: '0750'
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Enforce project quota configuration defaults
+  ansible.builtin.copy:
+    dest: "{{ hpc_storage_security_quota_enforcement_file }}"
+    owner: root
+    group: root
+    mode: '0640'
+    content: |
+      # Managed by hpc_storage_security
+      default_quota_gb: {{ hpc_storage_security_quota_default_gb }}
+      quota_exceeded_mode: readonly
+      readonly_flag_name: {{ hpc_storage_security_quota_readonly_flag }}
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Verify encryption at rest status
+  ansible.builtin.command: lsblk -o NAME,TYPE,FSTYPE,MOUNTPOINT
+  register: hpc_storage_security_encryption_at_rest_check
+  changed_when: false
+  check_mode: false
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Verify backup encryption status
+  ansible.builtin.command: "grep -Eq '^BackupEncryption=enabled$' /etc/cui/backup.conf"
+  register: hpc_storage_security_backup_encryption_check
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags
+
+- name: Ensure ACL sync service is enabled and started
+  ansible.builtin.systemd:
+    name: "{{ hpc_storage_security_service_name }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+  when: hpc_storage_security_enabled | bool
+  tags: *hpc_storage_security_role_tags

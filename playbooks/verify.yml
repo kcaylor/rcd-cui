@@ -42,3 +42,8 @@
         - si_dnf_automatic
         - si_clamav
         - si_openscap_oval
+        - hpc_slurm_cui
+        - hpc_container_security
+        - hpc_storage_security
+        - hpc_interconnect
+        - hpc_node_lifecycle

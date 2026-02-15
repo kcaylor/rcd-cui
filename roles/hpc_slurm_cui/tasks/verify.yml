@@ -1,0 +1,47 @@
+---
+- name: Validate CUI zone assignment for hpc_slurm_cui verification
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_slurm_cui_verify_tags
+    - r2_3.1.3
+    - r2_3.3.1
+    - r2_3.8.3
+    - r3_03.01.03
+    - r3_03.03.01
+    - r3_03.08.03
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Execute hpc_slurm_cui verification commands
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ hpc_slurm_cui_verify_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: hpc_slurm_cui_verify_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: hpc_slurm_cui_verify_commands | length > 0
+  tags: *hpc_slurm_cui_verify_tags
+
+- name: Build hpc_slurm_cui verification summary
+  ansible.builtin.set_fact:
+    hpc_slurm_cui_verify_summary:
+      role: hpc_slurm_cui
+      zone: "{{ cui_zone }}"
+      compliant: >-
+        {{
+          (hpc_slurm_cui_verify_results.results | default([])
+          | selectattr('rc', 'equalto', 0) | list | length)
+          == (hpc_slurm_cui_verify_commands | length)
+        }}
+      checks: "{{ hpc_slurm_cui_verify_results.results | default([]) }}"
+  changed_when: false
+  tags: *hpc_slurm_cui_verify_tags
+
+- name: Show hpc_slurm_cui verification summary
+  ansible.builtin.debug:
+    var: hpc_slurm_cui_verify_summary
+  changed_when: false
+  tags: *hpc_slurm_cui_verify_tags
