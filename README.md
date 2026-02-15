@@ -1,5 +1,9 @@
 # RCD-CUI: Research Computing CUI Compliance Automation
 
+[![CI](https://github.com/kcaylor/rcd-cui/actions/workflows/ci.yml/badge.svg)](https://github.com/kcaylor/rcd-cui/actions/workflows/ci.yml)
+![SPRS Score](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkcaylor.github.io%2Frcd-cui%2Fbadge-data.json&query=%24.sprs_score&label=SPRS&color=auto)
+![Last Assessment](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fkcaylor.github.io%2Frcd-cui%2Fbadge-data.json&query=%24.last_assessment&label=Last%20Assessment&color=blue)
+
 An Ansible-based framework for deploying and auditing NIST 800-171 compliant research computing infrastructure with CUI (Controlled Unclassified Information) protection.
 
 ## Overview

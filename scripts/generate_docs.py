@@ -156,7 +156,7 @@ def link_terms(text: str, term_anchors: dict[str, str]) -> str:
         anchor = term_anchors.get(token)
         if not anchor:
             return token
-        return f"[{token}](#{anchor})"
+        return f"[{token}](glossary_full.md#{anchor})"
 
     return ACRONYM_PATTERN.sub(_replace, text)
 

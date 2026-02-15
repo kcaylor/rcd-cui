@@ -76,3 +76,10 @@ make assess           # Run compliance assessment
 - **Molecule**: Role-level testing with delegated driver
 - **Pytest**: Schema validation and integration tests
 - Run `make ee-lint` before committing changes
+
+## Active Technologies
+- YAML (GitHub Actions workflows), Bash (scripts), Python 3.9+ (existing tooling) + GitHub Actions, GitHub Pages, shields.io (badges), existing Makefile targets (005-ci-cd-dashboard)
+- Git repository, `gh-pages` branch for published artifacts, JSON files for badge data (005-ci-cd-dashboard)
+
+## Recent Changes
+- 005-ci-cd-dashboard: Added YAML (GitHub Actions workflows), Bash (scripts), Python 3.9+ (existing tooling) + GitHub Actions, GitHub Pages, shields.io (badges), existing Makefile targets

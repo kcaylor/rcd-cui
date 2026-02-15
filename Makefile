@@ -10,7 +10,7 @@ EE_IMAGE ?= rcd-cui-ee:latest
 PROJECT_DIR := $(shell pwd)
 EE_RUN = $(CONTAINER_RUNTIME) run --rm -v $(PROJECT_DIR):/workspace -w /workspace $(EE_IMAGE)
 
-.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check assess evidence sprs poam dashboard report auditor-package
+.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check assess evidence sprs poam dashboard badge-data report auditor-package site
 
 env:
 	./scripts/bootstrap-env.sh
@@ -77,6 +77,12 @@ poam:
 
 dashboard:
 	$(PYTHON) scripts/generate_dashboard.py --output-dir reports/dashboard
+
+badge-data:
+	$(PYTHON) scripts/generate_badge_data.py --output reports/badge-data.json
+
+site:
+	./scripts/assemble_site.sh
 
 report: sprs poam dashboard
 

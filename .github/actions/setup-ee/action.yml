@@ -1,0 +1,53 @@
+name: Setup Execution Environment
+
+description: Build and cache the Ansible execution environment image for CI jobs.
+
+inputs:
+  python-version:
+    description: Python version used for tooling setup.
+    required: false
+    default: "3.11"
+  ee-image:
+    description: Tag for the local EE image.
+    required: false
+    default: "rcd-cui-ee:latest"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+        cache-dependency-path: |
+          requirements-dev.txt
+          requirements-ee.txt
+
+    - name: Install ansible-builder
+      shell: bash
+      run: python -m pip install --upgrade pip ansible-builder
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Prepare EE build context
+      shell: bash
+      run: ansible-builder create -f execution-environment.yml -c .ee
+
+    - name: Calculate EE cache scope
+      id: ee-cache
+      shell: bash
+      run: |
+        echo "scope=ee-${{ hashFiles('execution-environment.yml', 'requirements-ee.txt', 'bindep.txt') }}" >> "$GITHUB_OUTPUT"
+
+    - name: Build EE image with cache
+      uses: docker/build-push-action@v5
+      with:
+        context: ./.ee
+        file: ./.ee/Containerfile
+        load: true
+        push: false
+        tags: ${{ inputs.ee-image }}
+        cache-from: type=gha,scope=${{ steps.ee-cache.outputs.scope }}
+        cache-to: type=gha,mode=max,scope=${{ steps.ee-cache.outputs.scope }}

@@ -1,0 +1,75 @@
+name: Nightly Assessment
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  assess:
+    name: assess
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build execution environment
+        uses: ./.github/actions/setup-ee
+
+      - name: Run nightly assessment
+        shell: bash
+        run: ./scripts/run_nightly_assessment.sh
+
+      - name: Generate audience documentation
+        shell: bash
+        run: make docs
+
+      - name: Generate dashboard
+        shell: bash
+        run: make dashboard
+
+      - name: Generate framework crosswalk
+        shell: bash
+        run: make crosswalk
+
+      - name: Generate badge data
+        shell: bash
+        run: make badge-data
+
+      - name: Assemble _site artifacts
+        shell: bash
+        run: make site
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pages-site
+          path: _site/
+          if-no-files-found: error
+
+  deploy:
+    name: deploy
+    needs: assess
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pages-site
+          path: _site
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: _site
