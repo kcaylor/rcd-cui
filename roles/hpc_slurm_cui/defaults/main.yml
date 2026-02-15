@@ -1,0 +1,46 @@
+---
+hpc_slurm_cui_enabled: true
+hpc_slurm_cui_partition_name: cui
+hpc_slurm_cui_partition_nodes: "cui[001-032]"
+hpc_slurm_cui_allow_accounts:
+  - cui_default
+hpc_slurm_cui_qos: cui_qos
+hpc_slurm_cui_authorized_group: cuiproj-cui-users
+hpc_slurm_cui_ldap_uri: ldap://ipa.example.edu
+hpc_slurm_cui_ldap_base_dn: dc=example,dc=edu
+hpc_slurm_cui_training_attribute: cuiTrainingExpiry
+hpc_slurm_cui_auth_timeout_seconds: 10
+hpc_slurm_cui_retry_error_message: "Authorization service temporarily unavailable - please resubmit job"
+hpc_slurm_cui_prolog_path: /etc/slurm/prolog.d/cui_prolog.sh
+hpc_slurm_cui_epilog_path: /etc/slurm/epilog.d/cui_epilog.sh
+hpc_slurm_cui_partition_config_path: /etc/slurm/partitions.d/cui_partition.conf
+hpc_slurm_cui_audit_log_path: /var/log/slurm/cui_audit.log
+hpc_slurm_cui_health_check_program: /usr/local/sbin/hpc-node-health-check
+hpc_slurm_cui_sacct_fields:
+  - JobID
+  - User
+  - Account
+  - Partition
+  - NodeList
+  - Start
+  - End
+  - State
+  - ExitCode
+  - AdminComment
+hpc_slurm_cui_verify_commands:
+  - id: partition_exists
+    command: "grep -q '^PartitionName={{ hpc_slurm_cui_partition_name }}' {{ hpc_slurm_cui_partition_config_path }}"
+  - id: prolog_exists
+    command: "test -x {{ hpc_slurm_cui_prolog_path }}"
+  - id: epilog_exists
+    command: "test -x {{ hpc_slurm_cui_epilog_path }}"
+hpc_slurm_cui_evidence_commands:
+  - id: sacct_sample
+    command: >-
+      sacct --partition={{ hpc_slurm_cui_partition_name }}
+      --format={{ hpc_slurm_cui_sacct_fields | join(',') }}
+      --noheader | head -n 25
+hpc_slurm_cui_evidence_files:
+  - "{{ hpc_slurm_cui_partition_config_path }}"
+  - "{{ hpc_slurm_cui_prolog_path }}"
+  - "{{ hpc_slurm_cui_epilog_path }}"

@@ -1,0 +1,9 @@
+---
+- name: Converge hpc_container_security
+  hosts: all
+  gather_facts: true
+  become: false
+  vars:
+    hpc_container_security_enabled: false
+  roles:
+    - hpc_container_security

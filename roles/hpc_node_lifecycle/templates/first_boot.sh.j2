@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+STATE_DIR="{{ hpc_node_lifecycle_state_dir }}"
+LOG_DIR="{{ hpc_node_lifecycle_log_dir }}"
+QUARANTINE_FLAG="{{ hpc_node_lifecycle_quarantine_flag_path }}"
+SCAN_TIMEOUT="{{ hpc_node_lifecycle_scan_timeout_seconds }}"
+SCAN_COMMAND="{{ hpc_node_lifecycle_scan_command }}"
+FIRST_BOOT_MARKER="{{ hpc_node_lifecycle_first_boot_marker }}"
+
+mkdir -p "${STATE_DIR}" "${LOG_DIR}"
+
+echo "[$(date -u +"%Y-%m-%dT%H:%M:%SZ")] Starting first boot compliance scan" | tee -a "${LOG_DIR}/first_boot.log"
+if ! timeout "${SCAN_TIMEOUT}" bash -c "${SCAN_COMMAND}" >> "${LOG_DIR}/first_boot.log" 2>&1; then
+  touch "${QUARANTINE_FLAG}"
+  scontrol update NodeName="$(hostname -s)" State=DRAIN Reason="{{ hpc_node_lifecycle_quarantine_reason }}" || true
+  echo "Compliance scan failed; node quarantined" | tee -a "${LOG_DIR}/first_boot.log"
+  exit 1
+fi
+
+rm -f "${QUARANTINE_FLAG}"
+touch "${FIRST_BOOT_MARKER}"
+echo "Compliance scan passed; node is compliant" | tee -a "${LOG_DIR}/first_boot.log"
+exit 0

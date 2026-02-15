@@ -166,6 +166,19 @@
       delegate_to: localhost
       become: false
 
+    - name: Collect HPC role evidence payloads on each host
+      ansible.builtin.include_role:
+        name: "{{ item }}"
+        tasks_from: evidence.yml
+      loop:
+        - hpc_slurm_cui
+        - hpc_container_security
+        - hpc_storage_security
+        - hpc_interconnect
+        - hpc_node_lifecycle
+      vars:
+        evidence_output_dir: /tmp/cui-evidence
+
 - name: Finalize, redact, and package evidence on controller
   hosts: localhost
   gather_facts: false

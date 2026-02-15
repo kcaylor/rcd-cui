@@ -36,3 +36,23 @@
     - si_dnf_automatic
     - si_clamav
     - si_openscap_oval
+    - role: hpc_slurm_cui
+      tags:
+        - hpc
+        - hpc_slurm_cui
+    - role: hpc_container_security
+      tags:
+        - hpc
+        - hpc_container_security
+    - role: hpc_storage_security
+      tags:
+        - hpc
+        - hpc_storage_security
+    - role: hpc_interconnect
+      tags:
+        - hpc
+        - hpc_interconnect
+    - role: hpc_node_lifecycle
+      tags:
+        - hpc
+        - hpc_node_lifecycle

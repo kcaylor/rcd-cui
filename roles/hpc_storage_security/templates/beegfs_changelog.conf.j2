@@ -1,0 +1,10 @@
+# Managed by Ansible: hpc_storage_security (BeeGFS)
+[general]
+filesystem_type=beegfs
+project_root={{ hpc_storage_security_project_root }}
+log_file={{ hpc_storage_security_changelog_output_dir }}/changelog.log
+
+[beegfs]
+management_host=localhost
+poll_interval_seconds=5
+event_types=CREATE,UNLINK,SETATTR,RENAME

@@ -1,0 +1,45 @@
+---
+- name: Validate CUI zone assignment for hpc_interconnect verification
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_interconnect_verify_tags
+    - r2_3.13.8
+    - r2_3.13.11
+    - r3_03.13.08
+    - r3_03.13.11
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Execute hpc_interconnect verification commands
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ hpc_interconnect_verify_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: hpc_interconnect_verify_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: hpc_interconnect_verify_commands | length > 0
+  tags: *hpc_interconnect_verify_tags
+
+- name: Build hpc_interconnect verification summary
+  ansible.builtin.set_fact:
+    hpc_interconnect_verify_summary:
+      role: hpc_interconnect
+      zone: "{{ cui_zone }}"
+      compliant: >-
+        {{
+          (hpc_interconnect_verify_results.results | default([])
+          | selectattr('rc', 'equalto', 0) | list | length)
+          == (hpc_interconnect_verify_commands | length)
+        }}
+      checks: "{{ hpc_interconnect_verify_results.results | default([]) }}"
+  changed_when: false
+  tags: *hpc_interconnect_verify_tags
+
+- name: Show hpc_interconnect verification summary
+  ansible.builtin.debug:
+    var: hpc_interconnect_verify_summary
+  changed_when: false
+  tags: *hpc_interconnect_verify_tags

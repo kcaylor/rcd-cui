@@ -1,0 +1,111 @@
+---
+- name: Onboard a new CUI research project
+  hosts: localhost
+  gather_facts: true
+  vars_files:
+    - vars/onboarding_defaults.yml
+  vars:
+    project_id: "{{ project_id }}"
+    project_name: "{{ project_name }}"
+    pi_username: "{{ pi_username }}"
+    pi_email: "{{ pi_email }}"
+    pi_name: "{{ pi_name | default(pi_username) }}"
+    storage_quota_gb: "{{ storage_quota_gb | default(onboarding_defaults_default_quota_gb) }}"
+    freeipa_group: "{{ freeipa_group | default(onboarding_defaults_freeipa_group_prefix ~ project_id) }}"
+    slurm_account: "{{ slurm_account | default(onboarding_defaults_slurm_account_prefix ~ (project_id | replace('-', '_'))) }}"
+    project_storage_path: "{{ project_storage_path | default(onboarding_defaults_project_root ~ '/' ~ project_id) }}"
+    cui_partition: "{{ onboarding_defaults_cui_partition }}"
+    onboarding_timestamp: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ') }}"
+    onboarding_date: "{{ lookup('pipe', 'date +%F') }}"
+    welcome_packet_template_path: "{{ lookup('env', 'PWD') }}/templates/pi_welcome_packet.md.j2"
+  tasks:
+    - name: Validate required onboarding inputs
+      ansible.builtin.assert:
+        that:
+          - project_id is match('^cui-[a-z0-9]{4,20}$')
+          - project_name | length > 3
+          - pi_username | length > 1
+          - pi_email | length > 3
+        fail_msg: "Missing required onboarding variables. Provide project_id, project_name, pi_username, and pi_email."
+
+    - name: Create FreeIPA group for project
+      freeipa.ansible_freeipa.ipagroup:
+        ipaadmin_principal: "{{ ipaadmin_principal | default(omit) }}"
+        ipaadmin_password: "{{ ipaadmin_password | default(omit) }}"
+        name: "{{ freeipa_group }}"
+        description: "CUI project group for {{ project_name }}"
+        state: present
+
+    - name: Ensure Slurm account exists for project
+      ansible.builtin.command: "sacctmgr -i add account {{ slurm_account }} Description={{ project_name | quote }} Organization=CUI"
+      register: onboard_slurm_account_create
+      changed_when: onboard_slurm_account_create.rc == 0
+      failed_when: false
+
+    - name: Provision project storage directory
+      ansible.builtin.file:
+        path: "{{ project_storage_path }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0770'
+
+    - name: Apply project ACL bound to FreeIPA group
+      ansible.posix.acl:
+        path: "{{ project_storage_path }}"
+        entity: "{{ freeipa_group }}"
+        etype: group
+        permissions: rwx
+        default: true
+        state: present
+
+    - name: Create project quota metadata
+      ansible.builtin.copy:
+        dest: "{{ project_storage_path }}/.quota.yml"
+        mode: '0640'
+        content: |
+          project_id: {{ project_id }}
+          quota_gb: {{ storage_quota_gb }}
+          filesystem: {{ onboarding_defaults_filesystem_type }}
+
+    - name: Assign Duo MFA policy to project group
+      ansible.builtin.command: "duoctl policy assign --group {{ freeipa_group }} --policy {{ onboarding_defaults_duo_policy }}"
+      register: onboard_duo_assignment
+      changed_when: onboard_duo_assignment.rc == 0
+      failed_when: false
+
+    - name: Generate PI welcome packet
+      ansible.builtin.template:
+        src: "{{ welcome_packet_template_path }}"
+        dest: "{{ onboarding_defaults_welcome_output_dir }}/{{ project_id }}-welcome.md"
+        mode: '0640'
+      vars:
+        support_email: "{{ onboarding_defaults_support_email }}"
+        security_email: "{{ onboarding_defaults_security_email }}"
+
+    - name: Ensure onboarding evidence directory exists
+      ansible.builtin.file:
+        path: "{{ onboarding_defaults_evidence_root }}/onboarding"
+        state: directory
+        mode: '0755'
+
+    - name: Write onboarding evidence artifact
+      ansible.builtin.copy:
+        dest: "{{ onboarding_defaults_evidence_root }}/onboarding/{{ project_id }}-{{ onboarding_date }}.json"
+        mode: '0644'
+        content: |
+          {{
+            {
+              'project_id': project_id,
+              'project_name': project_name,
+              'pi_username': pi_username,
+              'pi_email': pi_email,
+              'freeipa_group': freeipa_group,
+              'slurm_account': slurm_account,
+              'project_storage_path': project_storage_path,
+              'quota_gb': storage_quota_gb,
+              'duo_policy': onboarding_defaults_duo_policy,
+              'welcome_packet': onboarding_defaults_welcome_output_dir ~ '/' ~ project_id ~ '-welcome.md',
+              'timestamp': onboarding_timestamp
+            } | to_nice_json
+          }}

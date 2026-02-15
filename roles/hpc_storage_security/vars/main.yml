@@ -1,0 +1,5 @@
+---
+hpc_storage_security_service_name: cui-acl-sync
+hpc_storage_security_log_dir: /var/log/cui-acl-sync
+hpc_storage_security_run_dir: /run/cui-acl-sync
+hpc_storage_security_quota_enforcement_file: /etc/cui/project_quotas.yml

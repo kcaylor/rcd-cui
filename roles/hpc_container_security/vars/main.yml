@@ -1,0 +1,5 @@
+---
+hpc_container_security_log_dir: /var/log/apptainer-cui
+hpc_container_security_wrapper_owner: root
+hpc_container_security_wrapper_group: root
+hpc_container_security_wrapper_mode: "0755"

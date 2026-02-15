@@ -1,0 +1,19 @@
+---
+- name: Decommission HPC node with sanitization
+  hosts: "{{ hostname | default('all') }}"
+  become: true
+  gather_facts: true
+  vars:
+    sanitization_method: "{{ sanitization_method | default('purge') }}"
+    target_device: "{{ target_device | default('/dev/sda') }}"
+  tasks:
+    - name: Ensure node is drained before decommissioning
+      ansible.builtin.command: "scontrol update NodeName={{ inventory_hostname }} State=DRAIN Reason='Decommissioning'"
+      register: decommission_drain
+      changed_when: decommission_drain.rc == 0
+      failed_when: false
+
+    - name: Run node sanitization script
+      ansible.builtin.command: "/usr/local/sbin/cui-sanitize-node.sh {{ target_device }} {{ sanitization_method }}"
+      register: decommission_sanitize
+      changed_when: decommission_sanitize.rc == 0

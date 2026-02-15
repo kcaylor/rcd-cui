@@ -1,0 +1,24 @@
+---
+hpc_container_security_enabled: true
+hpc_container_security_apptainer_conf_path: /etc/apptainer/apptainer.conf
+hpc_container_security_wrapper_path: /usr/local/bin/apptainer-cui
+hpc_container_security_org_public_key: /etc/apptainer/keys/cui-org-public.pem
+hpc_container_security_bind_allowlist:
+  - /cui/projects
+  - /cui/containers
+  - /tmp
+hpc_container_security_allow_unsigned: "no"
+hpc_container_security_enforce_network_none: true
+hpc_container_security_ib_device_path: /dev/infiniband
+hpc_container_security_log_path: /var/log/apptainer-cui/executions.jsonl
+hpc_container_security_verify_commands:
+  - id: conf_enforces_signatures
+    command: "grep -Eq '^allow unsigned = no$' {{ hpc_container_security_apptainer_conf_path }}"
+  - id: wrapper_exists
+    command: "test -x {{ hpc_container_security_wrapper_path }}"
+hpc_container_security_evidence_files:
+  - "{{ hpc_container_security_apptainer_conf_path }}"
+  - "{{ hpc_container_security_wrapper_path }}"
+hpc_container_security_evidence_commands:
+  - id: container_execution_log_sample
+    command: "tail -n 50 {{ hpc_container_security_log_path }}"

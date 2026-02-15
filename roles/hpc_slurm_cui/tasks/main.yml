@@ -1,0 +1,75 @@
+---
+- name: Validate CUI zone assignment for hpc_slurm_cui
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &hpc_slurm_cui_role_tags
+    - r2_3.1.3
+    - r2_3.3.1
+    - r2_3.8.3
+    - r3_03.01.03
+    - r3_03.03.01
+    - r3_03.08.03
+    - family_HPC
+    - zone_{{ cui_zone }}
+
+- name: Ensure Slurm directories exist for CUI role artifacts
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  loop:
+    - "{{ hpc_slurm_cui_partition_config_path | dirname }}"
+    - "{{ hpc_slurm_cui_prolog_path | dirname }}"
+    - "{{ hpc_slurm_cui_epilog_path | dirname }}"
+    - "{{ hpc_slurm_cui_audit_log_path | dirname }}"
+  when: hpc_slurm_cui_enabled | bool
+  tags: *hpc_slurm_cui_role_tags
+
+- name: Deploy Slurm CUI partition configuration
+  ansible.builtin.template:
+    src: cui_partition.conf.j2
+    dest: "{{ hpc_slurm_cui_partition_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+  when: hpc_slurm_cui_enabled | bool
+  tags: *hpc_slurm_cui_role_tags
+
+- name: Deploy Slurm prolog authorization script
+  ansible.builtin.template:
+    src: slurm_prolog.sh.j2
+    dest: "{{ hpc_slurm_cui_prolog_path }}"
+    owner: "{{ hpc_slurm_cui_prolog_owner }}"
+    group: "{{ hpc_slurm_cui_prolog_group }}"
+    mode: "{{ hpc_slurm_cui_prolog_mode }}"
+  when: hpc_slurm_cui_enabled | bool
+  tags: *hpc_slurm_cui_role_tags
+
+- name: Deploy Slurm epilog sanitization script
+  ansible.builtin.template:
+    src: slurm_epilog.sh.j2
+    dest: "{{ hpc_slurm_cui_epilog_path }}"
+    owner: "{{ hpc_slurm_cui_epilog_owner }}"
+    group: "{{ hpc_slurm_cui_epilog_group }}"
+    mode: "{{ hpc_slurm_cui_epilog_mode }}"
+  when: hpc_slurm_cui_enabled | bool
+  tags: *hpc_slurm_cui_role_tags
+
+- name: Configure CUI-specific sacct field format
+  ansible.builtin.copy:
+    dest: /etc/slurm/slurm.conf.d/cui_sacct_fields.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      # Managed by hpc_slurm_cui
+      # CUI accounting integration for Spec 003 evidence collection
+      AccountingStoreFlags=job_comment
+      JobAcctGatherType=jobacct_gather/cgroup
+      # Recommended sacct format for CUI evidence pipelines:
+      # {{ hpc_slurm_cui_sacct_fields | join(',') }}
+  when: hpc_slurm_cui_enabled | bool
+  tags: *hpc_slurm_cui_role_tags

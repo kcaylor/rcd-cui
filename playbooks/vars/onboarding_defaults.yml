@@ -1,0 +1,15 @@
+---
+onboarding_defaults_project_root: /cui/projects
+onboarding_defaults_container_root: /cui/containers
+onboarding_defaults_archive_root: /cui/archive
+onboarding_defaults_default_quota_gb: 5000
+onboarding_defaults_grace_period_hours: 24
+onboarding_defaults_freeipa_group_prefix: cuiproj-
+onboarding_defaults_slurm_account_prefix: cui_
+onboarding_defaults_welcome_output_dir: /tmp
+onboarding_defaults_evidence_root: data
+onboarding_defaults_duo_policy: cui-researchers
+onboarding_defaults_filesystem_type: lustre
+onboarding_defaults_support_email: hpc-ops@example.edu
+onboarding_defaults_security_email: security@example.edu
+onboarding_defaults_cui_partition: cui

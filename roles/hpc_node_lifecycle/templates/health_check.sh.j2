@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+QUARANTINE_FLAG="{{ hpc_node_lifecycle_quarantine_flag_path }}"
+
+if [ -f "${QUARANTINE_FLAG}" ]; then
+  echo "Node is quarantined"
+  exit 1
+fi
+
+required_services=(sssd auditd)
+for svc in "${required_services[@]}"; do
+  if ! systemctl is-active --quiet "${svc}"; then
+    echo "Required service ${svc} is not active"
+    exit 1
+  fi
+done
+
+if command -v nvidia-smi >/dev/null 2>&1; then
+  if ! nvidia-smi >/dev/null 2>&1; then
+    echo "GPU health check failed"
+    exit 1
+  fi
+fi
+
+echo "Node health check passed"
+exit 0

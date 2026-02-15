@@ -1,0 +1,26 @@
+# POA&M: InfiniBand RDMA Encryption Exception
+
+## System
+
+- Enclave: {{ hpc_interconnect_enclave_name }}
+- Generated: {{ ansible_date_time.date | default('unknown-date') }}
+
+## Exception Statement
+
+InfiniBand RDMA traffic inside the CUI enclave compute fabric currently operates without in-network encryption.
+This exception is documented until validated line-rate encryption is available in production hardware.
+
+## Affected Controls
+
+- NIST 800-171 Rev2: 3.13.8, 3.13.11
+- NIST 800-171 Rev3: 03.13.08, 03.13.11
+
+## Risk Assessment
+
+Residual risk is accepted as **medium** due to constrained physical access and layered compensating controls.
+
+## Milestones
+
+1. Track vendor roadmap for in-network encryption support.
+2. Validate performance and security test results in staging.
+3. Transition from exception to enforced encryption policy.

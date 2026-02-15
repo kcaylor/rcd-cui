@@ -1,0 +1,11 @@
+---
+profile: production
+exclude_paths:
+  - .git/
+  - tests/__pycache__/
+  - roles/common/vars/control_mapping.yml
+mock_modules:
+  - freeipa.ansible_freeipa.ipagroup
+  - freeipa.ansible_freeipa.ipagroup_member
+skip_list:
+  - yaml[line-length]

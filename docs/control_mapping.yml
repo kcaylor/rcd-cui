@@ -1,0 +1,70 @@
+version: 1.0.0
+last_updated: '2026-02-15'
+description: HPC-specific control-to-role mapping for CUI enclave operations.
+controls:
+  - control_id: 3.1.3
+    rev3_id: 03.01.03
+    title: Control information flow enforcement
+    implemented_roles:
+      - hpc_slurm_cui
+      - hpc_storage_security
+    implementation_paths:
+      - roles/hpc_slurm_cui/templates/cui_partition.conf.j2
+      - roles/hpc_storage_security/tasks/main.yml
+  - control_id: 3.3.1
+    rev3_id: 03.03.01
+    title: Audit event generation
+    implemented_roles:
+      - hpc_slurm_cui
+      - hpc_container_security
+      - hpc_interconnect
+    implementation_paths:
+      - roles/hpc_slurm_cui/templates/slurm_prolog.sh.j2
+      - roles/hpc_container_security/templates/container_wrapper.sh.j2
+      - roles/hpc_interconnect/tasks/evidence.yml
+  - control_id: 3.4.1
+    rev3_id: 03.04.01
+    title: Baseline configuration control
+    implemented_roles:
+      - hpc_node_lifecycle
+    implementation_paths:
+      - roles/hpc_node_lifecycle/templates/first_boot.sh.j2
+  - control_id: 3.4.8
+    rev3_id: 03.04.08
+    title: Prevent unauthorized software execution
+    implemented_roles:
+      - hpc_container_security
+    implementation_paths:
+      - roles/hpc_container_security/templates/apptainer.conf.j2
+  - control_id: 3.8.1
+    rev3_id: 03.08.01
+    title: Protect data at rest
+    implemented_roles:
+      - hpc_storage_security
+    implementation_paths:
+      - roles/hpc_storage_security/tasks/main.yml
+  - control_id: 3.8.3
+    rev3_id: 03.08.03
+    title: Sanitize media before reuse
+    implemented_roles:
+      - hpc_slurm_cui
+      - hpc_storage_security
+      - hpc_node_lifecycle
+    implementation_paths:
+      - roles/hpc_slurm_cui/templates/slurm_epilog.sh.j2
+      - roles/hpc_storage_security/templates/sanitize_project.sh.j2
+      - roles/hpc_node_lifecycle/templates/sanitize_node.sh.j2
+  - control_id: 3.13.8
+    rev3_id: 03.13.08
+    title: Protect confidentiality and integrity in transit
+    implemented_roles:
+      - hpc_interconnect
+    implementation_paths:
+      - roles/hpc_interconnect/templates/rdma_exception.md.j2
+  - control_id: 3.13.11
+    rev3_id: 03.13.11
+    title: Employ FIPS-validated cryptography where applicable
+    implemented_roles:
+      - hpc_interconnect
+    implementation_paths:
+      - roles/hpc_interconnect/templates/compensating_controls.md.j2
