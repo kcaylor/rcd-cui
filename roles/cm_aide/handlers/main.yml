@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart cm_aide services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ cm_aide_services }}"
+  when: cm_aide_services | length > 0
+  listen: Restart cm_aide services
+  tags:
+    - r2_3.4.9
+    - r3_03.04.09
+    - family_CM
+    - zone_{{ cui_zone }}

@@ -1,0 +1,53 @@
+---
+# Zone assignment is intentionally null here and must be set by zone group vars.
+cui_zone: null
+
+# Organization context used in evidence artifacts.
+cui_organization: "University Research Computing"
+cui_environment: "production"
+
+# Organization-defined parameters used by roles.
+session_timeout_minutes: 15
+password_min_length: 15
+password_complexity_enabled: true
+password_history: 24
+password_max_age_days: 365
+inactive_account_days: 90
+audit_log_retention_years: 3
+failed_login_lockout_threshold: 3
+failed_login_lockout_duration_minutes: 15
+
+# Infrastructure endpoints.
+freeipa_servers:
+  - ipa01.example.edu
+  - ipa02.example.edu
+freeipa_domain: "example.edu"
+freeipa_realm: "EXAMPLE.EDU"
+
+wazuh_manager_host: "wazuh.example.edu"
+wazuh_manager_port: 1514
+
+ntp_servers:
+  - time1.example.edu
+  - time2.example.edu
+
+syslog_server: "logs.example.edu"
+syslog_port: 6514
+syslog_protocol: "tcp"
+syslog_tls_enabled: true
+
+# Evidence output location on managed hosts.
+evidence_output_dir: "/tmp/cui-evidence"
+evidence_include_timestamps: true
+
+# OpenSCAP defaults.
+openscap_profile: "xccdf_org.ssgproject.content_profile_cui"
+openscap_content: "/usr/share/xml/scap/ssg/content/ssg-rhel9-ds.xml"
+openscap_tailoring_enabled: true
+openscap_skip_rules: []
+
+# Common zone behavior toggles.
+audit_rules_profile: comprehensive
+mfa_required: true
+mfa_bypass_ssh_certs: true
+usbguard_policy: deny_storage

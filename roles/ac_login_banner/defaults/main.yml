@@ -1,0 +1,36 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ac_login_banner_enabled: true
+
+# Package list required by this control implementation.
+ac_login_banner_packages:
+  []
+
+# Template files deployed by this role.
+ac_login_banner_templates:
+  - src: issue.j2
+    dest: /etc/issue
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+ac_login_banner_files:
+  []
+
+# Services managed by this role.
+ac_login_banner_services:
+  []
+
+# Read-only verification commands for compliance checks.
+ac_login_banner_verify_commands:
+  - id: issue_present
+    command: "test -f /etc/issue"
+
+# File paths captured as evidence artifacts.
+ac_login_banner_evidence_files:
+  - /etc/issue
+
+# Read-only commands captured as evidence artifacts.
+ac_login_banner_evidence_commands:
+  []

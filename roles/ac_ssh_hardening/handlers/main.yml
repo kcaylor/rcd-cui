@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ac_ssh_hardening services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ac_ssh_hardening_services }}"
+  when: ac_ssh_hardening_services | length > 0
+  listen: Restart ac_ssh_hardening services
+  tags:
+    - r2_3.1.12
+    - r3_03.01.12
+    - family_AC
+    - zone_{{ cui_zone }}

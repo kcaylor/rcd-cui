@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart sc_luks_verification services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ sc_luks_verification_services }}"
+  when: sc_luks_verification_services | length > 0
+  listen: Restart sc_luks_verification services
+  tags:
+    - r2_3.13.16
+    - r3_03.13.16
+    - family_SC
+    - zone_{{ cui_zone }}

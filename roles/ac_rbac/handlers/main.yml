@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ac_rbac services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ac_rbac_services }}"
+  when: ac_rbac_services | length > 0
+  listen: Restart ac_rbac services
+  tags:
+    - r2_3.1.5
+    - r3_03.01.05
+    - family_AC
+    - zone_{{ cui_zone }}

@@ -1,0 +1,7 @@
+---
+# Valid CUI zones. Roles fail fast if a host is not explicitly assigned.
+common_valid_cui_zones:
+  - management
+  - internal
+  - restricted
+  - public

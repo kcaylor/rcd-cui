@@ -1,0 +1,35 @@
+---
+# Enable or disable this role without changing playbook ordering.
+si_openscap_oval_enabled: true
+
+# Package list required by this control implementation.
+si_openscap_oval_packages:
+  - openscap-scanner
+
+# Template files deployed by this role.
+si_openscap_oval_templates:
+  []
+
+# Static helper files deployed by this role.
+si_openscap_oval_files:
+  []
+
+# Services managed by this role.
+si_openscap_oval_services:
+  []
+
+# Read-only verification commands for compliance checks.
+si_openscap_oval_verify_commands:
+  - id: oscap_present
+    command: "which oscap"
+  - id: oval_dir
+    command: "test -d /var/lib/openscap"
+
+# File paths captured as evidence artifacts.
+si_openscap_oval_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+si_openscap_oval_evidence_commands:
+  - id: oscap_oval
+    command: "oscap --version"

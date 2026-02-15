@@ -1,0 +1,45 @@
+---
+# WHY: Re-validate zone context during read-only audits to keep evidence attributable by zone.
+- name: Validate CUI zone assignment for ac_ssh_hardening verification
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_verify_tags
+    - r2_3.1.12
+    - r3_03.01.12
+    - family_AC
+    - zone_{{ cui_zone }}
+
+# WHY: Run non-destructive checks that show whether controls are active without modifying state.
+- name: Execute compliance verification checks for ac_ssh_hardening
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ ac_ssh_hardening_verify_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: ac_ssh_hardening_verify_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: ac_ssh_hardening_verify_commands | length > 0
+  tags: *role_verify_tags
+
+# WHY: Store structured verification output so auditors can trace check outcomes.
+- name: Build verification summary for ac_ssh_hardening
+  ansible.builtin.set_fact:
+    ac_ssh_hardening_verify_summary:
+      role: ac_ssh_hardening
+      zone: "{{ cui_zone }}"
+      compliant: >-
+        {{ (ac_ssh_hardening_verify_results.results | default([]) |
+        selectattr('rc', 'equalto', 0) | list | length) ==
+        (ac_ssh_hardening_verify_commands | length) }}
+      checks: "{{ ac_ssh_hardening_verify_results.results | default([]) }}"
+  changed_when: false
+  tags: *role_verify_tags
+
+# WHY: Print verification status in plain language for operators and compliance staff.
+- name: Show verification summary for ac_ssh_hardening
+  ansible.builtin.debug:
+    var: ac_ssh_hardening_verify_summary
+  changed_when: false
+  tags: *role_verify_tags

@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart si_openscap_oval services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ si_openscap_oval_services }}"
+  when: si_openscap_oval_services | length > 0
+  listen: Restart si_openscap_oval services
+  tags:
+    - r2_3.14.3
+    - r3_03.14.03
+    - family_SI
+    - zone_{{ cui_zone }}

@@ -1,0 +1,19 @@
+---
+# WHY: Prevent accidental deployment of security controls to systems without an explicit CUI zone.
+- name: Assert that cui_zone is explicitly assigned and valid
+  ansible.builtin.assert:
+    that:
+      - cui_zone is defined
+      - cui_zone is not none
+      - cui_zone in common_valid_cui_zones
+    fail_msg: >-
+      Host {{ inventory_hostname }} has no valid cui_zone. Assign exactly one of
+      management, internal, restricted, or public in inventory group_vars.
+    success_msg: "Validated CUI zone {{ cui_zone }} for {{ inventory_hostname }}"
+  tags:
+    - r2_3.1.1
+    - r3_03.01.01
+    - family_COMMON
+    - zone_{{ cui_zone }}
+    - always
+    - zone_validation

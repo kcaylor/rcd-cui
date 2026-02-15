@@ -1,0 +1,16 @@
+# ==============================================
+# SSH hardening policy
+# Purpose: Apply secure SSH defaults with zone-aware controls for HPC operations.
+# ==============================================
+Protocol 2
+PermitRootLogin no
+MaxAuthTries 3
+ClientAliveInterval 300
+ClientAliveCountMax 2
+UsePAM yes
+KexAlgorithms curve25519-sha256,ecdh-sha2-nistp384
+Ciphers aes256-gcm@openssh.com,chacha20-poly1305@openssh.com
+authenticationmethods publickey
+{% if mfa_required | bool %}
+AuthenticationMethods publickey,keyboard-interactive
+{% endif %}

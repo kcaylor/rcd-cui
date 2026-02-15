@@ -1,0 +1,40 @@
+---
+# Enable or disable this role without changing playbook ordering.
+cm_openscap_baseline_enabled: true
+
+# Package list required by this control implementation.
+cm_openscap_baseline_packages:
+  - openscap-scanner
+  - scap-security-guide
+
+# Template files deployed by this role.
+cm_openscap_baseline_templates:
+  - src: cui-hpc-tailoring.xml.j2
+    dest: /etc/oscap/cui-hpc-tailoring.xml
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+cm_openscap_baseline_files:
+  []
+
+# Services managed by this role.
+cm_openscap_baseline_services:
+  []
+
+# Read-only verification commands for compliance checks.
+cm_openscap_baseline_verify_commands:
+  - id: oscap_present
+    command: "which oscap"
+  - id: tailoring_file
+    command: "test -f /etc/oscap/cui-hpc-tailoring.xml"
+
+# File paths captured as evidence artifacts.
+cm_openscap_baseline_evidence_files:
+  - /etc/oscap/cui-hpc-tailoring.xml
+
+# Read-only commands captured as evidence artifacts.
+cm_openscap_baseline_evidence_commands:
+  - id: oscap_version
+    command: "oscap --version"

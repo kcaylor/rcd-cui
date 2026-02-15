@@ -1,0 +1,13 @@
+<!-- ============================================== -->
+<!-- CUI Wazuh agent configuration                  -->
+<!-- Purpose: Send host security telemetry to SIEM -->
+<!-- ============================================== -->
+<ossec_config>
+  <client>
+    <server>
+      <address>{{ wazuh_manager_host }}</address>
+      <port>{{ wazuh_manager_port }}</port>
+      <protocol>tcp</protocol>
+    </server>
+  </client>
+</ossec_config>

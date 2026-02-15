@@ -1,0 +1,40 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ac_ssh_hardening_enabled: true
+
+# Package list required by this control implementation.
+ac_ssh_hardening_packages:
+  - openssh-server
+
+# Template files deployed by this role.
+ac_ssh_hardening_templates:
+  - src: sshd_config.j2
+    dest: /etc/ssh/sshd_config.d/50-cui-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+ac_ssh_hardening_files:
+  []
+
+# Services managed by this role.
+ac_ssh_hardening_services:
+  - name: sshd
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+ac_ssh_hardening_verify_commands:
+  - id: sshd_hardening_file
+    command: "test -f /etc/ssh/sshd_config.d/50-cui-hardening.conf"
+  - id: sshd_check
+    command: "sshd -T"
+
+# File paths captured as evidence artifacts.
+ac_ssh_hardening_evidence_files:
+  - /etc/ssh/sshd_config.d/50-cui-hardening.conf
+
+# Read-only commands captured as evidence artifacts.
+ac_ssh_hardening_evidence_commands:
+  []

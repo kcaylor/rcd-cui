@@ -1,0 +1,10 @@
+---
+profile: production
+exclude_paths:
+  - .git/
+  - tests/__pycache__/
+  # Exclude control_mapping.yml from all checks - it's a data model file from Spec 001,
+  # not role-specific variables. The var-naming rule doesn't apply to data models.
+  - roles/common/vars/control_mapping.yml
+skip_list:
+  - yaml[line-length]

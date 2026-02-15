@@ -1,0 +1,36 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ac_session_timeout_enabled: true
+
+# Package list required by this control implementation.
+ac_session_timeout_packages:
+  - bash
+
+# Template files deployed by this role.
+ac_session_timeout_templates:
+  - src: profile_tmout.sh.j2
+    dest: /etc/profile.d/cui-tmout.sh
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+ac_session_timeout_files:
+  []
+
+# Services managed by this role.
+ac_session_timeout_services:
+  []
+
+# Read-only verification commands for compliance checks.
+ac_session_timeout_verify_commands:
+  - id: tmout_profile
+    command: "test -f /etc/profile.d/cui-tmout.sh"
+
+# File paths captured as evidence artifacts.
+ac_session_timeout_evidence_files:
+  - /etc/profile.d/cui-tmout.sh
+
+# Read-only commands captured as evidence artifacts.
+ac_session_timeout_evidence_commands:
+  []

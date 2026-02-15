@@ -1,0 +1,85 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for ac_selinux
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.1.20
+    - r3_03.01.20
+    - family_AC
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for ac_selinux
+  ansible.builtin.package:
+    name: "{{ ac_selinux_packages }}"
+    state: present
+  when:
+    - ac_selinux_enabled | bool
+    - ac_selinux_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for ac_selinux
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ ac_selinux_templates }}"
+  notify: Restart ac_selinux services
+  when:
+    - ac_selinux_enabled | bool
+    - ac_selinux_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for ac_selinux
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ ac_selinux_files }}"
+  notify: Restart ac_selinux services
+  when:
+    - ac_selinux_enabled | bool
+    - ac_selinux_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for ac_selinux
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ ac_selinux_services }}"
+  when:
+    - ac_selinux_enabled | bool
+    - ac_selinux_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for ac_selinux when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "ac_selinux is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - ac_selinux_enabled | bool
+    - ac_selinux_packages | length == 0
+    - ac_selinux_templates | length == 0
+    - ac_selinux_files | length == 0
+    - ac_selinux_services | length == 0
+  tags: *role_tags
+
+# WHY: Enforce mandatory access controls that contain process compromise impact.
+- name: Set SELinux to enforcing mode
+  ansible.posix.selinux:
+    policy: targeted
+    state: enforcing
+  when: ac_selinux_enabled | bool
+  tags: *role_tags

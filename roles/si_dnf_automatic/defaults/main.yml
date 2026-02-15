@@ -1,0 +1,41 @@
+---
+# Enable or disable this role without changing playbook ordering.
+si_dnf_automatic_enabled: true
+
+# Package list required by this control implementation.
+si_dnf_automatic_packages:
+  - dnf-automatic
+
+# Template files deployed by this role.
+si_dnf_automatic_templates:
+  - src: dnf-automatic.conf.j2
+    dest: /etc/dnf/automatic.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+si_dnf_automatic_files:
+  []
+
+# Services managed by this role.
+si_dnf_automatic_services:
+  - name: dnf-automatic.timer
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+si_dnf_automatic_verify_commands:
+  - id: dnf_auto_conf
+    command: "test -f /etc/dnf/automatic.conf"
+  - id: dnf_timer
+    command: "systemctl is-enabled dnf-automatic.timer"
+
+# File paths captured as evidence artifacts.
+si_dnf_automatic_evidence_files:
+  - /etc/dnf/automatic.conf
+
+# Read-only commands captured as evidence artifacts.
+si_dnf_automatic_evidence_commands:
+  - id: dnf_auto_timer
+    command: "systemctl status dnf-automatic.timer --no-pager"

@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ia_freeipa_client services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ia_freeipa_client_services }}"
+  when: ia_freeipa_client_services | length > 0
+  listen: Restart ia_freeipa_client services
+  tags:
+    - r2_3.5.1
+    - r3_03.05.01
+    - family_IA
+    - zone_{{ cui_zone }}

@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ac_usbguard services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ac_usbguard_services }}"
+  when: ac_usbguard_services | length > 0
+  listen: Restart ac_usbguard services
+  tags:
+    - r2_3.8.7
+    - r3_03.08.07
+    - family_AC
+    - zone_{{ cui_zone }}

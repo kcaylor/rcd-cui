@@ -1,0 +1,16 @@
+# ==============================================
+# SSH PAM stack for CUI systems
+# Purpose: Apply MFA for interactive logins while allowing certificate-based automation.
+# ==============================================
+#%PAM-1.0
+auth       required     pam_sepermit.so
+auth       substack     password-auth
+{% if mfa_required | bool %}
+auth       required     pam_duo.so
+{% endif %}
+auth       include      postlogin
+account    required     pam_nologin.so
+account    include      password-auth
+password   include      password-auth
+session    include      password-auth
+session    include      postlogin

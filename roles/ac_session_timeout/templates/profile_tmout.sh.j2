@@ -1,0 +1,11 @@
+# ==============================================
+# Shell idle timeout policy
+# Purpose: End abandoned interactive shells while allowing HPC batch workflows.
+# ==============================================
+{% if session_timeout_minutes | int > 0 %}
+TMOUT={{ (session_timeout_minutes | int) * 60 }}
+readonly TMOUT
+export TMOUT
+{% else %}
+unset TMOUT
+{% endif %}

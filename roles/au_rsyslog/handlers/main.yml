@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart au_rsyslog services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ au_rsyslog_services }}"
+  when: au_rsyslog_services | length > 0
+  listen: Restart au_rsyslog services
+  tags:
+    - r2_3.3.4
+    - r3_03.03.04
+    - family_AU
+    - zone_{{ cui_zone }}

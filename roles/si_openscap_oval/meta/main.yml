@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: si_openscap_oval
+  author: rcd-cui
+  description: "SI control role for CUI compliance"
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: EL
+      versions:
+        - "9"
+dependencies:
+  - role: common
+  - role: cm_openscap_baseline

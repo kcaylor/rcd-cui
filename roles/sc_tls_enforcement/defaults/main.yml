@@ -1,0 +1,33 @@
+---
+# Enable or disable this role without changing playbook ordering.
+sc_tls_enforcement_enabled: true
+
+# Package list required by this control implementation.
+sc_tls_enforcement_packages:
+  - crypto-policies
+
+# Template files deployed by this role.
+sc_tls_enforcement_templates:
+  []
+
+# Static helper files deployed by this role.
+sc_tls_enforcement_files:
+  []
+
+# Services managed by this role.
+sc_tls_enforcement_services:
+  []
+
+# Read-only verification commands for compliance checks.
+sc_tls_enforcement_verify_commands:
+  - id: crypto_policy
+    command: "update-crypto-policies --show"
+
+# File paths captured as evidence artifacts.
+sc_tls_enforcement_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+sc_tls_enforcement_evidence_commands:
+  - id: crypto_policy
+    command: "update-crypto-policies --show"

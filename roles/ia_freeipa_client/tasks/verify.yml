@@ -1,0 +1,45 @@
+---
+# WHY: Re-validate zone context during read-only audits to keep evidence attributable by zone.
+- name: Validate CUI zone assignment for ia_freeipa_client verification
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_verify_tags
+    - r2_3.5.1
+    - r3_03.05.01
+    - family_IA
+    - zone_{{ cui_zone }}
+
+# WHY: Run non-destructive checks that show whether controls are active without modifying state.
+- name: Execute compliance verification checks for ia_freeipa_client
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ ia_freeipa_client_verify_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: ia_freeipa_client_verify_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: ia_freeipa_client_verify_commands | length > 0
+  tags: *role_verify_tags
+
+# WHY: Store structured verification output so auditors can trace check outcomes.
+- name: Build verification summary for ia_freeipa_client
+  ansible.builtin.set_fact:
+    ia_freeipa_client_verify_summary:
+      role: ia_freeipa_client
+      zone: "{{ cui_zone }}"
+      compliant: >-
+        {{ (ia_freeipa_client_verify_results.results | default([]) |
+        selectattr('rc', 'equalto', 0) | list | length) ==
+        (ia_freeipa_client_verify_commands | length) }}
+      checks: "{{ ia_freeipa_client_verify_results.results | default([]) }}"
+  changed_when: false
+  tags: *role_verify_tags
+
+# WHY: Print verification status in plain language for operators and compliance staff.
+- name: Show verification summary for ia_freeipa_client
+  ansible.builtin.debug:
+    var: ia_freeipa_client_verify_summary
+  changed_when: false
+  tags: *role_verify_tags

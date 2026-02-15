@@ -1,0 +1,10 @@
+---
+# WHY: Confirm zone assignment is still valid during read-only compliance checks.
+- name: Verify zone assignment is valid
+  ansible.builtin.include_tasks: validate_zone.yml
+  tags:
+    - r2_3.1.1
+    - r3_03.01.01
+    - family_COMMON
+    - zone_{{ cui_zone }}
+    - verify

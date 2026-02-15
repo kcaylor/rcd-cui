@@ -1,0 +1,7 @@
+python3 [platform:rpm]
+python3-pip [platform:rpm]
+git [platform:rpm]
+openssh-clients [platform:rpm]
+sshpass [platform:rpm]
+tar [platform:rpm]
+gzip [platform:rpm]

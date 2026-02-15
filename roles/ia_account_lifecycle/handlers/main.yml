@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ia_account_lifecycle services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ia_account_lifecycle_services }}"
+  when: ia_account_lifecycle_services | length > 0
+  listen: Restart ia_account_lifecycle services
+  tags:
+    - r2_3.5.2
+    - r3_03.05.02
+    - family_IA
+    - zone_{{ cui_zone }}

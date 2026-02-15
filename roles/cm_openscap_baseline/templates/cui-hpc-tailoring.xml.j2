@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ============================================== -->
+<!-- OpenSCAP CUI Tailoring for HPC                 -->
+<!-- Purpose: Skip controls that conflict with HPC  -->
+<!-- operations while documenting compensations.    -->
+<!-- ============================================== -->
+<xccdf:Tailoring xmlns:xccdf="http://checklists.nist.gov/xccdf/1.2" id="cui-hpc-tailoring">
+  <xccdf:benchmark href="{{ openscap_content }}"/>
+  <xccdf:Profile id="cui_hpc_{{ cui_zone }}">
+{% for rule_id in openscap_skip_rules %}
+    <xccdf:select idref="{{ rule_id }}" selected="false"/>
+{% endfor %}
+  </xccdf:Profile>
+</xccdf:Tailoring>

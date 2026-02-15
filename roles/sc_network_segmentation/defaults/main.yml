@@ -1,0 +1,43 @@
+---
+# Enable or disable this role without changing playbook ordering.
+sc_network_segmentation_enabled: true
+
+# Package list required by this control implementation.
+sc_network_segmentation_packages:
+  - NetworkManager
+
+# Template files deployed by this role.
+sc_network_segmentation_templates:
+  []
+
+# Static helper files deployed by this role.
+sc_network_segmentation_files:
+  []
+
+# Services managed by this role.
+sc_network_segmentation_services:
+  - name: NetworkManager
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+sc_network_segmentation_verify_commands:
+  - id: nm_state
+    command: "systemctl is-active NetworkManager"
+  - id: ip_links
+    command: "ip -br link"
+
+# File paths captured as evidence artifacts.
+sc_network_segmentation_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+sc_network_segmentation_evidence_commands:
+  - id: ip_addr
+    command: "ip -br addr"
+
+sc_network_segmentation_zone_vlans:
+  management: 10
+  internal: 20
+  restricted: 30
+  public: 40

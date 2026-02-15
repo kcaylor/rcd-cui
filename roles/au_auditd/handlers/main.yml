@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart au_auditd services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ au_auditd_services }}"
+  when: au_auditd_services | length > 0
+  listen: Restart au_auditd services
+  tags:
+    - r2_3.3.1
+    - r3_03.03.01
+    - family_AU
+    - zone_{{ cui_zone }}

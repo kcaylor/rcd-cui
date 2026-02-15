@@ -1,0 +1,11 @@
+# ==============================================
+# USBGuard policy
+# Purpose: Block unauthorized removable media access to protect CUI.
+# ==============================================
+{% if usbguard_policy == 'deny_all' %}
+block with-interface equals { 08:*:* }
+allow with-interface equals { 03:*:* }
+{% else %}
+block with-interface equals { 08:*:* }
+allow with-interface equals { 03:*:* }
+{% endif %}

@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ac_session_timeout services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ac_session_timeout_services }}"
+  when: ac_session_timeout_services | length > 0
+  listen: Restart ac_session_timeout services
+  tags:
+    - r2_3.1.10
+    - r3_03.01.10
+    - family_AC
+    - zone_{{ cui_zone }}

@@ -1,0 +1,16 @@
+---
+# WHY: Capture zone assignment evidence so SSP artifacts clearly show host security boundary.
+- name: Record validated zone assignment for evidence
+  ansible.builtin.shell:
+    cmd: |
+      mkdir -p {{ evidence_output_dir }}/{{ inventory_hostname }}
+      cat > {{ evidence_output_dir }}/{{ inventory_hostname }}/common_zone_evidence.json <<'JSON'
+      {{ {'host': inventory_hostname, 'zone': cui_zone, 'role': 'common'} | to_nice_json }}
+      JSON
+  changed_when: false
+  tags:
+    - r2_3.1.1
+    - r3_03.01.01
+    - family_COMMON
+    - zone_{{ cui_zone }}
+    - evidence

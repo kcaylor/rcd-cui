@@ -1,0 +1,4 @@
+"rev2_id","title","family","rev3_id","rev3_rationale","cmmc_l2_id","cmmc_l2_rationale","nist_800_53_r5_id","automatable","zones","hpc_tailoring_ref"
+{% for control in controls -%}
+"{{ control.control_id }}","{{ control.title|replace('"','""') }}","{{ control.family }}","{{ control.framework_mapping.rev3_id }}","{{ control.framework_mapping.rev3_rationale or '' }}","{{ control.framework_mapping.cmmc_l2_id }}","{{ control.framework_mapping.cmmc_l2_rationale or '' }}","{{ control.framework_mapping.nist_800_53_r5_id|join(';') }}","{{ control.automatable }}","{{ control.zones|join(';') }}","{{ control.hpc_tailoring_ref or '' }}"
+{% endfor %}

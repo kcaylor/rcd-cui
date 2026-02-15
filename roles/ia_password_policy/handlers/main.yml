@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ia_password_policy services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ia_password_policy_services }}"
+  when: ia_password_policy_services | length > 0
+  listen: Restart ia_password_policy services
+  tags:
+    - r2_3.5.7
+    - r3_03.05.07
+    - family_IA
+    - zone_{{ cui_zone }}

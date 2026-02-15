@@ -1,0 +1,1149 @@
+version: 1.0.0
+last_updated: '2026-02-15'
+description: Plain-language glossary for CUI compliance stakeholders.
+terms:
+  AC:
+    term: AC
+    full_name: NIST Control Family AC
+    plain_language: AC identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use AC guidance to keep research programs compliant and funded.
+      researcher: Researchers follow AC practices during daily system use.
+      sysadmin: Sysadmins operationalize AC controls in managed infrastructure.
+      ciso: CISO teams use AC evidence in audit and risk reporting.
+      leadership: Leadership tracks AC to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  AC (compliance):
+    term: AC (compliance)
+    full_name: Access Control
+    plain_language: In compliance context, AC refers to access control requirements
+      that govern who can use systems and data.
+    who_cares:
+      pi: PIs use AC (compliance) guidance to keep research programs compliant and
+        funded.
+      researcher: Researchers follow AC (compliance) practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize AC (compliance) controls in managed infrastructure.
+      ciso: CISO teams use AC (compliance) evidence in audit and risk reporting.
+      leadership: Leadership tracks AC (compliance) to understand institutional compliance
+        posture.
+    see_also:
+    - AC
+    - RBAC
+    context: compliance
+  AC (hardware):
+    term: AC (hardware)
+    full_name: Alternating Current
+    plain_language: In hardware context, AC refers to electrical power characteristics
+      for data center and lab equipment.
+    who_cares:
+      pi: PIs use AC (hardware) guidance to keep research programs compliant and funded.
+      researcher: Researchers follow AC (hardware) practices during daily system use.
+      sysadmin: Sysadmins operationalize AC (hardware) controls in managed infrastructure.
+      ciso: CISO teams use AC (hardware) evidence in audit and risk reporting.
+      leadership: Leadership tracks AC (hardware) to understand institutional compliance
+        posture.
+    see_also:
+    - RHEL
+    - Rocky Linux
+    context: hardware
+  ACL:
+    term: ACL
+    full_name: Access Control List
+    plain_language: An ACL defines which identities can access a resource and what
+      operations are permitted.
+    who_cares:
+      pi: PIs rely on ACL context to communicate compliance expectations clearly.
+      researcher: Researchers use ACL guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor ACL-related controls.
+      ciso: CISO teams track ACL in risk and compliance reporting.
+      leadership: Leadership reviews ACL implications for institutional posture.
+    see_also: []
+    context: null
+  Ansible:
+    term: Ansible
+    full_name: Ansible Automation Platform
+    plain_language: Ansible applies declarative automation to configure systems and
+      collect compliance evidence.
+    who_cares:
+      pi: PIs use Ansible guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Ansible practices during daily system use.
+      sysadmin: Sysadmins operationalize Ansible controls in managed infrastructure.
+      ciso: CISO teams use Ansible evidence in audit and risk reporting.
+      leadership: Leadership tracks Ansible to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  Assessment:
+    term: Assessment
+    full_name: Security Assessment
+    plain_language: An assessment evaluates whether required controls are implemented
+      correctly and operating as intended.
+    who_cares:
+      pi: PIs use Assessment guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Assessment practices during daily system use.
+      sysadmin: Sysadmins operationalize Assessment controls in managed infrastructure.
+      ciso: CISO teams use Assessment evidence in audit and risk reporting.
+      leadership: Leadership tracks Assessment to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  AT:
+    term: AT
+    full_name: NIST Control Family AT
+    plain_language: AT identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use AT guidance to keep research programs compliant and funded.
+      researcher: Researchers follow AT practices during daily system use.
+      sysadmin: Sysadmins operationalize AT controls in managed infrastructure.
+      ciso: CISO teams use AT evidence in audit and risk reporting.
+      leadership: Leadership tracks AT to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  AU:
+    term: AU
+    full_name: NIST Control Family AU
+    plain_language: AU identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use AU guidance to keep research programs compliant and funded.
+      researcher: Researchers follow AU practices during daily system use.
+      sysadmin: Sysadmins operationalize AU controls in managed infrastructure.
+      ciso: CISO teams use AU evidence in audit and risk reporting.
+      leadership: Leadership tracks AU to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  Audit:
+    term: Audit
+    full_name: Audit
+    plain_language: An audit is a formal review of compliance evidence against documented
+      security requirements.
+    who_cares:
+      pi: PIs use Audit guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Audit practices during daily system use.
+      sysadmin: Sysadmins operationalize Audit controls in managed infrastructure.
+      ciso: CISO teams use Audit evidence in audit and risk reporting.
+      leadership: Leadership tracks Audit to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Batch Job:
+    term: Batch Job
+    full_name: Batch Job
+    plain_language: A batch job is a scheduled workload that can run for hours or
+      days without interactive sessions.
+    who_cares:
+      pi: PIs use Batch Job guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Batch Job practices during daily system use.
+      sysadmin: Sysadmins operationalize Batch Job controls in managed infrastructure.
+      ciso: CISO teams use Batch Job evidence in audit and risk reporting.
+      leadership: Leadership tracks Batch Job to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  C3PAO:
+    term: C3PAO
+    full_name: Certified Third-Party Assessment Organization
+    plain_language: A C3PAO performs independent CMMC assessments and issues official
+      findings.
+    who_cares:
+      pi: PIs use C3PAO guidance to keep research programs compliant and funded.
+      researcher: Researchers follow C3PAO practices during daily system use.
+      sysadmin: Sysadmins operationalize C3PAO controls in managed infrastructure.
+      ciso: CISO teams use C3PAO evidence in audit and risk reporting.
+      leadership: Leadership tracks C3PAO to understand institutional compliance posture.
+    see_also: []
+    context: null
+  CA:
+    term: CA
+    full_name: NIST Control Family CA
+    plain_language: CA identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use CA guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CA practices during daily system use.
+      sysadmin: Sysadmins operationalize CA controls in managed infrastructure.
+      ciso: CISO teams use CA evidence in audit and risk reporting.
+      leadership: Leadership tracks CA to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  CI/CD:
+    term: CI/CD
+    full_name: Continuous Integration and Continuous Delivery
+    plain_language: CI/CD automates testing and policy checks for repeatable releases.
+    who_cares:
+      pi: PIs use CI/CD guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CI/CD practices during daily system use.
+      sysadmin: Sysadmins operationalize CI/CD controls in managed infrastructure.
+      ciso: CISO teams use CI/CD evidence in audit and risk reporting.
+      leadership: Leadership tracks CI/CD to understand institutional compliance posture.
+    see_also: []
+    context: null
+  CISO:
+    term: CISO
+    full_name: Chief Information Security Officer
+    plain_language: The CISO function governs enterprise security strategy, risk decisions,
+      and compliance reporting.
+    who_cares:
+      pi: PIs use CISO guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CISO practices during daily system use.
+      sysadmin: Sysadmins operationalize CISO controls in managed infrastructure.
+      ciso: CISO teams use CISO evidence in audit and risk reporting.
+      leadership: Leadership tracks CISO to understand institutional compliance posture.
+    see_also: []
+    context: null
+  CLI:
+    term: CLI
+    full_name: Command-Line Interface
+    plain_language: CLI workflows run validation and generation scripts in local development
+      and CI pipelines.
+    who_cares:
+      pi: PIs use CLI guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CLI practices during daily system use.
+      sysadmin: Sysadmins operationalize CLI controls in managed infrastructure.
+      ciso: CISO teams use CLI evidence in audit and risk reporting.
+      leadership: Leadership tracks CLI to understand institutional compliance posture.
+    see_also: []
+    context: null
+  CM:
+    term: CM
+    full_name: NIST Control Family CM
+    plain_language: CM identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use CM guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CM practices during daily system use.
+      sysadmin: Sysadmins operationalize CM controls in managed infrastructure.
+      ciso: CISO teams use CM evidence in audit and risk reporting.
+      leadership: Leadership tracks CM to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  CMMC:
+    term: CMMC
+    full_name: Cybersecurity Maturity Model Certification
+    plain_language: CMMC defines maturity expectations for defense contractors handling
+      federal information.
+    who_cares:
+      pi: PIs use CMMC guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CMMC practices during daily system use.
+      sysadmin: Sysadmins operationalize CMMC controls in managed infrastructure.
+      ciso: CISO teams use CMMC evidence in audit and risk reporting.
+      leadership: Leadership tracks CMMC to understand institutional compliance posture.
+    see_also:
+    - C3PAO
+    - DFARS
+    context: null
+  Compute Node:
+    term: Compute Node
+    full_name: Compute Node
+    plain_language: A compute node runs assigned workloads and is typically optimized
+      for performance rather than interactivity.
+    who_cares:
+      pi: PIs use Compute Node guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Compute Node practices during daily system use.
+      sysadmin: Sysadmins operationalize Compute Node controls in managed infrastructure.
+      ciso: CISO teams use Compute Node evidence in audit and risk reporting.
+      leadership: Leadership tracks Compute Node to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  Continuous Monitoring:
+    term: Continuous Monitoring
+    full_name: Continuous Monitoring
+    plain_language: Continuous monitoring provides recurring checks that detect drift
+      and control failures quickly.
+    who_cares:
+      pi: PIs use Continuous Monitoring guidance to keep research programs compliant
+        and funded.
+      researcher: Researchers follow Continuous Monitoring practices during daily
+        system use.
+      sysadmin: Sysadmins operationalize Continuous Monitoring controls in managed
+        infrastructure.
+      ciso: CISO teams use Continuous Monitoring evidence in audit and risk reporting.
+      leadership: Leadership tracks Continuous Monitoring to understand institutional
+        compliance posture.
+    see_also: []
+    context: null
+  Control Inheritance:
+    term: Control Inheritance
+    full_name: Control Inheritance
+    plain_language: Control inheritance documents when one system or service provides
+      controls for dependent systems.
+    who_cares:
+      pi: PIs use Control Inheritance guidance to keep research programs compliant
+        and funded.
+      researcher: Researchers follow Control Inheritance practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize Control Inheritance controls in managed infrastructure.
+      ciso: CISO teams use Control Inheritance evidence in audit and risk reporting.
+      leadership: Leadership tracks Control Inheritance to understand institutional
+        compliance posture.
+    see_also: []
+    context: null
+  CSV:
+    term: CSV
+    full_name: Comma-Separated Values
+    plain_language: CSV is a tabular text format used for crosswalk exports and spreadsheet
+      imports.
+    who_cares:
+      pi: PIs use CSV guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CSV practices during daily system use.
+      sysadmin: Sysadmins operationalize CSV controls in managed infrastructure.
+      ciso: CISO teams use CSV evidence in audit and risk reporting.
+      leadership: Leadership tracks CSV to understand institutional compliance posture.
+    see_also: []
+    context: null
+  CUI:
+    term: CUI
+    full_name: Controlled Unclassified Information
+    plain_language: CUI is sensitive information that requires safeguarding under
+      federal rules even when it is not classified.
+    who_cares:
+      pi: PIs use CUI guidance to keep research programs compliant and funded.
+      researcher: Researchers follow CUI practices during daily system use.
+      sysadmin: Sysadmins operationalize CUI controls in managed infrastructure.
+      ciso: CISO teams use CUI evidence in audit and risk reporting.
+      leadership: Leadership tracks CUI to understand institutional compliance posture.
+    see_also:
+    - NIST 800-171
+    - SPRS
+    - SSP
+    context: null
+  DFARS:
+    term: DFARS
+    full_name: Defense Federal Acquisition Regulation Supplement
+    plain_language: DFARS contains defense-specific contract clauses, including cybersecurity
+      obligations.
+    who_cares:
+      pi: PIs use DFARS guidance to keep research programs compliant and funded.
+      researcher: Researchers follow DFARS practices during daily system use.
+      sysadmin: Sysadmins operationalize DFARS controls in managed infrastructure.
+      ciso: CISO teams use DFARS evidence in audit and risk reporting.
+      leadership: Leadership tracks DFARS to understand institutional compliance posture.
+    see_also: []
+    context: null
+  DoD:
+    term: DoD
+    full_name: Department of Defense
+    plain_language: DoD guidance informs parameter values and assessment expectations
+      for defense-funded research programs.
+    who_cares:
+      pi: PIs use DoD guidance to keep research programs compliant and funded.
+      researcher: Researchers follow DoD practices during daily system use.
+      sysadmin: Sysadmins operationalize DoD controls in managed infrastructure.
+      ciso: CISO teams use DoD evidence in audit and risk reporting.
+      leadership: Leadership tracks DoD to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Enclave:
+    term: Enclave
+    full_name: Security Enclave
+    plain_language: An enclave is a bounded environment where sensitive workloads
+      and data are isolated with stronger controls.
+    who_cares:
+      pi: PIs use Enclave guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Enclave practices during daily system use.
+      sysadmin: Sysadmins operationalize Enclave controls in managed infrastructure.
+      ciso: CISO teams use Enclave evidence in audit and risk reporting.
+      leadership: Leadership tracks Enclave to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  Evidence:
+    term: Evidence
+    full_name: Compliance Evidence
+    plain_language: Evidence includes logs, screenshots, test outputs, and records
+      used to prove control implementation.
+    who_cares:
+      pi: PIs use Evidence guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Evidence practices during daily system use.
+      sysadmin: Sysadmins operationalize Evidence controls in managed infrastructure.
+      ciso: CISO teams use Evidence evidence in audit and risk reporting.
+      leadership: Leadership tracks Evidence to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  FAR:
+    term: FAR
+    full_name: Federal Acquisition Regulation
+    plain_language: FAR provides acquisition policy requirements that apply across
+      federal contracting.
+    who_cares:
+      pi: PIs use FAR guidance to keep research programs compliant and funded.
+      researcher: Researchers follow FAR practices during daily system use.
+      sysadmin: Sysadmins operationalize FAR controls in managed infrastructure.
+      ciso: CISO teams use FAR evidence in audit and risk reporting.
+      leadership: Leadership tracks FAR to understand institutional compliance posture.
+    see_also: []
+    context: null
+  FIPS:
+    term: FIPS
+    full_name: Federal Information Processing Standards
+    plain_language: FIPS standards define approved cryptographic modules and implementation
+      requirements for federal systems.
+    who_cares:
+      pi: PIs use FIPS guidance to keep research programs compliant and funded.
+      researcher: Researchers follow FIPS practices during daily system use.
+      sysadmin: Sysadmins operationalize FIPS controls in managed infrastructure.
+      ciso: CISO teams use FIPS evidence in audit and risk reporting.
+      leadership: Leadership tracks FIPS to understand institutional compliance posture.
+    see_also: []
+    context: null
+  FIPS on InfiniBand:
+    term: FIPS on InfiniBand
+    full_name: FIPS on InfiniBand
+    plain_language: This term describes encryption and validation tradeoffs when applying
+      FIPS controls to HPC fabrics.
+    who_cares:
+      pi: PIs use FIPS on InfiniBand guidance to keep research programs compliant
+        and funded.
+      researcher: Researchers follow FIPS on InfiniBand practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize FIPS on InfiniBand controls in managed infrastructure.
+      ciso: CISO teams use FIPS on InfiniBand evidence in audit and risk reporting.
+      leadership: Leadership tracks FIPS on InfiniBand to understand institutional
+        compliance posture.
+    see_also: []
+    context: null
+  GPU:
+    term: GPU
+    full_name: Graphics Processing Unit
+    plain_language: A GPU accelerates parallel computation and can retain residual
+      data unless memory is sanitized.
+    who_cares:
+      pi: PIs use GPU guidance to keep research programs compliant and funded.
+      researcher: Researchers follow GPU practices during daily system use.
+      sysadmin: Sysadmins operationalize GPU controls in managed infrastructure.
+      ciso: CISO teams use GPU evidence in audit and risk reporting.
+      leadership: Leadership tracks GPU to understand institutional compliance posture.
+    see_also: []
+    context: null
+  HPC:
+    term: HPC
+    full_name: High-Performance Computing
+    plain_language: HPC refers to cluster-based computing for large-scale scientific
+      workloads.
+    who_cares:
+      pi: PIs rely on HPC context to communicate compliance expectations clearly.
+      researcher: Researchers use HPC guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor HPC-related controls.
+      ciso: CISO teams track HPC in risk and compliance reporting.
+      leadership: Leadership reviews HPC implications for institutional posture.
+    see_also: []
+    context: null
+  IA:
+    term: IA
+    full_name: NIST Control Family IA
+    plain_language: IA identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use IA guidance to keep research programs compliant and funded.
+      researcher: Researchers follow IA practices during daily system use.
+      sysadmin: Sysadmins operationalize IA controls in managed infrastructure.
+      ciso: CISO teams use IA evidence in audit and risk reporting.
+      leadership: Leadership tracks IA to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  InfiniBand:
+    term: InfiniBand
+    full_name: InfiniBand Fabric
+    plain_language: InfiniBand provides low-latency, high-throughput networking for
+      tightly coupled HPC workloads.
+    who_cares:
+      pi: PIs use InfiniBand guidance to keep research programs compliant and funded.
+      researcher: Researchers follow InfiniBand practices during daily system use.
+      sysadmin: Sysadmins operationalize InfiniBand controls in managed infrastructure.
+      ciso: CISO teams use InfiniBand evidence in audit and risk reporting.
+      leadership: Leadership tracks InfiniBand to understand institutional compliance
+        posture.
+    see_also:
+    - FIPS on InfiniBand
+    - MPI
+    context: null
+  IR:
+    term: IR
+    full_name: NIST Control Family IR
+    plain_language: IR identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use IR guidance to keep research programs compliant and funded.
+      researcher: Researchers follow IR practices during daily system use.
+      sysadmin: Sysadmins operationalize IR controls in managed infrastructure.
+      ciso: CISO teams use IR evidence in audit and risk reporting.
+      leadership: Leadership tracks IR to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  IR (compliance):
+    term: IR (compliance)
+    full_name: Incident Response
+    plain_language: In compliance context, IR refers to preparation and response actions
+      for security incidents.
+    who_cares:
+      pi: PIs use IR (compliance) guidance to keep research programs compliant and
+        funded.
+      researcher: Researchers follow IR (compliance) practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize IR (compliance) controls in managed infrastructure.
+      ciso: CISO teams use IR (compliance) evidence in audit and risk reporting.
+      leadership: Leadership tracks IR (compliance) to understand institutional compliance
+        posture.
+    see_also:
+    - IR
+    - Assessment
+    context: compliance
+  IR (infrared):
+    term: IR (infrared)
+    full_name: Infrared
+    plain_language: In facilities context, IR refers to infrared sensors and hardware
+      components.
+    who_cares:
+      pi: PIs use IR (infrared) guidance to keep research programs compliant and funded.
+      researcher: Researchers follow IR (infrared) practices during daily system use.
+      sysadmin: Sysadmins operationalize IR (infrared) controls in managed infrastructure.
+      ciso: CISO teams use IR (infrared) evidence in audit and risk reporting.
+      leadership: Leadership tracks IR (infrared) to understand institutional compliance
+        posture.
+    see_also:
+    - PE
+    context: infrared
+  ITAR:
+    term: ITAR
+    full_name: International Traffic in Arms Regulations
+    plain_language: ITAR governs handling and export of defense-related technical
+      data and services.
+    who_cares:
+      pi: PIs use ITAR guidance to keep research programs compliant and funded.
+      researcher: Researchers follow ITAR practices during daily system use.
+      sysadmin: Sysadmins operationalize ITAR controls in managed infrastructure.
+      ciso: CISO teams use ITAR evidence in audit and risk reporting.
+      leadership: Leadership tracks ITAR to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Jinja2:
+    term: Jinja2
+    full_name: Jinja2 Template Engine
+    plain_language: Jinja2 renders audience-specific documentation from structured
+      YAML data.
+    who_cares:
+      pi: PIs use Jinja2 guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Jinja2 practices during daily system use.
+      sysadmin: Sysadmins operationalize Jinja2 controls in managed infrastructure.
+      ciso: CISO teams use Jinja2 evidence in audit and risk reporting.
+      leadership: Leadership tracks Jinja2 to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  L2:
+    term: L2
+    full_name: Level 2
+    plain_language: L2 denotes CMMC Level 2 mappings used in crosswalk data models.
+    who_cares:
+      pi: PIs rely on L2 context to communicate compliance expectations clearly.
+      researcher: Researchers use L2 guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor L2-related controls.
+      ciso: CISO teams track L2 in risk and compliance reporting.
+      leadership: Leadership reviews L2 implications for institutional posture.
+    see_also:
+    - NIST
+    - CMMC
+    context: null
+  Least Privilege:
+    term: Least Privilege
+    full_name: Least Privilege
+    plain_language: Least privilege limits access rights to the minimum required for
+      a task and reduces blast radius.
+    who_cares:
+      pi: PIs use Least Privilege guidance to keep research programs compliant and
+        funded.
+      researcher: Researchers follow Least Privilege practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize Least Privilege controls in managed infrastructure.
+      ciso: CISO teams use Least Privilege evidence in audit and risk reporting.
+      leadership: Leadership tracks Least Privilege to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  Login Node:
+    term: Login Node
+    full_name: Login Node
+    plain_language: A login node is the user entry point for preparing and submitting
+      HPC workloads.
+    who_cares:
+      pi: PIs use Login Node guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Login Node practices during daily system use.
+      sysadmin: Sysadmins operationalize Login Node controls in managed infrastructure.
+      ciso: CISO teams use Login Node evidence in audit and risk reporting.
+      leadership: Leadership tracks Login Node to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  MA:
+    term: MA
+    full_name: NIST Control Family MA
+    plain_language: MA identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use MA guidance to keep research programs compliant and funded.
+      researcher: Researchers follow MA practices during daily system use.
+      sysadmin: Sysadmins operationalize MA controls in managed infrastructure.
+      ciso: CISO teams use MA evidence in audit and risk reporting.
+      leadership: Leadership tracks MA to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  MFA:
+    term: MFA
+    full_name: Multi-Factor Authentication
+    plain_language: MFA requires two or more factors when users authenticate to reduce
+      account compromise risk.
+    who_cares:
+      pi: PIs use MFA guidance to keep research programs compliant and funded.
+      researcher: Researchers follow MFA practices during daily system use.
+      sysadmin: Sysadmins operationalize MFA controls in managed infrastructure.
+      ciso: CISO teams use MFA evidence in audit and risk reporting.
+      leadership: Leadership tracks MFA to understand institutional compliance posture.
+    see_also:
+    - IA
+    - RBAC
+    context: null
+  MP:
+    term: MP
+    full_name: NIST Control Family MP
+    plain_language: MP identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use MP guidance to keep research programs compliant and funded.
+      researcher: Researchers follow MP practices during daily system use.
+      sysadmin: Sysadmins operationalize MP controls in managed infrastructure.
+      ciso: CISO teams use MP evidence in audit and risk reporting.
+      leadership: Leadership tracks MP to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  MPI:
+    term: MPI
+    full_name: Message Passing Interface
+    plain_language: MPI is a programming model for coordinating distributed parallel
+      processes in HPC jobs.
+    who_cares:
+      pi: PIs use MPI guidance to keep research programs compliant and funded.
+      researcher: Researchers follow MPI practices during daily system use.
+      sysadmin: Sysadmins operationalize MPI controls in managed infrastructure.
+      ciso: CISO teams use MPI evidence in audit and risk reporting.
+      leadership: Leadership tracks MPI to understand institutional compliance posture.
+    see_also: []
+    context: null
+  NIST:
+    term: NIST
+    full_name: National Institute of Standards and Technology
+    plain_language: NIST publishes security standards used by federal agencies and
+      research institutions.
+    who_cares:
+      pi: PIs use NIST guidance to keep research programs compliant and funded.
+      researcher: Researchers follow NIST practices during daily system use.
+      sysadmin: Sysadmins operationalize NIST controls in managed infrastructure.
+      ciso: CISO teams use NIST evidence in audit and risk reporting.
+      leadership: Leadership tracks NIST to understand institutional compliance posture.
+    see_also: []
+    context: null
+  NIST 800-171:
+    term: NIST 800-171
+    full_name: Protecting Controlled Unclassified Information in Nonfederal Systems
+      and Organizations
+    plain_language: NIST 800-171 defines baseline safeguards for CUI in contractor
+      and university environments.
+    who_cares:
+      pi: PIs use NIST 800-171 guidance to keep research programs compliant and funded.
+      researcher: Researchers follow NIST 800-171 practices during daily system use.
+      sysadmin: Sysadmins operationalize NIST 800-171 controls in managed infrastructure.
+      ciso: CISO teams use NIST 800-171 evidence in audit and risk reporting.
+      leadership: Leadership tracks NIST 800-171 to understand institutional compliance
+        posture.
+    see_also:
+    - NIST
+    - CMMC
+    - SPRS
+    context: null
+  NIST 800-223:
+    term: NIST 800-223
+    full_name: High-Performance Computing Security Overlay
+    plain_language: NIST 800-223 describes HPC-specific implementation guidance where
+      enterprise defaults do not fit.
+    who_cares:
+      pi: PIs use NIST 800-223 guidance to keep research programs compliant and funded.
+      researcher: Researchers follow NIST 800-223 practices during daily system use.
+      sysadmin: Sysadmins operationalize NIST 800-223 controls in managed infrastructure.
+      ciso: CISO teams use NIST 800-223 evidence in audit and risk reporting.
+      leadership: Leadership tracks NIST 800-223 to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  NIST 800-53:
+    term: NIST 800-53
+    full_name: Security and Privacy Controls for Information Systems and Organizations
+    plain_language: NIST 800-53 is a broader control catalog often used as a source
+      mapping for 800-171 requirements.
+    who_cares:
+      pi: PIs use NIST 800-53 guidance to keep research programs compliant and funded.
+      researcher: Researchers follow NIST 800-53 practices during daily system use.
+      sysadmin: Sysadmins operationalize NIST 800-53 controls in managed infrastructure.
+      ciso: CISO teams use NIST 800-53 evidence in audit and risk reporting.
+      leadership: Leadership tracks NIST 800-53 to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  ODP:
+    term: ODP
+    full_name: Organization-Defined Parameter
+    plain_language: An ODP is a value each organization assigns to tailor implementation
+      details in Rev 3 controls.
+    who_cares:
+      pi: PIs use ODP guidance to keep research programs compliant and funded.
+      researcher: Researchers follow ODP practices during daily system use.
+      sysadmin: Sysadmins operationalize ODP controls in managed infrastructure.
+      ciso: CISO teams use ODP evidence in audit and risk reporting.
+      leadership: Leadership tracks ODP to understand institutional compliance posture.
+    see_also:
+    - Rev 3
+    - DoD
+    context: null
+  Parallel Filesystem:
+    term: Parallel Filesystem
+    full_name: Parallel Filesystem
+    plain_language: Parallel filesystems distribute data across many storage nodes
+      to support high aggregate throughput.
+    who_cares:
+      pi: PIs use Parallel Filesystem guidance to keep research programs compliant
+        and funded.
+      researcher: Researchers follow Parallel Filesystem practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize Parallel Filesystem controls in managed infrastructure.
+      ciso: CISO teams use Parallel Filesystem evidence in audit and risk reporting.
+      leadership: Leadership tracks Parallel Filesystem to understand institutional
+        compliance posture.
+    see_also: []
+    context: null
+  PE:
+    term: PE
+    full_name: NIST Control Family PE
+    plain_language: PE identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use PE guidance to keep research programs compliant and funded.
+      researcher: Researchers follow PE practices during daily system use.
+      sysadmin: Sysadmins operationalize PE controls in managed infrastructure.
+      ciso: CISO teams use PE evidence in audit and risk reporting.
+      leadership: Leadership tracks PE to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  PI:
+    term: PI
+    full_name: Principal Investigator
+    plain_language: A PI is the project owner accountable for research conduct, data
+      stewardship, and sponsor commitments.
+    who_cares:
+      pi: PIs use PI guidance to keep research programs compliant and funded.
+      researcher: Researchers follow PI practices during daily system use.
+      sysadmin: Sysadmins operationalize PI controls in managed infrastructure.
+      ciso: CISO teams use PI evidence in audit and risk reporting.
+      leadership: Leadership tracks PI to understand institutional compliance posture.
+    see_also: []
+    context: null
+  PKI:
+    term: PKI
+    full_name: Public Key Infrastructure
+    plain_language: PKI manages certificates and cryptographic trust used for identity
+      and secure communications.
+    who_cares:
+      pi: PIs use PKI guidance to keep research programs compliant and funded.
+      researcher: Researchers follow PKI practices during daily system use.
+      sysadmin: Sysadmins operationalize PKI controls in managed infrastructure.
+      ciso: CISO teams use PKI evidence in audit and risk reporting.
+      leadership: Leadership tracks PKI to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Plan of Action & Milestones:
+    term: Plan of Action & Milestones
+    full_name: Plan of Action and Milestones
+    plain_language: This full phrase mirrors POA&M and captures remediation planning
+      for open gaps.
+    who_cares:
+      pi: PIs use Plan of Action & Milestones guidance to keep research programs compliant
+        and funded.
+      researcher: Researchers follow Plan of Action & Milestones practices during
+        daily system use.
+      sysadmin: Sysadmins operationalize Plan of Action & Milestones controls in managed
+        infrastructure.
+      ciso: CISO teams use Plan of Action & Milestones evidence in audit and risk
+        reporting.
+      leadership: Leadership tracks Plan of Action & Milestones to understand institutional
+        compliance posture.
+    see_also: []
+    context: null
+  POA:
+    term: POA
+    full_name: Plan of Action
+    plain_language: POA is a shortened form often seen in POA&M references.
+    who_cares:
+      pi: PIs rely on POA context to communicate compliance expectations clearly.
+      researcher: Researchers use POA guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor POA-related controls.
+      ciso: CISO teams track POA in risk and compliance reporting.
+      leadership: Leadership reviews POA implications for institutional posture.
+    see_also: []
+    context: null
+  POA&M:
+    term: POA&M
+    full_name: Plan of Action and Milestones
+    plain_language: POA&M tracks identified weaknesses, planned remediations, owners,
+      and due dates.
+    who_cares:
+      pi: PIs use POA&M guidance to keep research programs compliant and funded.
+      researcher: Researchers follow POA&M practices during daily system use.
+      sysadmin: Sysadmins operationalize POA&M controls in managed infrastructure.
+      ciso: CISO teams use POA&M evidence in audit and risk reporting.
+      leadership: Leadership tracks POA&M to understand institutional compliance posture.
+    see_also:
+    - Plan of Action & Milestones
+    - Assessment
+    context: null
+  PS:
+    term: PS
+    full_name: NIST Control Family PS
+    plain_language: PS identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use PS guidance to keep research programs compliant and funded.
+      researcher: Researchers follow PS practices during daily system use.
+      sysadmin: Sysadmins operationalize PS controls in managed infrastructure.
+      ciso: CISO teams use PS evidence in audit and risk reporting.
+      leadership: Leadership tracks PS to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  PXE:
+    term: PXE
+    full_name: Preboot Execution Environment
+    plain_language: PXE enables network-based provisioning and requires strict control
+      over boot infrastructure.
+    who_cares:
+      pi: PIs use PXE guidance to keep research programs compliant and funded.
+      researcher: Researchers follow PXE practices during daily system use.
+      sysadmin: Sysadmins operationalize PXE controls in managed infrastructure.
+      ciso: CISO teams use PXE evidence in audit and risk reporting.
+      leadership: Leadership tracks PXE to understand institutional compliance posture.
+    see_also: []
+    context: null
+  RA:
+    term: RA
+    full_name: NIST Control Family RA
+    plain_language: RA identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use RA guidance to keep research programs compliant and funded.
+      researcher: Researchers follow RA practices during daily system use.
+      sysadmin: Sysadmins operationalize RA controls in managed infrastructure.
+      ciso: CISO teams use RA evidence in audit and risk reporting.
+      leadership: Leadership tracks RA to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  RBAC:
+    term: RBAC
+    full_name: Role-Based Access Control
+    plain_language: RBAC assigns permissions to roles so users gain only the access
+      needed for their responsibilities.
+    who_cares:
+      pi: PIs use RBAC guidance to keep research programs compliant and funded.
+      researcher: Researchers follow RBAC practices during daily system use.
+      sysadmin: Sysadmins operationalize RBAC controls in managed infrastructure.
+      ciso: CISO teams use RBAC evidence in audit and risk reporting.
+      leadership: Leadership tracks RBAC to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Rev 2:
+    term: Rev 2
+    full_name: Revision 2
+    plain_language: Revision 2 refers to NIST 800-171 control identifiers in the current
+      baseline mapping.
+    who_cares:
+      pi: PIs use Rev 2 guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Rev 2 practices during daily system use.
+      sysadmin: Sysadmins operationalize Rev 2 controls in managed infrastructure.
+      ciso: CISO teams use Rev 2 evidence in audit and risk reporting.
+      leadership: Leadership tracks Rev 2 to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Rev 3:
+    term: Rev 3
+    full_name: Revision 3
+    plain_language: Revision 3 introduces ODP-heavy control language and updated identifiers
+      for forward alignment.
+    who_cares:
+      pi: PIs use Rev 3 guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Rev 3 practices during daily system use.
+      sysadmin: Sysadmins operationalize Rev 3 controls in managed infrastructure.
+      ciso: CISO teams use Rev 3 evidence in audit and risk reporting.
+      leadership: Leadership tracks Rev 3 to understand institutional compliance posture.
+    see_also: []
+    context: null
+  RHEL:
+    term: RHEL
+    full_name: Red Hat Enterprise Linux
+    plain_language: RHEL is the target operating baseline for managed systems in this
+      framework.
+    who_cares:
+      pi: PIs use RHEL guidance to keep research programs compliant and funded.
+      researcher: Researchers follow RHEL practices during daily system use.
+      sysadmin: Sysadmins operationalize RHEL controls in managed infrastructure.
+      ciso: CISO teams use RHEL evidence in audit and risk reporting.
+      leadership: Leadership tracks RHEL to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Rocky Linux:
+    term: Rocky Linux
+    full_name: Rocky Linux
+    plain_language: Rocky Linux is a RHEL-compatible operating system used in research
+      computing environments.
+    who_cares:
+      pi: PIs use Rocky Linux guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Rocky Linux practices during daily system use.
+      sysadmin: Sysadmins operationalize Rocky Linux controls in managed infrastructure.
+      ciso: CISO teams use Rocky Linux evidence in audit and risk reporting.
+      leadership: Leadership tracks Rocky Linux to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  SA:
+    term: SA
+    full_name: NIST Control Family SA
+    plain_language: SA identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use SA guidance to keep research programs compliant and funded.
+      researcher: Researchers follow SA practices during daily system use.
+      sysadmin: Sysadmins operationalize SA controls in managed infrastructure.
+      ciso: CISO teams use SA evidence in audit and risk reporting.
+      leadership: Leadership tracks SA to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  SC:
+    term: SC
+    full_name: NIST Control Family SC
+    plain_language: SC identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use SC guidance to keep research programs compliant and funded.
+      researcher: Researchers follow SC practices during daily system use.
+      sysadmin: Sysadmins operationalize SC controls in managed infrastructure.
+      ciso: CISO teams use SC evidence in audit and risk reporting.
+      leadership: Leadership tracks SC to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  Self-Assessment:
+    term: Self-Assessment
+    full_name: Self-Assessment
+    plain_language: A self-assessment is an internal control evaluation performed
+      before external audit events.
+    who_cares:
+      pi: PIs use Self-Assessment guidance to keep research programs compliant and
+        funded.
+      researcher: Researchers follow Self-Assessment practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize Self-Assessment controls in managed infrastructure.
+      ciso: CISO teams use Self-Assessment evidence in audit and risk reporting.
+      leadership: Leadership tracks Self-Assessment to understand institutional compliance
+        posture.
+    see_also: []
+    context: null
+  SI:
+    term: SI
+    full_name: NIST Control Family SI
+    plain_language: SI identifies one NIST control family used to organize security
+      requirements in a consistent way.
+    who_cares:
+      pi: PIs use SI guidance to keep research programs compliant and funded.
+      researcher: Researchers follow SI practices during daily system use.
+      sysadmin: Sysadmins operationalize SI controls in managed infrastructure.
+      ciso: CISO teams use SI evidence in audit and risk reporting.
+      leadership: Leadership tracks SI to understand institutional compliance posture.
+    see_also:
+    - NIST
+    - NIST 800-171
+    context: null
+  SIEM:
+    term: SIEM
+    full_name: Security Information and Event Management
+    plain_language: SIEM platforms collect and analyze log data to support monitoring
+      and incident response.
+    who_cares:
+      pi: PIs use SIEM guidance to keep research programs compliant and funded.
+      researcher: Researchers follow SIEM practices during daily system use.
+      sysadmin: Sysadmins operationalize SIEM controls in managed infrastructure.
+      ciso: CISO teams use SIEM evidence in audit and risk reporting.
+      leadership: Leadership tracks SIEM to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Slurm:
+    term: Slurm
+    full_name: Simple Linux Utility for Resource Management
+    plain_language: Slurm schedules batch jobs and allocates compute resources across
+      HPC clusters.
+    who_cares:
+      pi: PIs use Slurm guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Slurm practices during daily system use.
+      sysadmin: Sysadmins operationalize Slurm controls in managed infrastructure.
+      ciso: CISO teams use Slurm evidence in audit and risk reporting.
+      leadership: Leadership tracks Slurm to understand institutional compliance posture.
+    see_also: []
+    context: null
+  SP:
+    term: SP
+    full_name: Special Publication
+    plain_language: SP commonly refers to NIST Special Publication document series
+      identifiers.
+    who_cares:
+      pi: PIs rely on SP context to communicate compliance expectations clearly.
+      researcher: Researchers use SP guidance in daily secure workflows.
+      sysadmin: Sysadmins implement and monitor SP-related controls.
+      ciso: CISO teams track SP in risk and compliance reporting.
+      leadership: Leadership reviews SP implications for institutional posture.
+    see_also:
+    - NIST
+    - CMMC
+    context: null
+  SPRS:
+    term: SPRS
+    full_name: Supplier Performance Risk System
+    plain_language: SPRS stores self-assessment scores and related compliance data
+      used by DoD acquisition teams.
+    who_cares:
+      pi: PIs use SPRS guidance to keep research programs compliant and funded.
+      researcher: Researchers follow SPRS practices during daily system use.
+      sysadmin: Sysadmins operationalize SPRS controls in managed infrastructure.
+      ciso: CISO teams use SPRS evidence in audit and risk reporting.
+      leadership: Leadership tracks SPRS to understand institutional compliance posture.
+    see_also: []
+    context: null
+  SSH:
+    term: SSH
+    full_name: Secure Shell
+    plain_language: SSH provides encrypted remote administration and secure file transfer
+      for managed systems.
+    who_cares:
+      pi: PIs use SSH guidance to keep research programs compliant and funded.
+      researcher: Researchers follow SSH practices during daily system use.
+      sysadmin: Sysadmins operationalize SSH controls in managed infrastructure.
+      ciso: CISO teams use SSH evidence in audit and risk reporting.
+      leadership: Leadership tracks SSH to understand institutional compliance posture.
+    see_also: []
+    context: null
+  SSP:
+    term: SSP
+    full_name: System Security Plan
+    plain_language: An SSP documents how controls are implemented, who owns them,
+      and where evidence is retained.
+    who_cares:
+      pi: PIs use SSP guidance to keep research programs compliant and funded.
+      researcher: Researchers follow SSP practices during daily system use.
+      sysadmin: Sysadmins operationalize SSP controls in managed infrastructure.
+      ciso: CISO teams use SSP evidence in audit and risk reporting.
+      leadership: Leadership tracks SSP to understand institutional compliance posture.
+    see_also: []
+    context: null
+  System Security Plan:
+    term: System Security Plan
+    full_name: System Security Plan
+    plain_language: System Security Plan is the full phrase for SSP and details control
+      implementation evidence.
+    who_cares:
+      pi: PIs use System Security Plan guidance to keep research programs compliant
+        and funded.
+      researcher: Researchers follow System Security Plan practices during daily system
+        use.
+      sysadmin: Sysadmins operationalize System Security Plan controls in managed
+        infrastructure.
+      ciso: CISO teams use System Security Plan evidence in audit and risk reporting.
+      leadership: Leadership tracks System Security Plan to understand institutional
+        compliance posture.
+    see_also: []
+    context: null
+  TLS:
+    term: TLS
+    full_name: Transport Layer Security
+    plain_language: TLS encrypts network communications to protect data confidentiality
+      and integrity in transit.
+    who_cares:
+      pi: PIs use TLS guidance to keep research programs compliant and funded.
+      researcher: Researchers follow TLS practices during daily system use.
+      sysadmin: Sysadmins operationalize TLS controls in managed infrastructure.
+      ciso: CISO teams use TLS evidence in audit and risk reporting.
+      leadership: Leadership tracks TLS to understand institutional compliance posture.
+    see_also: []
+    context: null
+  UTF-8:
+    term: UTF-8
+    full_name: Unicode Transformation Format 8-bit
+    plain_language: UTF-8 encoding ensures generated crosswalk files open correctly
+      in modern tooling.
+    who_cares:
+      pi: PIs use UTF-8 guidance to keep research programs compliant and funded.
+      researcher: Researchers follow UTF-8 practices during daily system use.
+      sysadmin: Sysadmins operationalize UTF-8 controls in managed infrastructure.
+      ciso: CISO teams use UTF-8 evidence in audit and risk reporting.
+      leadership: Leadership tracks UTF-8 to understand institutional compliance posture.
+    see_also: []
+    context: null
+  YAML:
+    term: YAML
+    full_name: YAML Ain't Markup Language
+    plain_language: YAML is a human-readable serialization format used as the canonical
+      data model in this project.
+    who_cares:
+      pi: PIs use YAML guidance to keep research programs compliant and funded.
+      researcher: Researchers follow YAML practices during daily system use.
+      sysadmin: Sysadmins operationalize YAML controls in managed infrastructure.
+      ciso: CISO teams use YAML evidence in audit and risk reporting.
+      leadership: Leadership tracks YAML to understand institutional compliance posture.
+    see_also: []
+    context: null
+  Zero Trust:
+    term: Zero Trust
+    full_name: Zero Trust Architecture
+    plain_language: Zero Trust assumes no implicit trust and requires continuous verification
+      of identity, device, and context.
+    who_cares:
+      pi: PIs use Zero Trust guidance to keep research programs compliant and funded.
+      researcher: Researchers follow Zero Trust practices during daily system use.
+      sysadmin: Sysadmins operationalize Zero Trust controls in managed infrastructure.
+      ciso: CISO teams use Zero Trust evidence in audit and risk reporting.
+      leadership: Leadership tracks Zero Trust to understand institutional compliance
+        posture.
+    see_also: []
+    context: null

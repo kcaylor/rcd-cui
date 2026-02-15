@@ -1,0 +1,39 @@
+---
+# Enable or disable this role without changing playbook ordering.
+cm_kernel_hardening_enabled: true
+
+# Package list required by this control implementation.
+cm_kernel_hardening_packages:
+  []
+
+# Template files deployed by this role.
+cm_kernel_hardening_templates:
+  - src: 99-cui-hardening.conf.j2
+    dest: /etc/sysctl.d/99-cui-hardening.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+cm_kernel_hardening_files:
+  []
+
+# Services managed by this role.
+cm_kernel_hardening_services:
+  []
+
+# Read-only verification commands for compliance checks.
+cm_kernel_hardening_verify_commands:
+  - id: sysctl_conf
+    command: "test -f /etc/sysctl.d/99-cui-hardening.conf"
+  - id: sysctl_value
+    command: "sysctl kernel.randomize_va_space"
+
+# File paths captured as evidence artifacts.
+cm_kernel_hardening_evidence_files:
+  - /etc/sysctl.d/99-cui-hardening.conf
+
+# Read-only commands captured as evidence artifacts.
+cm_kernel_hardening_evidence_commands:
+  - id: sysctl_all
+    command: "sysctl -a"

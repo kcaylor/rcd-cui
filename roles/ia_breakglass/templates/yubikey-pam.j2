@@ -1,0 +1,8 @@
+# ==============================================
+# Break-glass PAM policy
+# Purpose: Require hardware-token-backed emergency access.
+# ==============================================
+#%PAM-1.0
+auth required pam_u2f.so cue
+account required pam_unix.so
+session required pam_unix.so

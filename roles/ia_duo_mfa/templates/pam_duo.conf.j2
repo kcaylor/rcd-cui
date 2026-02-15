@@ -1,0 +1,11 @@
+# ==============================================
+# Duo PAM configuration
+# Purpose: Enforce MFA for interactive access while allowing approved HPC bypasses.
+# ==============================================
+[duo]
+ikey = {{ ia_duo_mfa_integration_key }}
+skey = {{ ia_duo_mfa_secret_key }}
+host = {{ ia_duo_mfa_api_host }}
+pushinfo = yes
+autopush = yes
+failmode = safe

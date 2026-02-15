@@ -1,0 +1,14 @@
+{% set title = "Researcher Quickstart" %}
+{% set audience = "Researcher" %}
+{% include "_partials/header.j2" with context %}
+
+## Researcher Onboarding
+1. Request system access through approved account workflows.
+2. Complete security training aligned with {{ "NIST 800-171"|link_terms }}.
+3. Use {{ "MFA"|link_terms }} when signing in.
+4. Store project data in authorized enclaves handling {{ "CUI"|link_terms }}.
+
+## Daily Practices
+{% for control in controls[15:35] -%}
+- **{{ control.control_id }}**: {{ control.plain_language|link_terms }}
+{% endfor %}

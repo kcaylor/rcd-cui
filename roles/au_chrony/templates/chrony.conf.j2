@@ -1,0 +1,10 @@
+# ==============================================
+# CUI chrony configuration
+# Purpose: Keep system time accurate for reliable audit event correlation.
+# ==============================================
+{% for ntp_server in ntp_servers %}
+server {{ ntp_server }} iburst
+{% endfor %}
+driftfile /var/lib/chrony/drift
+makestep 1.0 3
+rtcsync

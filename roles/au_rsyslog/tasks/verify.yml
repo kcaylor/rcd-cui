@@ -1,0 +1,45 @@
+---
+# WHY: Re-validate zone context during read-only audits to keep evidence attributable by zone.
+- name: Validate CUI zone assignment for au_rsyslog verification
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_verify_tags
+    - r2_3.3.4
+    - r3_03.03.04
+    - family_AU
+    - zone_{{ cui_zone }}
+
+# WHY: Run non-destructive checks that show whether controls are active without modifying state.
+- name: Execute compliance verification checks for au_rsyslog
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ au_rsyslog_verify_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: au_rsyslog_verify_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: au_rsyslog_verify_commands | length > 0
+  tags: *role_verify_tags
+
+# WHY: Store structured verification output so auditors can trace check outcomes.
+- name: Build verification summary for au_rsyslog
+  ansible.builtin.set_fact:
+    au_rsyslog_verify_summary:
+      role: au_rsyslog
+      zone: "{{ cui_zone }}"
+      compliant: >-
+        {{ (au_rsyslog_verify_results.results | default([]) |
+        selectattr('rc', 'equalto', 0) | list | length) ==
+        (au_rsyslog_verify_commands | length) }}
+      checks: "{{ au_rsyslog_verify_results.results | default([]) }}"
+  changed_when: false
+  tags: *role_verify_tags
+
+# WHY: Print verification status in plain language for operators and compliance staff.
+- name: Show verification summary for au_rsyslog
+  ansible.builtin.debug:
+    var: au_rsyslog_verify_summary
+  changed_when: false
+  tags: *role_verify_tags

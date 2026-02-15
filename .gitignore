@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.pytest_cache/
+.coverage
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Generated docs
+docs/generated/
+
+# Environment
+.env
+.env.*
+
+# Logs and temp
+*.log
+*.tmp
+*.swp
+
+# Universal
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

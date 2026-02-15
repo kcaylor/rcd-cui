@@ -1,0 +1,8 @@
+---
+cui_zone: internal
+session_timeout_minutes: 15
+audit_rules_profile: comprehensive
+mfa_required: true
+mfa_bypass_ssh_certs: true
+usbguard_policy: deny_storage
+firewall_default_zone: public

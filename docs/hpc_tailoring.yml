@@ -1,0 +1,156 @@
+version: 1.0.0
+last_updated: '2026-02-15'
+description: HPC-specific tailoring decisions with compensating controls and risk
+  acceptance.
+tailoring_decisions:
+- tailoring_id: session-timeout-compute-nodes
+  control_r2: 3.13.11
+  control_r3: 03.13.11
+  title: Session timeout on compute nodes
+  standard_requirement: Terminate inactive sessions after a defined period.
+  hpc_challenge: Long-running batch jobs often execute for days without interactive
+    activity.
+  tailored_implementation: Apply timeout controls to login nodes while allowing scheduler-managed
+    compute sessions.
+  compensating_controls:
+  - Scheduler job ownership checks
+  - Node isolation
+  - Privileged session logging
+  risk_acceptance: medium
+  nist_800_223_reference: NIST SP 800-223 Section 4.2
+  performance_impact: Low impact on throughput when enforced at access tier.
+- tailoring_id: fips-cryptography-infiniband
+  control_r2: 3.13.8
+  control_r3: 03.13.08
+  title: FIPS cryptography on InfiniBand
+  standard_requirement: Use validated cryptography to protect confidentiality and
+    integrity.
+  hpc_challenge: Native InfiniBand encryption choices can reduce bandwidth and increase
+    latency.
+  tailored_implementation: Encrypt at storage and management planes while segmenting
+    trusted compute fabric paths.
+  compensating_controls:
+  - Fabric segmentation
+  - Host-based encryption
+  - Strict key management
+  risk_acceptance: medium
+  nist_800_223_reference: NIST SP 800-223 Section 5.1
+  performance_impact: Moderate overhead on fabric-level encryption.
+- tailoring_id: audit-volume-compute-nodes
+  control_r2: 3.3.1
+  control_r3: 03.03.01
+  title: Audit volume on compute nodes
+  standard_requirement: Capture auditable events for security-relevant actions.
+  hpc_challenge: Per-process logging at scale can overwhelm storage and analysis systems.
+  tailored_implementation: Collect high-value events locally and forward sampled telemetry
+    to SIEM pipelines.
+  compensating_controls:
+  - Centralized SIEM correlation
+  - Immutable log archive
+  risk_acceptance: low
+  nist_800_223_reference: NIST SP 800-223 Section 6.3
+  performance_impact: Low when selective event capture is used.
+- tailoring_id: mfa-batch-jobs
+  control_r2: 3.5.3
+  control_r3: 03.05.03
+  title: MFA for batch jobs
+  standard_requirement: Use multifactor authentication for privileged and remote access.
+  hpc_challenge: Non-interactive scheduler jobs cannot satisfy prompt-based MFA at
+    execution time.
+  tailored_implementation: Require MFA at job submission and use short-lived signed
+    scheduler tokens for execution.
+  compensating_controls:
+  - Token expiration enforcement
+  - Submission audit trail
+  risk_acceptance: medium
+  nist_800_223_reference: NIST SP 800-223 Section 4.5
+  performance_impact: Minimal impact on users after submission.
+- tailoring_id: multi-tenancy-isolation
+  control_r2: 3.13.2
+  control_r3: 03.13.02
+  title: Multi-tenancy isolation
+  standard_requirement: Separate user functionality from system management functionality.
+  hpc_challenge: Shared nodes and accelerators increase tenant co-residency risk.
+  tailored_implementation: Use scheduler partitioning, cgroup isolation, and network
+    micro-segmentation.
+  compensating_controls:
+  - Dedicated partitions for high sensitivity workloads
+  - GPU reset automation
+  risk_acceptance: medium
+  nist_800_223_reference: NIST SP 800-223 Section 5.4
+  performance_impact: Moderate due to reduced packing efficiency.
+- tailoring_id: container-security
+  control_r2: 3.4.8
+  control_r3: 03.04.08
+  title: Container security on shared clusters
+  standard_requirement: Apply configuration restrictions to prevent unauthorized software
+    behavior.
+  hpc_challenge: Researchers need portable containers that may include privileged
+    runtime options.
+  tailored_implementation: Require signed container images and enforce runtime policy
+    profiles.
+  compensating_controls:
+  - Image scanning
+  - Admission policy checks
+  risk_acceptance: low
+  nist_800_223_reference: NIST SP 800-223 Section 7.1
+  performance_impact: Low with pre-cache and signed image workflows.
+- tailoring_id: parallel-filesystem-acls
+  control_r2: 3.1.3
+  control_r3: 03.01.03
+  title: Parallel filesystem ACL enforcement
+  standard_requirement: Control information flow according to policy.
+  hpc_challenge: High-throughput filesystems may not support enterprise ACL semantics
+    uniformly.
+  tailored_implementation: Use project-level RBAC and data domain separation with
+    periodic entitlement reviews.
+  compensating_controls:
+  - Automated entitlement reports
+  - Quarterly access recertification
+  risk_acceptance: medium
+  nist_800_223_reference: NIST SP 800-223 Section 5.7
+  performance_impact: Low for most workflows.
+- tailoring_id: long-running-job-management
+  control_r2: 3.13.12
+  control_r3: 03.13.12
+  title: Long-running job management
+  standard_requirement: Protect sessions and terminate orphaned activity.
+  hpc_challenge: Scientific jobs may require uninterrupted runtimes over extended
+    windows.
+  tailored_implementation: Use scheduler heartbeat checks and owner re-validation
+    for prolonged jobs.
+  compensating_controls:
+  - Job checkpointing
+  - Owner attestation for extended runtime
+  risk_acceptance: medium
+  nist_800_223_reference: NIST SP 800-223 Section 4.8
+  performance_impact: Low with scheduler-native controls.
+- tailoring_id: gpu-memory-sanitization
+  control_r2: 3.8.3
+  control_r3: 03.08.03
+  title: GPU memory sanitization
+  standard_requirement: Sanitize media before reuse.
+  hpc_challenge: GPU memory can retain residual data across workload boundaries.
+  tailored_implementation: Trigger secure GPU memory reset hooks between tenant allocations.
+  compensating_controls:
+  - Node health checks
+  - Scheduler drain on sanitize failure
+  risk_acceptance: low
+  nist_800_223_reference: NIST SP 800-223 Section 7.4
+  performance_impact: Small per-allocation delay.
+- tailoring_id: node-provisioning-pxe
+  control_r2: 3.4.1
+  control_r3: 03.04.01
+  title: Node provisioning via PXE
+  standard_requirement: Maintain baseline configurations with controlled changes.
+  hpc_challenge: Rapid node reprovisioning relies on network boot workflows vulnerable
+    to tampering.
+  tailored_implementation: Use signed images, isolated provisioning networks, and
+    measured boot attestations.
+  compensating_controls:
+  - Provisioning network ACLs
+  - Image signature verification
+  - Attestation logs
+  risk_acceptance: low
+  nist_800_223_reference: NIST SP 800-223 Section 6.1
+  performance_impact: Low with cached trusted images.

@@ -1,0 +1,88 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for si_openscap_oval
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.14.3
+    - r3_03.14.03
+    - family_SI
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for si_openscap_oval
+  ansible.builtin.package:
+    name: "{{ si_openscap_oval_packages }}"
+    state: present
+  when:
+    - si_openscap_oval_enabled | bool
+    - si_openscap_oval_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for si_openscap_oval
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ si_openscap_oval_templates }}"
+  notify: Restart si_openscap_oval services
+  when:
+    - si_openscap_oval_enabled | bool
+    - si_openscap_oval_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for si_openscap_oval
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ si_openscap_oval_files }}"
+  notify: Restart si_openscap_oval services
+  when:
+    - si_openscap_oval_enabled | bool
+    - si_openscap_oval_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for si_openscap_oval
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ si_openscap_oval_services }}"
+  when:
+    - si_openscap_oval_enabled | bool
+    - si_openscap_oval_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for si_openscap_oval when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "si_openscap_oval is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - si_openscap_oval_enabled | bool
+    - si_openscap_oval_packages | length == 0
+    - si_openscap_oval_templates | length == 0
+    - si_openscap_oval_files | length == 0
+    - si_openscap_oval_services | length == 0
+  tags: *role_tags
+
+# WHY: Prepare directory for periodic OVAL scan content and results.
+- name: Ensure OVAL data directory exists
+  ansible.builtin.file:
+    path: /var/lib/openscap
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  when: si_openscap_oval_enabled | bool
+  tags: *role_tags

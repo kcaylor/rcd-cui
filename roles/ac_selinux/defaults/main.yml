@@ -1,0 +1,33 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ac_selinux_enabled: true
+
+# Package list required by this control implementation.
+ac_selinux_packages:
+  - policycoreutils-python-utils
+
+# Template files deployed by this role.
+ac_selinux_templates:
+  []
+
+# Static helper files deployed by this role.
+ac_selinux_files:
+  []
+
+# Services managed by this role.
+ac_selinux_services:
+  []
+
+# Read-only verification commands for compliance checks.
+ac_selinux_verify_commands:
+  - id: selinux_mode
+    command: "getenforce"
+
+# File paths captured as evidence artifacts.
+ac_selinux_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+ac_selinux_evidence_commands:
+  - id: sestatus
+    command: "sestatus"

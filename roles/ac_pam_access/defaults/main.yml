@@ -1,0 +1,36 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ac_pam_access_enabled: true
+
+# Package list required by this control implementation.
+ac_pam_access_packages:
+  - pam
+
+# Template files deployed by this role.
+ac_pam_access_templates:
+  - src: access.conf.j2
+    dest: /etc/security/access.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+ac_pam_access_files:
+  []
+
+# Services managed by this role.
+ac_pam_access_services:
+  []
+
+# Read-only verification commands for compliance checks.
+ac_pam_access_verify_commands:
+  - id: access_conf
+    command: "test -f /etc/security/access.conf"
+
+# File paths captured as evidence artifacts.
+ac_pam_access_evidence_files:
+  - /etc/security/access.conf
+
+# Read-only commands captured as evidence artifacts.
+ac_pam_access_evidence_commands:
+  []

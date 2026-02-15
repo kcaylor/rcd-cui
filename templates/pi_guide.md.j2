@@ -1,0 +1,17 @@
+{% set title = "PI Guide" %}
+{% set audience = "Principal Investigator" %}
+{% include "_partials/header.j2" with context %}
+
+## What You Need To Know
+For Principal Investigators, the first priority is protecting {{ "CUI"|link_terms }} and ensuring research teams follow approved handling workflows.
+
+## Top Responsibilities
+{% for control in controls[:15] -%}
+- **{{ control.control_id }} {{ control.title }}**: {{ control.plain_language|link_terms }}
+{% endfor %}
+
+## Key Terms
+- {{ "CUI"|link_terms }}
+- {{ "MFA"|link_terms }}
+- {{ "RBAC"|link_terms }}
+- {{ "SSP"|link_terms }}

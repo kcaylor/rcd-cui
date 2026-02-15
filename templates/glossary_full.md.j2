@@ -1,0 +1,23 @@
+{% set title = "Full Glossary" %}
+{% set audience = "All Stakeholders" %}
+{% include "_partials/header.j2" with context %}
+
+## Terms
+{% for key, term in terms -%}
+### <a id="{{ key|slugify }}"></a>{{ key }}
+**Full name:** {{ term.full_name }}
+
+{{ term.plain_language }}
+
+**Why it matters**
+- PI: {{ term.who_cares.pi }}
+- Researcher: {{ term.who_cares.researcher }}
+- Sysadmin: {{ term.who_cares.sysadmin }}
+- CISO: {{ term.who_cares.ciso }}
+- Leadership: {{ term.who_cares.leadership }}
+
+{% if term.see_also -%}
+**See also:** {% for related in term.see_also %}[{{ related }}](#{{ related|slugify }}){% if not loop.last %}, {% endif %}{% endfor %}
+{% endif %}
+
+{% endfor %}

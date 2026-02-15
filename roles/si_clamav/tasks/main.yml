@@ -1,0 +1,77 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for si_clamav
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.14.2
+    - r3_03.14.02
+    - family_SI
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for si_clamav
+  ansible.builtin.package:
+    name: "{{ si_clamav_packages }}"
+    state: present
+  when:
+    - si_clamav_enabled | bool
+    - si_clamav_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for si_clamav
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ si_clamav_templates }}"
+  notify: Restart si_clamav services
+  when:
+    - si_clamav_enabled | bool
+    - si_clamav_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for si_clamav
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ si_clamav_files }}"
+  notify: Restart si_clamav services
+  when:
+    - si_clamav_enabled | bool
+    - si_clamav_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for si_clamav
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ si_clamav_services }}"
+  when:
+    - si_clamav_enabled | bool
+    - si_clamav_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for si_clamav when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "si_clamav is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - si_clamav_enabled | bool
+    - si_clamav_packages | length == 0
+    - si_clamav_templates | length == 0
+    - si_clamav_files | length == 0
+    - si_clamav_services | length == 0
+  tags: *role_tags
