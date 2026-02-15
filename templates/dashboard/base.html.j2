@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compliance Dashboard</title>
+  <link rel="stylesheet" href="assets/dashboard.css">
+  <script src="assets/chart.min.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <h1>Compliance Dashboard</h1>
+    <p>Assessment {{ assessment.assessment_id }} | {{ assessment.timestamp }}</p>
+  </header>
+
+  <nav class="tabs" aria-label="Dashboard views">
+    <button class="tab is-active" data-tab="leadership">Leadership</button>
+    <button class="tab" data-tab="ciso">CISO</button>
+    <button class="tab" data-tab="auditor">Auditor</button>
+  </nav>
+
+  <main>
+    <section id="leadership" class="tab-panel is-active">
+      {% include 'dashboard/leadership.html.j2' %}
+    </section>
+    <section id="ciso" class="tab-panel">
+      {% include 'dashboard/ciso.html.j2' %}
+    </section>
+    <section id="auditor" class="tab-panel">
+      {% include 'dashboard/auditor.html.j2' %}
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.tab');
+      var panels = document.querySelectorAll('.tab-panel');
+
+      function show(id) {
+        tabs.forEach(function (tab) {
+          tab.classList.toggle('is-active', tab.dataset.tab === id);
+        });
+        panels.forEach(function (panel) {
+          panel.classList.toggle('is-active', panel.id === id);
+        });
+        window.location.hash = id;
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () { show(tab.dataset.tab); });
+      });
+
+      var initialTab = window.location.hash ? window.location.hash.substring(1) : 'leadership';
+      if (!document.getElementById(initialTab)) {
+        initialTab = 'leadership';
+      }
+      show(initialTab);
+
+      var gaugeCanvas = document.getElementById('sprsGauge');
+      if (gaugeCanvas && window.Chart) {
+        new Chart(gaugeCanvas.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Score', 'Remaining'],
+            datasets: [{
+              data: [{{ breakdown.total_score if breakdown.total_score > 0 else 0 }}, {{ breakdown.baseline_score - (breakdown.total_score if breakdown.total_score > 0 else 0) }}],
+              backgroundColor: ['#1f7a8c', '#d6d8dc']
+            }]
+          },
+          options: {cutout: '70%', responsive: true, plugins: {legend: {display: false}}}
+        });
+      }
+
+      var trendCanvas = document.getElementById('trendChart');
+      if (trendCanvas && window.Chart) {
+        new Chart(trendCanvas.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: [{% for p in trend %}'{{ p.timestamp }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+              label: 'SPRS score',
+              data: [{% for p in trend %}{{ p.score }}{% if not loop.last %}, {% endif %}{% endfor %}],
+              borderColor: '#bf4342',
+              backgroundColor: 'rgba(191,67,66,0.15)',
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {responsive: true}
+        });
+      }
+    }());
+  </script>
+</body>
+</html>

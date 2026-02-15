@@ -1,0 +1,48 @@
+<div class="grid two-col">
+  <article class="card">
+    <h2>Family Breakdown</h2>
+    <table>
+      <thead>
+        <tr><th>Family</th><th>Total</th><th>Passing</th><th>Failing</th><th>Deductions</th></tr>
+      </thead>
+      <tbody>
+      {% for family, item in breakdown.by_family.items() %}
+        <tr>
+          <td>{{ family }}</td>
+          <td>{{ item.controls_total }}</td>
+          <td>{{ item.controls_passing }}</td>
+          <td>{{ item.controls_failing }}</td>
+          <td>{{ item.deduction_points }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Remediation Priority</h2>
+    <ol>
+      {% for rec in breakdown.recommendations[:15] %}
+      <li>{{ rec.control_id }} ({{ rec.weight }} points, effort {{ rec.effort_estimate }})</li>
+      {% endfor %}
+    </ol>
+  </article>
+</div>
+
+<article class="card">
+  <h2>Control Drill-Down</h2>
+  <table>
+    <thead>
+      <tr><th>Control</th><th>Status</th><th>Explanation</th></tr>
+    </thead>
+    <tbody>
+      {% for d in breakdown.deductions %}
+      <tr>
+        <td>{{ d.control_id }}</td>
+        <td>{{ d.status }}</td>
+        <td>{{ d.plain_language }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</article>

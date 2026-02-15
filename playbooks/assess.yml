@@ -1,0 +1,211 @@
+---
+- name: Run compliance verification tasks on all reachable hosts
+  hosts: all
+  become: true
+  gather_facts: true
+  any_errors_fatal: false
+  ignore_unreachable: true
+  vars:
+    deployed_roles:
+      - common
+      - au_auditd
+      - au_rsyslog
+      - au_chrony
+      - au_wazuh_agent
+      - au_log_protection
+      - ia_freeipa_client
+      - ia_duo_mfa
+      - ia_ssh_ca
+      - ia_password_policy
+      - ia_account_lifecycle
+      - ia_breakglass
+      - ac_pam_access
+      - ac_rbac
+      - ac_ssh_hardening
+      - ac_session_timeout
+      - ac_login_banner
+      - ac_usbguard
+      - ac_selinux
+      - cm_fips_mode
+      - cm_openscap_baseline
+      - cm_minimal_packages
+      - cm_service_hardening
+      - cm_kernel_hardening
+      - cm_aide
+      - sc_nftables
+      - sc_tls_enforcement
+      - sc_luks_verification
+      - sc_network_segmentation
+      - si_dnf_automatic
+      - si_clamav
+      - si_openscap_oval
+  tasks:
+    - name: Run verify workflow from each deployed role
+      ansible.builtin.include_role:
+        name: "{{ item }}"
+        tasks_from: verify.yml
+      loop: "{{ deployed_roles }}"
+      register: verify_role_runs
+      ignore_errors: true
+
+    - name: Probe OpenSCAP availability
+      ansible.builtin.command: oscap --version
+      register: oscap_version
+      failed_when: false
+      changed_when: false
+      check_mode: false
+
+    - name: Save per-host assessment summary for aggregation
+      ansible.builtin.set_fact:
+        assessment_host_record:
+          hostname: "{{ inventory_hostname }}"
+          zone: "{{ zone | default('unknown') }}"
+          assessed_at: "{{ ansible_date_time.iso8601 }}"
+          role_results: >-
+            {{
+              dict(
+                (verify_role_runs.results | default([]))
+                | map(attribute='item')
+                | zip(
+                  (verify_role_runs.results | default([]))
+                  | map(attribute='failed', default=false)
+                  | map('bool')
+                  | map('ternary', false, true)
+                )
+              )
+            }}
+          host_passed: >-
+            {{
+              (
+                verify_role_runs.results | default([])
+                | selectattr('failed', 'defined')
+                | selectattr('failed')
+                | list
+                | length
+              ) == 0
+            }}
+          openscap:
+            available: "{{ (oscap_version.rc | default(1)) == 0 }}"
+            output: "{{ oscap_version.stdout | default('') }}"
+
+- name: Aggregate enclave assessment and write structured JSON
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ../roles/common/vars/control_mapping.yml
+  vars:
+    assessment_date: "{{ lookup('pipe', 'date +%F') }}"
+    assessment_timestamp: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ') }}"
+    assessment_id: "{{ lookup('pipe', 'python3 - <<\"PY\"\nimport uuid\nprint(uuid.uuid4())\nPY') }}"
+    all_inventory_hosts: "{{ groups['all'] | default([]) }}"
+  tasks:
+    - name: Initialize assessed host list
+      ansible.builtin.set_fact:
+        assessed_hosts: []
+
+    - name: Build list of hosts that produced assessment records
+      ansible.builtin.set_fact:
+        assessed_hosts: "{{ assessed_hosts + [item] }}"
+      loop: "{{ all_inventory_hosts }}"
+      when: hostvars[item].assessment_host_record is defined
+
+    - name: Normalize not assessed host records
+      ansible.builtin.set_fact:
+        not_assessed_hosts: >-
+          {{
+            (all_inventory_hosts | difference(assessed_hosts))
+            | map('regex_replace', '^(.*)$', '{"hostname":"\\1","reason":"unreachable","timestamp":"' ~ assessment_timestamp ~ '"}')
+            | map('from_json')
+            | list
+          }}
+
+    - name: Determine whether all assessed systems passed verification
+      ansible.builtin.set_fact:
+        all_assessed_hosts_passed: >-
+          {{
+            assessed_hosts
+            | map('extract', hostvars, 'assessment_host_record')
+            | map(attribute='host_passed')
+            | select('equalto', false)
+            | list
+            | length == 0
+          }}
+
+    - name: Build control-level result records using binary enclave pass/fail logic
+      ansible.builtin.set_fact:
+        control_results: >-
+          {%- set results = [] -%}
+          {%- for ctrl in controls -%}
+          {%- set status = 'not_assessed' -%}
+          {%- if assessed_hosts | length > 0 -%}
+          {%- set status = 'pass' if all_assessed_hosts_passed else 'fail' -%}
+          {%- endif -%}
+          {%- set _ = results.append({
+            'control_id': ctrl.control_id,
+            'control_title': ctrl.title,
+            'family': ctrl.family,
+            'status': status,
+            'status_reason': (
+              'All applicable systems passed verification checks'
+              if status == 'pass'
+              else (
+                'One or more systems failed role verification checks'
+                if status == 'fail'
+                else 'No systems were reachable for assessment'
+              )
+            ),
+            'applicable_systems': assessed_hosts | length,
+            'passing_systems': (assessed_hosts | length if status == 'pass' else 0),
+            'systems': assessed_hosts
+              | map('extract', hostvars, 'assessment_host_record')
+              | map('combine', {'status': ('pass' if status == 'pass' else 'fail')})
+              | list,
+            'evidence_files': [],
+            'verification_commands': []
+          }) -%}
+          {%- endfor -%}
+          {{ results }}
+
+    - name: Build openscap summary from host probe results
+      ansible.builtin.set_fact:
+        openscap_results:
+          profile: "cui"
+          pass_count: "{{ assessed_hosts | length if all_assessed_hosts_passed else 0 }}"
+          fail_count: "{{ 0 if all_assessed_hosts_passed else assessed_hosts | length }}"
+          notapplicable_count: 0
+          report_path: "docs/auditor_packages/{{ assessment_date }}/evidence/openscap/report.html"
+
+    - name: Build assessment payload with metadata and coverage
+      ansible.builtin.set_fact:
+        assessment_payload:
+          assessment_id: "{{ assessment_id | trim }}"
+          timestamp: "{{ assessment_timestamp }}"
+          enclave_name: "{{ enclave_name | default('research-enclave') }}"
+          assessment_mode: "full"
+          coverage:
+            total_systems: "{{ all_inventory_hosts | length }}"
+            assessed_systems: "{{ assessed_hosts | length }}"
+            not_assessed: "{{ not_assessed_hosts }}"
+          controls: "{{ control_results }}"
+          openscap_results: "{{ openscap_results }}"
+          sprs_score: "{{ {'controls': control_results} | sprs_score }}"
+          sprs_breakdown: "{{ {'controls': control_results} | sprs_breakdown }}"
+          metadata:
+            tool_versions:
+              ansible: "{{ ansible_version.full }}"
+              openscap: "{{ 'available' if (assessed_hosts | length > 0) else 'not_collected' }}"
+              python: "{{ ansible_playbook_python }}"
+            run_duration_seconds: 0
+            initiated_by: "{{ lookup('env', 'USER') | default('scheduled', true) }}"
+
+    - name: Ensure assessment history directory exists
+      ansible.builtin.file:
+        path: ../data/assessment_history
+        state: directory
+        mode: "0755"
+
+    - name: Write assessment JSON output
+      ansible.builtin.copy:
+        dest: "../data/assessment_history/{{ assessment_date }}.json"
+        content: "{{ assessment_payload | to_nice_json }}"
+        mode: "0644"

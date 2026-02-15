@@ -1,0 +1,228 @@
+---
+- name: Collect SSP evidence artifacts from enclave systems
+  hosts: all
+  become: true
+  gather_facts: true
+  ignore_unreachable: true
+  vars:
+    evidence_date: "{{ lookup('pipe', 'date +%F') }}"
+    evidence_stamp: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H-%M-%SZ') }}"
+    evidence_root: >-
+      ../docs/auditor_packages/{{ evidence_date }}/evidence/evidence-{{ evidence_stamp }}
+    controller_initializer: "{{ ansible_play_hosts_all | first }}"
+    command_artifacts:
+      - id: system_inventory
+        family: CM
+        command: "hostnamectl"
+        filename: system_inventory.txt
+      - id: packages
+        family: CM
+        command: "rpm -qa"
+        filename: packages.txt
+      - id: network_addr
+        family: SC
+        command: "ip addr"
+        filename: network_addr.txt
+      - id: network_route
+        family: SC
+        command: "ip route"
+        filename: network_route.txt
+      - id: firewall_rules
+        family: SC
+        command: "nft list ruleset"
+        filename: firewall_rules.txt
+      - id: selinux_status
+        family: AC
+        command: "sestatus"
+        filename: selinux_status.txt
+      - id: fips_status
+        family: CM
+        command: "fips-mode-setup --check"
+        filename: fips_status.txt
+      - id: audit_rules
+        family: AU
+        command: "auditctl -l"
+        filename: audit_rules.txt
+      - id: sshd_config
+        family: IA
+        command: "sshd -T"
+        filename: sshd_config.txt
+      - id: pam_config
+        family: IA
+        command: "grep -R '' /etc/pam.d"
+        filename: pam_config.txt
+      - id: passwd_listing
+        family: AC
+        command: "getent passwd"
+        filename: passwd_listing.txt
+      - id: group_listing
+        family: AC
+        command: "getent group"
+        filename: group_listing.txt
+      - id: slurm_config
+        family: AC
+        command: "scontrol show config"
+        filename: slurm_config.txt
+      - id: lsblk
+        family: SC
+        command: "lsblk"
+        filename: lsblk.txt
+      - id: cryptsetup_status
+        family: SC
+        command: "cryptsetup status luks-root"
+        filename: cryptsetup_status.txt
+  tasks:
+    - name: Ensure evidence directory structure exists on controller
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0755"
+      delegate_to: localhost
+      become: false
+      when: inventory_hostname == controller_initializer
+      loop:
+        - "{{ evidence_root }}"
+        - "{{ evidence_root }}/inventory"
+        - "{{ evidence_root }}/by_family"
+        - "{{ evidence_root }}/by_system"
+        - "{{ evidence_root }}/openscap"
+        - "{{ evidence_root }}/narratives"
+
+    - name: Ensure family directories exist on controller
+      ansible.builtin.file:
+        path: "{{ evidence_root }}/by_family/{{ item }}"
+        state: directory
+        mode: "0755"
+      delegate_to: localhost
+      become: false
+      when: inventory_hostname == controller_initializer
+      loop:
+        - AC
+        - AU
+        - CM
+        - IA
+        - SC
+        - SI
+
+    - name: Ensure per-system directory exists on controller
+      ansible.builtin.file:
+        path: "{{ evidence_root }}/by_system/{{ inventory_hostname }}"
+        state: directory
+        mode: "0755"
+      delegate_to: localhost
+      become: false
+
+    - name: Collect system evidence commands
+      ansible.builtin.command: "{{ item.command }}"
+      register: evidence_command_results
+      changed_when: false
+      failed_when: false
+      loop: "{{ command_artifacts }}"
+      loop_control:
+        label: "{{ item.id }}"
+
+    - name: Write command outputs under by_system
+      ansible.builtin.copy:
+        dest: "{{ evidence_root }}/by_system/{{ inventory_hostname }}/{{ item.item.filename }}"
+        mode: "0644"
+        content: |
+          # command: {{ item.item.command }}
+          # host: {{ inventory_hostname }}
+          # zone: {{ zone | default('unknown') }}
+          # collected: {{ ansible_date_time.iso8601 }}
+          {{ item.stdout | default('') }}
+          {% if item.stderr is defined and item.stderr %}
+          # stderr:
+          {{ item.stderr }}
+          {% endif %}
+      delegate_to: localhost
+      become: false
+      loop: "{{ evidence_command_results.results | default([]) }}"
+
+    - name: Write command outputs under by_family
+      ansible.builtin.copy:
+        dest: "{{ evidence_root }}/by_family/{{ item.item.family }}/{{ inventory_hostname }}_{{ item.item.filename }}"
+        mode: "0644"
+        content: |
+          # command: {{ item.item.command }}
+          # host: {{ inventory_hostname }}
+          # collected: {{ ansible_date_time.iso8601 }}
+          {{ item.stdout | default('') }}
+      delegate_to: localhost
+      become: false
+      loop: "{{ evidence_command_results.results | default([]) }}"
+
+    - name: Write inventory summary
+      vars:
+        inventory_payload:
+          hostname: "{{ inventory_hostname }}"
+          zone: "{{ zone | default('unknown') }}"
+          os_family: "{{ ansible_os_family | default('unknown') }}"
+          os_version: "{{ ansible_distribution_version | default('unknown') }}"
+      ansible.builtin.copy:
+        dest: "{{ evidence_root }}/inventory/{{ inventory_hostname }}.json"
+        mode: "0644"
+        content: "{{ inventory_payload | to_nice_json }}"
+      delegate_to: localhost
+      become: false
+
+- name: Finalize, redact, and package evidence on controller
+  hosts: localhost
+  gather_facts: false
+  vars:
+    evidence_date: "{{ lookup('pipe', 'date +%F') }}"
+    evidence_root: >-
+      {{ lookup(
+        'pipe',
+        'ls -1dt ../docs/auditor_packages/' ~
+        evidence_date ~
+        '/evidence/evidence-* 2>/dev/null | head -n1'
+      ) }}
+    package_path: "../docs/auditor_packages/{{ evidence_date }}.tar.gz"
+  tasks:
+    - name: Redact secrets in evidence directory
+      ansible.builtin.command:
+        cmd: "{{ ansible_playbook_python }} ../scripts/redact_secrets.py {{ evidence_root }}"
+      register: redaction_output
+      changed_when: true
+
+    - name: Build checksum manifest
+      ansible.builtin.shell: |
+        set -euo pipefail
+        find "{{ evidence_root }}" -type f -exec sha256sum {} \; \
+          > "{{ evidence_root }}/checksums.sha256"
+      args:
+        executable: /bin/bash
+      changed_when: true
+
+    - name: Build metadata file
+      ansible.builtin.copy:
+        dest: "{{ evidence_root }}/metadata.json"
+        mode: "0644"
+        content: >-
+          {{
+            {
+              'collection_timestamp': lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ'),
+              'enclave_name': enclave_name | default('research-enclave'),
+              'systems_collected': groups['all'] | default([]) | length,
+              'tool_versions': {
+                'ansible': ansible_version.full,
+                'python': ansible_playbook_python,
+                'openscap': 'unknown'
+              },
+              'redaction_applied': true,
+              'redaction_summary': redaction_output.stdout | default(''),
+              'total_files': lookup(
+                'pipe',
+                'find ' ~ evidence_root ~ ' -type f | wc -l'
+              ) | int
+            } | to_nice_json
+          }}
+
+    - name: Package evidence as tar.gz
+      community.general.archive:
+        path: "../docs/auditor_packages/{{ evidence_date }}"
+        dest: "{{ package_path }}"
+        format: gz
+        mode: "0644"
+      changed_when: true

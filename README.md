@@ -79,3 +79,15 @@ The original documentation/data-model workflow remains available:
 - `make crosswalk`
 - `make validate-schemas`
 - `make test`
+
+## Compliance Assessment and Reporting Workflow
+
+The compliance assessment layer adds assessment orchestration, scoring, narrative generation, dashboards, and auditor package bundling:
+
+- `make assess` runs `playbooks/assess.yml` in the execution environment and writes assessment JSON to `data/assessment_history/`
+- `make evidence` runs `playbooks/ssp_evidence.yml` and creates evidence archives in `docs/auditor_packages/`
+- `make sprs` generates markdown SPRS breakdown output under `reports/`
+- `make poam` generates markdown and CSV POA&M status reports under `reports/`
+- `make dashboard` generates the HTML dashboard at `reports/dashboard/index.html`
+- `make report` runs `sprs`, `poam`, and `dashboard` together
+- `make auditor-package` bundles crosswalk, narratives, evidence, SPRS, POA&M, HPC tailoring, and ODP artifacts

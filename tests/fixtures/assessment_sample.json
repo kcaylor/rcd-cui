@@ -1,0 +1,43 @@
+{
+  "assessment_id": "11111111-1111-1111-1111-111111111111",
+  "timestamp": "2026-02-15T00:00:00Z",
+  "enclave_name": "fixture-enclave",
+  "coverage": {
+    "total_systems": 4,
+    "assessed_systems": 3,
+    "not_assessed": [
+      {
+        "hostname": "compute003",
+        "reason": "unreachable",
+        "timestamp": "2026-02-15T00:00:00Z"
+      }
+    ]
+  },
+  "controls": [
+    {
+      "control_id": "3.1.1",
+      "control_title": "Access control policy",
+      "family": "AC",
+      "status": "pass",
+      "systems": [
+        {"hostname": "login01", "zone": "restricted", "status": "pass", "verification_output": "ok", "evidence_files": []}
+      ]
+    },
+    {
+      "control_id": "3.5.3",
+      "control_title": "MFA",
+      "family": "IA",
+      "status": "fail",
+      "systems": [
+        {"hostname": "login01", "zone": "restricted", "status": "fail", "verification_output": "missing", "evidence_files": []}
+      ]
+    }
+  ],
+  "openscap_results": {
+    "profile": "cui",
+    "pass_count": 10,
+    "fail_count": 2,
+    "report_path": "docs/auditor_packages/2026-02-15/evidence/openscap/report.html"
+  },
+  "sprs_score": 104
+}
