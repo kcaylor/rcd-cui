@@ -1,35 +1,78 @@
-# rcd-cui Development Guidelines
+# RCD-CUI Development Context
 
-Auto-generated from all feature plans. Last updated: 2026-02-14
+Guidelines for AI assistants working on this repository.
 
-## Active Technologies
-- Python 3.9+ (filter plugins, reporting scripts), Ansible 2.15+ (playbooks) + Ansible, Jinja2, PyYAML, JSON (standard library), OpenSCAP CLI (003-compliance-assessment)
-- JSON files (assessment results, historical data), YAML (POA&M data model) (003-compliance-assessment)
-- Python 3.9+, Bash (POSIX-compliant for Slurm scripts) + Ansible 2.15+, Slurm 23.x+, Apptainer 1.2+, FreeIPA client, Lustre/BeeGFS client tools (004-hpc-cui-roles)
-- Lustre or BeeGFS parallel filesystem, local /tmp and /dev/shm for job scratch (004-hpc-cui-roles)
+## Project Overview
 
-- Python 3.9+ (per constitution tech stack) (001-data-models-docs-foundation)
+RCD-CUI is an Ansible framework for NIST 800-171 CUI compliance in research computing environments. It targets RHEL 9/Rocky Linux 9 systems with FreeIPA, Slurm, and HPC infrastructure.
+
+## Technology Stack
+
+- **Ansible 2.15+**: Roles, playbooks, execution environments
+- **Python 3.9+**: Filter plugins, reporting scripts, Pydantic validation
+- **Jinja2**: Templates for documentation and configuration
+- **Container Runtime**: Podman (preferred) or Docker for execution environments
 
 ## Project Structure
 
-```text
-src/
-tests/
+```
+roles/           # Ansible roles (35+) organized by NIST control family
+playbooks/       # Site playbooks, assessment, onboarding/offboarding
+inventory/       # Hosts and group_vars by security zone
+docs/            # Data models and generated documentation
+scripts/         # Python tooling (doc generation, validation)
+templates/       # Jinja2 templates for documentation
+tests/           # Pytest and Molecule tests
+specs/           # Feature specifications (historical)
 ```
 
-## Commands
+## Role Naming Convention
 
-cd src [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] pytest [ONLY COMMANDS FOR ACTIVE TECHNOLOGIES][ONLY COMMANDS FOR ACTIVE TECHNOLOGIES] ruff check .
+Roles follow the pattern `{family}_{function}`:
+- `ac_*` - Access Control
+- `au_*` - Audit and Accountability
+- `cm_*` - Configuration Management
+- `ia_*` - Identification and Authentication
+- `sc_*` - System and Communications Protection
+- `si_*` - System and Information Integrity
+- `hpc_*` - HPC-specific controls
+
+## Role Structure
+
+Each role follows a standard pattern:
+```
+roles/{role_name}/
+├── tasks/
+│   ├── main.yml      # Implementation tasks
+│   ├── verify.yml    # Compliance verification
+│   └── evidence.yml  # Evidence collection
+├── defaults/main.yml # Default variables
+├── vars/main.yml     # Role variables
+├── templates/        # Jinja2 templates
+├── handlers/main.yml # Service handlers
+└── meta/main.yml     # Role metadata
+```
+
+## Key Commands
+
+```bash
+make env              # Create local Python environment
+make ee-build         # Build Ansible Execution Environment
+make ee-lint          # Lint roles in execution environment
+make ee-syntax-check  # Syntax check playbooks
+make test             # Run pytest
+make docs             # Generate documentation
+make assess           # Run compliance assessment
+```
 
 ## Code Style
 
-Python 3.9+ (per constitution tech stack): Follow standard conventions
+- **Ansible**: Follow ansible-lint rules, use FQCN for modules
+- **Python**: PEP 8, type hints, docstrings
+- **YAML**: 2-space indentation, explicit string quoting
 
-## Recent Changes
-- 004-hpc-cui-roles: Added Python 3.9+, Bash (POSIX-compliant for Slurm scripts) + Ansible 2.15+, Slurm 23.x+, Apptainer 1.2+, FreeIPA client, Lustre/BeeGFS client tools
-- 003-compliance-assessment: Added Python 3.9+ (filter plugins, reporting scripts), Ansible 2.15+ (playbooks) + Ansible, Jinja2, PyYAML, JSON (standard library), OpenSCAP CLI
+## Testing
 
-- 001-data-models-docs-foundation: Added Python 3.9+ (per constitution tech stack)
-
-<!-- MANUAL ADDITIONS START -->
-<!-- MANUAL ADDITIONS END -->
+- **Molecule**: Role-level testing with delegated driver
+- **Pytest**: Schema validation and integration tests
+- Run `make ee-lint` before committing changes
