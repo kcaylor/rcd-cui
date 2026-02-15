@@ -28,6 +28,8 @@ body {
 
 .hero h1 { margin: 0 0 .25rem; font-size: 2rem; }
 .hero p { margin: 0; color: var(--muted); }
+.github-link { color: var(--muted); vertical-align: middle; margin-left: .5rem; transition: color .2s; }
+.github-link:hover { color: var(--ink); text-decoration: none; }
 
 .tabs {
   display: flex;
