@@ -1,0 +1,90 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for cm_service_hardening
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.4.7
+    - r3_03.04.07
+    - family_CM
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for cm_service_hardening
+  ansible.builtin.package:
+    name: "{{ cm_service_hardening_packages }}"
+    state: present
+  when:
+    - cm_service_hardening_enabled | bool
+    - cm_service_hardening_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for cm_service_hardening
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ cm_service_hardening_templates }}"
+  notify: Restart cm_service_hardening services
+  when:
+    - cm_service_hardening_enabled | bool
+    - cm_service_hardening_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for cm_service_hardening
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ cm_service_hardening_files }}"
+  notify: Restart cm_service_hardening services
+  when:
+    - cm_service_hardening_enabled | bool
+    - cm_service_hardening_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for cm_service_hardening
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ cm_service_hardening_services }}"
+  when:
+    - cm_service_hardening_enabled | bool
+    - cm_service_hardening_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for cm_service_hardening when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "cm_service_hardening is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - cm_service_hardening_enabled | bool
+    - cm_service_hardening_packages | length == 0
+    - cm_service_hardening_templates | length == 0
+    - cm_service_hardening_files | length == 0
+    - cm_service_hardening_services | length == 0
+  tags: *role_tags
+
+# WHY: Disable services not required for CUI workloads to limit exposure.
+- name: Disable and mask unnecessary services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+    masked: true
+  loop: "{{ cm_service_hardening_disable_services }}"
+  when:
+    - cm_service_hardening_enabled | bool
+    - cm_service_hardening_disable_services | length > 0
+  tags: *role_tags

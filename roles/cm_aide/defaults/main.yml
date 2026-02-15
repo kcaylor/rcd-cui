@@ -1,0 +1,39 @@
+---
+# Enable or disable this role without changing playbook ordering.
+cm_aide_enabled: true
+
+# Package list required by this control implementation.
+cm_aide_packages:
+  - aide
+
+# Template files deployed by this role.
+cm_aide_templates:
+  - src: aide.conf.j2
+    dest: /etc/aide.conf
+    owner: root
+    group: root
+    mode: "0600"
+
+# Static helper files deployed by this role.
+cm_aide_files:
+  []
+
+# Services managed by this role.
+cm_aide_services:
+  []
+
+# Read-only verification commands for compliance checks.
+cm_aide_verify_commands:
+  - id: aide_conf
+    command: "test -f /etc/aide.conf"
+  - id: aide_db
+    command: "ls /var/lib/aide/aide.db.gz"
+
+# File paths captured as evidence artifacts.
+cm_aide_evidence_files:
+  - /etc/aide.conf
+
+# Read-only commands captured as evidence artifacts.
+cm_aide_evidence_commands:
+  - id: aide_check
+    command: "aide --check || true"

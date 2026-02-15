@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart au_log_protection services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ au_log_protection_services }}"
+  when: au_log_protection_services | length > 0
+  listen: Restart au_log_protection services
+  tags:
+    - r2_3.3.9
+    - r3_03.03.09
+    - family_AU
+    - zone_{{ cui_zone }}

@@ -1,0 +1,38 @@
+---
+# Enable or disable this role without changing playbook ordering.
+cm_minimal_packages_enabled: true
+
+# Package list required by this control implementation.
+cm_minimal_packages_packages:
+  - dnf
+
+# Template files deployed by this role.
+cm_minimal_packages_templates:
+  []
+
+# Static helper files deployed by this role.
+cm_minimal_packages_files:
+  []
+
+# Services managed by this role.
+cm_minimal_packages_services:
+  []
+
+# Read-only verification commands for compliance checks.
+cm_minimal_packages_verify_commands:
+  - id: package_count
+    command: "rpm -qa | wc -l"
+
+# File paths captured as evidence artifacts.
+cm_minimal_packages_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+cm_minimal_packages_evidence_commands:
+  - id: rpm_count
+    command: "rpm -qa | wc -l"
+
+cm_minimal_packages_remove:
+  - telnet
+  - rsh
+  - ypbind

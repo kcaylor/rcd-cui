@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ac_selinux services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ac_selinux_services }}"
+  when: ac_selinux_services | length > 0
+  listen: Restart ac_selinux services
+  tags:
+    - r2_3.1.20
+    - r3_03.01.20
+    - family_AC
+    - zone_{{ cui_zone }}

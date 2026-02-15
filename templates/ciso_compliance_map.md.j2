@@ -1,0 +1,10 @@
+{% set title = "CISO Compliance Map" %}
+{% set audience = "CISO and Compliance Team" %}
+{% include "_partials/header.j2" with context %}
+
+## Full Control Matrix
+{% include "_partials/control_table.j2" %}
+
+## ODP Summary
+- Total ODP entries: {{ odp_entries|length }}
+- Entries that deviate from DoD guidance: {{ odp_entries|selectattr('deviation_rationale')|list|length }}

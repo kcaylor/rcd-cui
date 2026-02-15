@@ -1,0 +1,36 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ia_password_policy_enabled: true
+
+# Package list required by this control implementation.
+ia_password_policy_packages:
+  - libpwquality
+
+# Template files deployed by this role.
+ia_password_policy_templates:
+  - src: pwquality.conf.j2
+    dest: /etc/security/pwquality.conf.d/cui.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+ia_password_policy_files:
+  []
+
+# Services managed by this role.
+ia_password_policy_services:
+  []
+
+# Read-only verification commands for compliance checks.
+ia_password_policy_verify_commands:
+  - id: pwquality_conf
+    command: "test -f /etc/security/pwquality.conf.d/cui.conf"
+
+# File paths captured as evidence artifacts.
+ia_password_policy_evidence_files:
+  - /etc/security/pwquality.conf.d/cui.conf
+
+# Read-only commands captured as evidence artifacts.
+ia_password_policy_evidence_commands:
+  []

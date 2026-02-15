@@ -1,0 +1,77 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for cm_openscap_baseline
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.4.1
+    - r3_03.04.01
+    - family_CM
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for cm_openscap_baseline
+  ansible.builtin.package:
+    name: "{{ cm_openscap_baseline_packages }}"
+    state: present
+  when:
+    - cm_openscap_baseline_enabled | bool
+    - cm_openscap_baseline_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for cm_openscap_baseline
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ cm_openscap_baseline_templates }}"
+  notify: Restart cm_openscap_baseline services
+  when:
+    - cm_openscap_baseline_enabled | bool
+    - cm_openscap_baseline_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for cm_openscap_baseline
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ cm_openscap_baseline_files }}"
+  notify: Restart cm_openscap_baseline services
+  when:
+    - cm_openscap_baseline_enabled | bool
+    - cm_openscap_baseline_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for cm_openscap_baseline
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ cm_openscap_baseline_services }}"
+  when:
+    - cm_openscap_baseline_enabled | bool
+    - cm_openscap_baseline_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for cm_openscap_baseline when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "cm_openscap_baseline is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - cm_openscap_baseline_enabled | bool
+    - cm_openscap_baseline_packages | length == 0
+    - cm_openscap_baseline_templates | length == 0
+    - cm_openscap_baseline_files | length == 0
+    - cm_openscap_baseline_services | length == 0
+  tags: *role_tags

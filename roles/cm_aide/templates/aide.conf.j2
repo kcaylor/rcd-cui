@@ -1,0 +1,15 @@
+# ==============================================
+# AIDE configuration
+# Purpose: Detect unauthorized file changes to support integrity monitoring.
+# ==============================================
+@@define DBDIR /var/lib/aide
+@@define LOGDIR /var/log/aide
+
+database=file:@@{DBDIR}/aide.db.gz
+database_out=file:@@{DBDIR}/aide.db.new.gz
+gzip_dbout=yes
+
+/etc NORMAL
+/bin NORMAL
+/sbin NORMAL
+/usr NORMAL

@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  role_name: ia_duo_mfa
+  author: rcd-cui
+  description: "IA control role for CUI compliance"
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: EL
+      versions:
+        - "9"
+dependencies:
+  - role: common
+  - role: ia_freeipa_client

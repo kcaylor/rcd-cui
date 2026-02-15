@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart si_clamav services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ si_clamav_services }}"
+  when: si_clamav_services | length > 0
+  listen: Restart si_clamav services
+  tags:
+    - r2_3.14.2
+    - r3_03.14.02
+    - family_SI
+    - zone_{{ cui_zone }}

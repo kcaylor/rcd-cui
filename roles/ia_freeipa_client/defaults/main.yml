@@ -1,0 +1,41 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ia_freeipa_client_enabled: true
+
+# Package list required by this control implementation.
+ia_freeipa_client_packages:
+  - ipa-client
+  - sssd
+  - oddjob
+  - oddjob-mkhomedir
+
+# Template files deployed by this role.
+ia_freeipa_client_templates:
+  []
+
+# Static helper files deployed by this role.
+ia_freeipa_client_files:
+  []
+
+# Services managed by this role.
+ia_freeipa_client_services:
+  - name: sssd
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+ia_freeipa_client_verify_commands:
+  - id: ipa_default_conf
+    command: "test -f /etc/ipa/default.conf"
+  - id: sssd_active
+    command: "systemctl is-active sssd"
+
+# File paths captured as evidence artifacts.
+ia_freeipa_client_evidence_files:
+  - /etc/ipa/default.conf
+  - /etc/sssd/sssd.conf
+
+# Read-only commands captured as evidence artifacts.
+ia_freeipa_client_evidence_commands:
+  - id: realm_list
+    command: "realm list"

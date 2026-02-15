@@ -1,0 +1,40 @@
+---
+# Enable or disable this role without changing playbook ordering.
+cm_service_hardening_enabled: true
+
+# Package list required by this control implementation.
+cm_service_hardening_packages:
+  []
+
+# Template files deployed by this role.
+cm_service_hardening_templates:
+  []
+
+# Static helper files deployed by this role.
+cm_service_hardening_files:
+  []
+
+# Services managed by this role.
+cm_service_hardening_services:
+  []
+
+# Read-only verification commands for compliance checks.
+cm_service_hardening_verify_commands:
+  - id: cups_state
+    command: "systemctl is-enabled cups || true"
+  - id: avahi_state
+    command: "systemctl is-enabled avahi-daemon || true"
+
+# File paths captured as evidence artifacts.
+cm_service_hardening_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+cm_service_hardening_evidence_commands:
+  - id: service_snapshot
+    command: "systemctl list-unit-files --type=service"
+
+cm_service_hardening_disable_services:
+  - cups
+  - bluetooth
+  - avahi-daemon

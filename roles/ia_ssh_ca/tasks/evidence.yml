@@ -1,0 +1,67 @@
+---
+# WHY: Re-validate zone context before collecting SSP artifacts so evidence remains scoped correctly.
+- name: Validate CUI zone assignment for ia_ssh_ca evidence collection
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_evidence_tags
+    - r2_3.5.3
+    - r3_03.05.03
+    - family_IA
+    - zone_{{ cui_zone }}
+
+# WHY: Create a consistent evidence directory per host for SSP artifact collection.
+- name: Ensure host evidence directory exists
+  ansible.builtin.file:
+    path: "{{ evidence_output_dir }}/{{ inventory_hostname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+  tags: *role_evidence_tags
+
+# WHY: Capture metadata for key configuration files without changing system state.
+- name: Collect evidence file metadata for ia_ssh_ca
+  ansible.builtin.stat:
+    path: "{{ item }}"
+  loop: "{{ ia_ssh_ca_evidence_files }}"
+  register: ia_ssh_ca_evidence_file_stats
+  changed_when: false
+  when: ia_ssh_ca_evidence_files | length > 0
+  tags: *role_evidence_tags
+
+# WHY: Capture command output evidence that demonstrates live compliance posture.
+- name: Collect evidence command output for ia_ssh_ca
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ ia_ssh_ca_evidence_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: ia_ssh_ca_evidence_command_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: ia_ssh_ca_evidence_commands | length > 0
+  tags: *role_evidence_tags
+
+# WHY: Build machine-readable evidence data for SSP generation and audit traceability.
+- name: Build evidence payload for ia_ssh_ca
+  ansible.builtin.set_fact:
+    ia_ssh_ca_evidence_payload:
+      role: ia_ssh_ca
+      host: "{{ inventory_hostname }}"
+      zone: "{{ cui_zone }}"
+      collected_at: "{{ ansible_date_time.iso8601 if evidence_include_timestamps | bool else 'timestamps_disabled' }}"
+      file_stats: "{{ ia_ssh_ca_evidence_file_stats.results | default([]) }}"
+      command_results: "{{ ia_ssh_ca_evidence_command_results.results | default([]) }}"
+  changed_when: false
+  tags: *role_evidence_tags
+
+# WHY: Persist evidence payload to disk so auditors can review role-specific artifacts later.
+- name: Write evidence payload for ia_ssh_ca
+  ansible.builtin.copy:
+    dest: "{{ evidence_output_dir }}/{{ inventory_hostname }}/ia_ssh_ca_evidence.json"
+    owner: root
+    group: root
+    mode: '0640'
+    content: "{{ ia_ssh_ca_evidence_payload | to_nice_json }}"
+  tags: *role_evidence_tags

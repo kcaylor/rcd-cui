@@ -1,0 +1,39 @@
+---
+# Enable or disable this role without changing playbook ordering.
+au_log_protection_enabled: true
+
+# Package list required by this control implementation.
+au_log_protection_packages:
+  - e2fsprogs
+  - logrotate
+
+# Template files deployed by this role.
+au_log_protection_templates:
+  - src: audit-logrotate.j2
+    dest: /etc/logrotate.d/audit-cui
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+au_log_protection_files:
+  []
+
+# Services managed by this role.
+au_log_protection_services:
+  []
+
+# Read-only verification commands for compliance checks.
+au_log_protection_verify_commands:
+  - id: audit_attr
+    command: "lsattr /var/log/audit"
+  - id: audit_logrotate
+    command: "test -f /etc/logrotate.d/audit-cui"
+
+# File paths captured as evidence artifacts.
+au_log_protection_evidence_files:
+  - /etc/logrotate.d/audit-cui
+
+# Read-only commands captured as evidence artifacts.
+au_log_protection_evidence_commands:
+  []

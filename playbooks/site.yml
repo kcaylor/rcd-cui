@@ -1,0 +1,38 @@
+---
+- name: Apply CUI core controls
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - common
+    - au_auditd
+    - au_rsyslog
+    - au_chrony
+    - au_wazuh_agent
+    - au_log_protection
+    - ia_freeipa_client
+    - ia_duo_mfa
+    - ia_ssh_ca
+    - ia_password_policy
+    - ia_account_lifecycle
+    - ia_breakglass
+    - ac_pam_access
+    - ac_rbac
+    - ac_ssh_hardening
+    - ac_session_timeout
+    - ac_login_banner
+    - ac_usbguard
+    - ac_selinux
+    - cm_fips_mode
+    - cm_openscap_baseline
+    - cm_minimal_packages
+    - cm_service_hardening
+    - cm_kernel_hardening
+    - cm_aide
+    - sc_nftables
+    - sc_tls_enforcement
+    - sc_luks_verification
+    - sc_network_segmentation
+    - si_dnf_automatic
+    - si_clamav
+    - si_openscap_oval

@@ -1,0 +1,42 @@
+---
+# Enable or disable this role without changing playbook ordering.
+sc_nftables_enabled: true
+
+# Package list required by this control implementation.
+sc_nftables_packages:
+  - nftables
+
+# Template files deployed by this role.
+sc_nftables_templates:
+  - src: nftables.conf.j2
+    dest: /etc/nftables.conf
+    owner: root
+    group: root
+    mode: "0640"
+    validate: "nft -c -f %s"
+
+# Static helper files deployed by this role.
+sc_nftables_files:
+  []
+
+# Services managed by this role.
+sc_nftables_services:
+  - name: nftables
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+sc_nftables_verify_commands:
+  - id: nft_service
+    command: "systemctl is-active nftables"
+  - id: nft_rules
+    command: "nft list ruleset"
+
+# File paths captured as evidence artifacts.
+sc_nftables_evidence_files:
+  - /etc/nftables.conf
+
+# Read-only commands captured as evidence artifacts.
+sc_nftables_evidence_commands:
+  - id: nft_ruleset
+    command: "nft list ruleset"

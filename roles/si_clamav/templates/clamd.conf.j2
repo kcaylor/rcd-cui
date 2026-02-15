@@ -1,0 +1,14 @@
+# ==============================================
+# ClamAV daemon policy
+# Purpose: Scan malware while excluding HPC high-throughput paths.
+# ==============================================
+LogFile /var/log/clamd.scan
+LocalSocket /run/clamd.scan/clamd.sock
+TCPSocket 3310
+TCPAddr 127.0.0.1
+{% if cui_zone == 'restricted' and not clamav_realtime_scan | bool %}
+OnAccessIncludePath /var/empty
+{% endif %}
+ExcludePath ^/scratch
+ExcludePath ^/tmp
+ExcludePath ^/dev/shm

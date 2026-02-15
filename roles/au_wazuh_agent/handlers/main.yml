@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart au_wazuh_agent services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ au_wazuh_agent_services }}"
+  when: au_wazuh_agent_services | length > 0
+  listen: Restart au_wazuh_agent services
+  tags:
+    - r2_3.3.6
+    - r3_03.03.06
+    - family_AU
+    - zone_{{ cui_zone }}

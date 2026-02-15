@@ -1,0 +1,8 @@
+# ==============================================
+# PAM access policy
+# Purpose: Enforce deny-by-default interactive access.
+# ==============================================
++:root:LOCAL
++:@cui-admins:ALL
++:@cui-users:ALL
+-:ALL:ALL

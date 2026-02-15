@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart cm_fips_mode services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ cm_fips_mode_services }}"
+  when: cm_fips_mode_services | length > 0
+  listen: Restart cm_fips_mode services
+  tags:
+    - r2_3.13.11
+    - r3_03.13.11
+    - family_CM
+    - zone_{{ cui_zone }}

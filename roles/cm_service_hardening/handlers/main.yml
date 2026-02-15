@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart cm_service_hardening services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ cm_service_hardening_services }}"
+  when: cm_service_hardening_services | length > 0
+  listen: Restart cm_service_hardening services
+  tags:
+    - r2_3.4.7
+    - r3_03.04.07
+    - family_CM
+    - zone_{{ cui_zone }}

@@ -1,0 +1,12 @@
+# ==============================================
+# dnf-automatic policy
+# Purpose: Apply security updates on schedule for continuous vulnerability reduction.
+# ==============================================
+[commands]
+upgrade_type = security
+apply_updates = yes
+random_sleep = 120
+
+[emitters]
+system_name = {{ inventory_hostname }}
+emit_via = motd

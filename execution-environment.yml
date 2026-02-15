@@ -1,0 +1,19 @@
+---
+version: 3
+
+images:
+  base_image:
+    name: registry.access.redhat.com/ubi9/ubi:latest
+
+dependencies:
+  ansible_core:
+    package_pip: ansible-core>=2.15,<2.16
+  ansible_runner:
+    package_pip: ansible-runner>=2.3,<3.0
+  galaxy: requirements.yml
+  python: requirements-ee.txt
+  system: bindep.txt
+
+additional_build_steps:
+  prepend_base:
+    - RUN dnf -y install python3 python3-pip && dnf clean all

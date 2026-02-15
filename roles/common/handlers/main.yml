@@ -1,0 +1,13 @@
+---
+# WHY: Provide a standard handler entry point even when common role does not restart services.
+- name: Common noop handler
+  ansible.builtin.debug:
+    msg: "Common role has no service restart action."
+  changed_when: false
+  when: false
+  listen: restart common services
+  tags:
+    - r2_3.1.1
+    - r3_03.01.01
+    - family_COMMON
+    - zone_{{ cui_zone }}

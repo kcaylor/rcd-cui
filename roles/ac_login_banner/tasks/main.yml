@@ -1,0 +1,77 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for ac_login_banner
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.1.9
+    - r3_03.01.09
+    - family_AC
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for ac_login_banner
+  ansible.builtin.package:
+    name: "{{ ac_login_banner_packages }}"
+    state: present
+  when:
+    - ac_login_banner_enabled | bool
+    - ac_login_banner_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for ac_login_banner
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ ac_login_banner_templates }}"
+  notify: Restart ac_login_banner services
+  when:
+    - ac_login_banner_enabled | bool
+    - ac_login_banner_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for ac_login_banner
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ ac_login_banner_files }}"
+  notify: Restart ac_login_banner services
+  when:
+    - ac_login_banner_enabled | bool
+    - ac_login_banner_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for ac_login_banner
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ ac_login_banner_services }}"
+  when:
+    - ac_login_banner_enabled | bool
+    - ac_login_banner_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for ac_login_banner when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "ac_login_banner is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - ac_login_banner_enabled | bool
+    - ac_login_banner_packages | length == 0
+    - ac_login_banner_templates | length == 0
+    - ac_login_banner_files | length == 0
+    - ac_login_banner_services | length == 0
+  tags: *role_tags

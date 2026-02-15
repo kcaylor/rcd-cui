@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart si_dnf_automatic services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ si_dnf_automatic_services }}"
+  when: si_dnf_automatic_services | length > 0
+  listen: Restart si_dnf_automatic services
+  tags:
+    - r2_3.14.1
+    - r3_03.14.01
+    - family_SI
+    - zone_{{ cui_zone }}

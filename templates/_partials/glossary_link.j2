@@ -1,0 +1,3 @@
+{% macro glossary_link(term) -%}
+[{{ term }}](#{{ term|slugify }})
+{%- endmacro %}

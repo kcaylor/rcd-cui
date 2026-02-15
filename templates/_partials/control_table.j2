@@ -1,0 +1,5 @@
+| Rev2 ID | Title | Rev3 | CMMC L2 | 800-53 Rev5 |
+|---|---|---|---|---|
+{% for control in controls -%}
+| {{ control.control_id }} | {{ control.title|replace('|','\\|') }} | {{ control.framework_mapping.rev3_id }} | {{ control.framework_mapping.cmmc_l2_id }} | {{ control.framework_mapping.nist_800_53_r5_id|join(', ') }} |
+{% endfor %}

@@ -1,0 +1,77 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for ia_password_policy
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.5.7
+    - r3_03.05.07
+    - family_IA
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for ia_password_policy
+  ansible.builtin.package:
+    name: "{{ ia_password_policy_packages }}"
+    state: present
+  when:
+    - ia_password_policy_enabled | bool
+    - ia_password_policy_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for ia_password_policy
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ ia_password_policy_templates }}"
+  notify: Restart ia_password_policy services
+  when:
+    - ia_password_policy_enabled | bool
+    - ia_password_policy_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for ia_password_policy
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ ia_password_policy_files }}"
+  notify: Restart ia_password_policy services
+  when:
+    - ia_password_policy_enabled | bool
+    - ia_password_policy_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for ia_password_policy
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ ia_password_policy_services }}"
+  when:
+    - ia_password_policy_enabled | bool
+    - ia_password_policy_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for ia_password_policy when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "ia_password_policy is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - ia_password_policy_enabled | bool
+    - ia_password_policy_packages | length == 0
+    - ia_password_policy_templates | length == 0
+    - ia_password_policy_files | length == 0
+    - ia_password_policy_services | length == 0
+  tags: *role_tags

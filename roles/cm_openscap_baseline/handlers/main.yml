@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart cm_openscap_baseline services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ cm_openscap_baseline_services }}"
+  when: cm_openscap_baseline_services | length > 0
+  listen: Restart cm_openscap_baseline services
+  tags:
+    - r2_3.4.1
+    - r3_03.04.01
+    - family_CM
+    - zone_{{ cui_zone }}

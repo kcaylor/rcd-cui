@@ -1,0 +1,32 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ia_account_lifecycle_enabled: true
+
+# Package list required by this control implementation.
+ia_account_lifecycle_packages:
+  - shadow-utils
+
+# Template files deployed by this role.
+ia_account_lifecycle_templates:
+  []
+
+# Static helper files deployed by this role.
+ia_account_lifecycle_files:
+  []
+
+# Services managed by this role.
+ia_account_lifecycle_services:
+  []
+
+# Read-only verification commands for compliance checks.
+ia_account_lifecycle_verify_commands:
+  - id: inactive_threshold
+    command: "echo {{ inactive_account_days }}"
+
+# File paths captured as evidence artifacts.
+ia_account_lifecycle_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+ia_account_lifecycle_evidence_commands:
+  []

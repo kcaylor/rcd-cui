@@ -1,0 +1,41 @@
+---
+# Enable or disable this role without changing playbook ordering.
+au_wazuh_agent_enabled: true
+
+# Package list required by this control implementation.
+au_wazuh_agent_packages:
+  - wazuh-agent
+
+# Template files deployed by this role.
+au_wazuh_agent_templates:
+  - src: ossec.conf.j2
+    dest: /var/ossec/etc/ossec.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+# Static helper files deployed by this role.
+au_wazuh_agent_files:
+  []
+
+# Services managed by this role.
+au_wazuh_agent_services:
+  - name: wazuh-agent
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+au_wazuh_agent_verify_commands:
+  - id: wazuh_active
+    command: "systemctl is-active wazuh-agent"
+  - id: wazuh_config
+    command: "test -f /var/ossec/etc/ossec.conf"
+
+# File paths captured as evidence artifacts.
+au_wazuh_agent_evidence_files:
+  - /var/ossec/etc/ossec.conf
+
+# Read-only commands captured as evidence artifacts.
+au_wazuh_agent_evidence_commands:
+  - id: wazuh_status
+    command: "systemctl status wazuh-agent --no-pager"

@@ -1,0 +1,55 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ia_duo_mfa_enabled: true
+
+# Package list required by this control implementation.
+ia_duo_mfa_packages:
+  - duo_unix
+
+# Template files deployed by this role.
+ia_duo_mfa_templates:
+  - src: pam_duo.conf.j2
+    dest: /etc/duo/pam_duo.conf
+    owner: root
+    group: root
+    mode: "0600"
+  - src: sshd-pam.j2
+    dest: /etc/pam.d/sshd
+    owner: root
+    group: root
+    mode: "0644"
+
+# Static helper files deployed by this role.
+ia_duo_mfa_files:
+  - src: check-ssh-cert-auth.sh
+    dest: /usr/local/libexec/check-ssh-cert-auth.sh
+    owner: root
+    group: root
+    mode: "0755"
+
+# Services managed by this role.
+ia_duo_mfa_services:
+  - name: sshd
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+ia_duo_mfa_verify_commands:
+  - id: duo_conf
+    command: "test -f /etc/duo/pam_duo.conf"
+  - id: sshd_pam
+    command: "grep -q pam_duo /etc/pam.d/sshd"
+
+# File paths captured as evidence artifacts.
+ia_duo_mfa_evidence_files:
+  - /etc/duo/pam_duo.conf
+  - /etc/pam.d/sshd
+
+# Read-only commands captured as evidence artifacts.
+ia_duo_mfa_evidence_commands:
+  - id: duo_file_mode
+    command: "stat -c '%n %a' /etc/duo/pam_duo.conf"
+
+ia_duo_mfa_integration_key: "REPLACE_WITH_DUO_IKEY"
+ia_duo_mfa_secret_key: "REPLACE_WITH_DUO_SKEY"
+ia_duo_mfa_api_host: "api-xxxxxxxx.duosecurity.com"

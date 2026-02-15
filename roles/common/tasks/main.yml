@@ -1,0 +1,11 @@
+---
+# WHY: Run zone validation once per host before control-specific roles execute.
+- name: Include shared zone validation task
+  ansible.builtin.include_tasks: validate_zone.yml
+  tags:
+    - r2_3.1.1
+    - r3_03.01.01
+    - family_COMMON
+    - zone_{{ cui_zone }}
+    - always
+    - zone_validation

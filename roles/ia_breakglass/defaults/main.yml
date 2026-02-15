@@ -1,0 +1,46 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ia_breakglass_enabled: true
+
+# Package list required by this control implementation.
+ia_breakglass_packages:
+  - pam_u2f
+
+# Template files deployed by this role.
+ia_breakglass_templates:
+  - src: yubikey-pam.j2
+    dest: /etc/pam.d/cui-breakglass
+    owner: root
+    group: root
+    mode: "0644"
+  - src: breakglass-audit.rules.j2
+    dest: /etc/audit/rules.d/50-breakglass.rules
+    owner: root
+    group: root
+    mode: "0640"
+
+# Static helper files deployed by this role.
+ia_breakglass_files:
+  []
+
+# Services managed by this role.
+ia_breakglass_services:
+  - name: auditd
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+ia_breakglass_verify_commands:
+  - id: breakglass_pam
+    command: "test -f /etc/pam.d/cui-breakglass"
+  - id: breakglass_audit
+    command: "test -f /etc/audit/rules.d/50-breakglass.rules"
+
+# File paths captured as evidence artifacts.
+ia_breakglass_evidence_files:
+  - /etc/pam.d/cui-breakglass
+  - /etc/audit/rules.d/50-breakglass.rules
+
+# Read-only commands captured as evidence artifacts.
+ia_breakglass_evidence_commands:
+  []

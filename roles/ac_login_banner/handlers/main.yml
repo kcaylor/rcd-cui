@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ac_login_banner services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ac_login_banner_services }}"
+  when: ac_login_banner_services | length > 0
+  listen: Restart ac_login_banner services
+  tags:
+    - r2_3.1.9
+    - r3_03.01.09
+    - family_AC
+    - zone_{{ cui_zone }}

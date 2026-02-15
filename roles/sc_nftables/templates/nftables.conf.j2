@@ -1,0 +1,31 @@
+# ==============================================
+# nftables policy
+# Purpose: Enforce default-deny firewalling with zone-aware allow rules.
+# ==============================================
+flush ruleset
+
+table inet filter {
+  chain input {
+    type filter hook input priority 0; policy drop;
+    iif "lo" accept
+    ct state established,related accept
+
+    {% if cui_zone == 'management' %}
+    tcp dport { 22, 443 } accept
+    {% elif cui_zone == 'internal' %}
+    tcp dport { 22, 443, 6817, 6818 } accept
+    {% elif cui_zone == 'restricted' %}
+    tcp dport { 22, 6817, 6818 } accept
+    {% else %}
+    tcp dport { 22, 443, 80 } accept
+    {% endif %}
+  }
+
+  chain forward {
+    type filter hook forward priority 0; policy drop;
+  }
+
+  chain output {
+    type filter hook output priority 0; policy accept;
+  }
+}

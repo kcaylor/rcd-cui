@@ -1,0 +1,45 @@
+---
+# WHY: Re-validate zone context during read-only audits to keep evidence attributable by zone.
+- name: Validate CUI zone assignment for si_clamav verification
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_verify_tags
+    - r2_3.14.2
+    - r3_03.14.02
+    - family_SI
+    - zone_{{ cui_zone }}
+
+# WHY: Run non-destructive checks that show whether controls are active without modifying state.
+- name: Execute compliance verification checks for si_clamav
+  ansible.builtin.command: "{{ item.command }}"
+  loop: "{{ si_clamav_verify_commands }}"
+  loop_control:
+    label: "{{ item.id }}"
+  register: si_clamav_verify_results
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  when: si_clamav_verify_commands | length > 0
+  tags: *role_verify_tags
+
+# WHY: Store structured verification output so auditors can trace check outcomes.
+- name: Build verification summary for si_clamav
+  ansible.builtin.set_fact:
+    si_clamav_verify_summary:
+      role: si_clamav
+      zone: "{{ cui_zone }}"
+      compliant: >-
+        {{ (si_clamav_verify_results.results | default([]) |
+        selectattr('rc', 'equalto', 0) | list | length) ==
+        (si_clamav_verify_commands | length) }}
+      checks: "{{ si_clamav_verify_results.results | default([]) }}"
+  changed_when: false
+  tags: *role_verify_tags
+
+# WHY: Print verification status in plain language for operators and compliance staff.
+- name: Show verification summary for si_clamav
+  ansible.builtin.debug:
+    var: si_clamav_verify_summary
+  changed_when: false
+  tags: *role_verify_tags

@@ -1,0 +1,77 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for au_wazuh_agent
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.3.6
+    - r3_03.03.06
+    - family_AU
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for au_wazuh_agent
+  ansible.builtin.package:
+    name: "{{ au_wazuh_agent_packages }}"
+    state: present
+  when:
+    - au_wazuh_agent_enabled | bool
+    - au_wazuh_agent_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for au_wazuh_agent
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ au_wazuh_agent_templates }}"
+  notify: Restart au_wazuh_agent services
+  when:
+    - au_wazuh_agent_enabled | bool
+    - au_wazuh_agent_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for au_wazuh_agent
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ au_wazuh_agent_files }}"
+  notify: Restart au_wazuh_agent services
+  when:
+    - au_wazuh_agent_enabled | bool
+    - au_wazuh_agent_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for au_wazuh_agent
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ au_wazuh_agent_services }}"
+  when:
+    - au_wazuh_agent_enabled | bool
+    - au_wazuh_agent_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for au_wazuh_agent when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "au_wazuh_agent is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - au_wazuh_agent_enabled | bool
+    - au_wazuh_agent_packages | length == 0
+    - au_wazuh_agent_templates | length == 0
+    - au_wazuh_agent_files | length == 0
+    - au_wazuh_agent_services | length == 0
+  tags: *role_tags

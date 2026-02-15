@@ -1,0 +1,13 @@
+# ==============================================
+# CUI remote logging configuration
+# Purpose: Forward security logs to central SIEM with TLS protection.
+# ==============================================
+module(load="imuxsock")
+module(load="imjournal")
+{% if syslog_tls_enabled | bool %}
+$DefaultNetstreamDriverCAFile /etc/pki/rsyslog/ca.pem
+action(type="omfwd" target="{{ syslog_server }}" port="{{ syslog_port }}" protocol="tcp"
+       StreamDriver="gtls" StreamDriverMode="1" StreamDriverAuthMode="x509/name")
+{% else %}
+action(type="omfwd" target="{{ syslog_server }}" port="{{ syslog_port }}" protocol="{{ syslog_protocol }}")
+{% endif %}

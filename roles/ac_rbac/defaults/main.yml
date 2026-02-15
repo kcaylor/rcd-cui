@@ -1,0 +1,37 @@
+---
+# Enable or disable this role without changing playbook ordering.
+ac_rbac_enabled: true
+
+# Package list required by this control implementation.
+ac_rbac_packages:
+  - sudo
+
+# Template files deployed by this role.
+ac_rbac_templates:
+  - src: sudoers.j2
+    dest: /etc/sudoers.d/10-cui-rbac
+    owner: root
+    group: root
+    mode: "0440"
+    validate: "visudo -cf %s"
+
+# Static helper files deployed by this role.
+ac_rbac_files:
+  []
+
+# Services managed by this role.
+ac_rbac_services:
+  []
+
+# Read-only verification commands for compliance checks.
+ac_rbac_verify_commands:
+  - id: sudoers_rbac
+    command: "visudo -cf /etc/sudoers.d/10-cui-rbac"
+
+# File paths captured as evidence artifacts.
+ac_rbac_evidence_files:
+  - /etc/sudoers.d/10-cui-rbac
+
+# Read-only commands captured as evidence artifacts.
+ac_rbac_evidence_commands:
+  []

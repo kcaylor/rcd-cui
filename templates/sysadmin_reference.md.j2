@@ -1,0 +1,11 @@
+{% set title = "Sysadmin Reference" %}
+{% set audience = "System Administrator" %}
+{% include "_partials/header.j2" with context %}
+
+## Operational Controls
+{% include "_partials/control_table.j2" %}
+
+## HPC Tailoring Hotspots
+{% for entry in hpc_entries -%}
+- **{{ entry.tailoring_id }}** ({{ entry.control_r2 }}): {{ entry.hpc_challenge|link_terms }}
+{% endfor %}

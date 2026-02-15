@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart sc_network_segmentation services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ sc_network_segmentation_services }}"
+  when: sc_network_segmentation_services | length > 0
+  listen: Restart sc_network_segmentation services
+  tags:
+    - r2_3.13.5
+    - r3_03.13.05
+    - family_SC
+    - zone_{{ cui_zone }}

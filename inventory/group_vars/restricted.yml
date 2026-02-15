@@ -1,0 +1,25 @@
+---
+cui_zone: restricted
+
+# HPC tailoring: disable idle timeout so long-running batch jobs are not interrupted.
+session_timeout_minutes: 0
+
+# HPC tailoring: minimize audit I/O overhead on compute nodes.
+audit_rules_profile: minimal
+
+# HPC tailoring: batch jobs use SSH certificates from Slurm orchestration.
+mfa_required: false
+mfa_bypass_ssh_certs: true
+
+# Compute nodes have no physical end-user access.
+usbguard_policy: deny_all
+
+# Malware scanning tailored for HPC performance.
+clamav_realtime_scan: false
+clamav_scheduled_scan_hour: 3
+
+# OpenSCAP exclusions for HPC conflicts.
+openscap_skip_rules:
+  - "xccdf_org.ssgproject.content_rule_accounts_tmout"
+  - "xccdf_org.ssgproject.content_rule_package_screen_lock"
+  - "xccdf_org.ssgproject.content_rule_dconf_gnome_screensaver_idle_delay"

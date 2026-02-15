@@ -1,0 +1,2601 @@
+---
+version: 1.0.0
+last_updated: '2026-02-15'
+description: Canonical mapping of NIST 800-171 Rev 2 controls across Rev 3, CMMC L2, and NIST 800-53 Rev 5.
+controls:
+  - control_id: 3.1.1
+    title: AC Control 3.1.1
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.1
+      rev3_id: 03.01.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-1
+    ansible_roles:
+      - ac_pam_access
+      - common
+    hpc_tailoring_ref: null
+  - control_id: 3.1.2
+    title: AC Control 3.1.2
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.2
+      rev3_id: 03.01.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.3
+    title: AC Control 3.1.3
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.3
+      rev3_id: 03.01.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-3
+    ansible_roles: []
+    hpc_tailoring_ref: parallel-filesystem-acls
+  - control_id: 3.1.4
+    title: AC Control 3.1.4
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.4
+      rev3_id: 03.01.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.5
+    title: AC Control 3.1.5
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.5
+      rev3_id: 03.01.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-5
+    ansible_roles:
+      - ac_rbac
+    hpc_tailoring_ref: null
+  - control_id: 3.1.6
+    title: AC Control 3.1.6
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.6
+      rev3_id: 03.01.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-6
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.7
+    title: AC Control 3.1.7
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.7
+      rev3_id: 03.01.07
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.7
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-7
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.8
+    title: AC Control 3.1.8
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.8
+      rev3_id: 03.01.08
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.8
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-8
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.9
+    title: AC Control 3.1.9
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.9
+      rev3_id: 03.01.09
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.9
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-9
+    ansible_roles:
+      - ac_login_banner
+    hpc_tailoring_ref: null
+  - control_id: 3.1.10
+    title: AC Control 3.1.10
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.10
+      rev3_id: 03.01.10
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.10
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-10
+    ansible_roles:
+      - ac_session_timeout
+    hpc_tailoring_ref: null
+  - control_id: 3.1.11
+    title: AC Control 3.1.11
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.11
+      rev3_id: 03.01.11
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.11
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-11
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.12
+    title: AC Control 3.1.12
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.12
+      rev3_id: 03.01.12
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.12
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-12
+    ansible_roles:
+      - ac_ssh_hardening
+    hpc_tailoring_ref: null
+  - control_id: 3.1.13
+    title: AC Control 3.1.13
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.13
+      rev3_id: 03.01.13
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.13
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-13
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.14
+    title: AC Control 3.1.14
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.14
+      rev3_id: 03.01.14
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.14
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-14
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.15
+    title: AC Control 3.1.15
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.15
+      rev3_id: 03.01.15
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.15
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-15
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.16
+    title: AC Control 3.1.16
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.16
+      rev3_id: 03.01.16
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.16
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-16
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.17
+    title: AC Control 3.1.17
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.17
+      rev3_id: 03.01.17
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.17
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-17
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.18
+    title: AC Control 3.1.18
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.18
+      rev3_id: 03.01.18
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.18
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-18
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.19
+    title: AC Control 3.1.19
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.19
+      rev3_id: 03.01.19
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.19
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-19
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.20
+    title: AC Control 3.1.20
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.20
+      rev3_id: 03.01.20
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.20
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-20
+    ansible_roles:
+      - ac_selinux
+    hpc_tailoring_ref: null
+  - control_id: 3.1.21
+    title: AC Control 3.1.21
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.21
+      rev3_id: 03.01.21
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.21
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-21
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.1.22
+    title: AC Control 3.1.22
+    family: AC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.1.22
+      rev3_id: 03.01.22
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.1.22
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AC-22
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.2.1
+    title: AT Control 3.2.1
+    family: AT
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.2.1
+      rev3_id: 03.02.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.2.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AT-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.2.2
+    title: AT Control 3.2.2
+    family: AT
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.2.2
+      rev3_id: 03.02.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.2.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AT-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.2.3
+    title: AT Control 3.2.3
+    family: AT
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.2.3
+      rev3_id: 03.02.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.2.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AT-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.3.1
+    title: AU Control 3.3.1
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.1
+      rev3_id: 03.03.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-1
+    ansible_roles:
+      - au_auditd
+    hpc_tailoring_ref: audit-volume-compute-nodes
+  - control_id: 3.3.2
+    title: AU Control 3.3.2
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.2
+      rev3_id: 03.03.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.3.3
+    title: AU Control 3.3.3
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.3
+      rev3_id: 03.03.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.3.4
+    title: AU Control 3.3.4
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.4
+      rev3_id: 03.03.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-4
+    ansible_roles:
+      - au_rsyslog
+    hpc_tailoring_ref: null
+  - control_id: 3.3.5
+    title: AU Control 3.3.5
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.5
+      rev3_id: 03.03.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-5
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.3.6
+    title: AU Control 3.3.6
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.6
+      rev3_id: 03.03.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-6
+    ansible_roles:
+      - au_wazuh_agent
+    hpc_tailoring_ref: null
+  - control_id: 3.3.7
+    title: AU Control 3.3.7
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.7
+      rev3_id: 03.03.07
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.7
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-7
+    ansible_roles:
+      - au_chrony
+    hpc_tailoring_ref: null
+  - control_id: 3.3.8
+    title: AU Control 3.3.8
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.8
+      rev3_id: 03.03.08
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.8
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-8
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.3.9
+    title: AU Control 3.3.9
+    family: AU
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.3.9
+      rev3_id: 03.03.09
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.3.9
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - AU-9
+    ansible_roles:
+      - au_log_protection
+    hpc_tailoring_ref: null
+  - control_id: 3.4.1
+    title: CM Control 3.4.1
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.1
+      rev3_id: 03.04.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-1
+    ansible_roles:
+      - cm_openscap_baseline
+    hpc_tailoring_ref: node-provisioning-pxe
+  - control_id: 3.4.2
+    title: CM Control 3.4.2
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.2
+      rev3_id: 03.04.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.4.3
+    title: CM Control 3.4.3
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.3
+      rev3_id: 03.04.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.4.4
+    title: CM Control 3.4.4
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.4
+      rev3_id: 03.04.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.4.5
+    title: CM Control 3.4.5
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.5
+      rev3_id: N/A
+      rev3_rationale: This Rev 2 control was consolidated in Rev 3 and is tracked through related requirements.
+      cmmc_l2_id: L2-3.4.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-5
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.4.6
+    title: CM Control 3.4.6
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.6
+      rev3_id: 03.04.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-6
+    ansible_roles:
+      - cm_minimal_packages
+    hpc_tailoring_ref: null
+  - control_id: 3.4.7
+    title: CM Control 3.4.7
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.7
+      rev3_id: 03.04.07
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.7
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-7
+    ansible_roles:
+      - cm_service_hardening
+    hpc_tailoring_ref: null
+  - control_id: 3.4.8
+    title: CM Control 3.4.8
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.8
+      rev3_id: 03.04.08
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.8
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-8
+    ansible_roles:
+      - cm_kernel_hardening
+    hpc_tailoring_ref: container-security
+  - control_id: 3.4.9
+    title: CM Control 3.4.9
+    family: CM
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.4.9
+      rev3_id: 03.04.09
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.4.9
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CM-9
+    ansible_roles:
+      - cm_aide
+    hpc_tailoring_ref: null
+  - control_id: 3.5.1
+    title: IA Control 3.5.1
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.1
+      rev3_id: 03.05.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-1
+    ansible_roles:
+      - ia_freeipa_client
+    hpc_tailoring_ref: null
+  - control_id: 3.5.2
+    title: IA Control 3.5.2
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.2
+      rev3_id: 03.05.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-2
+    ansible_roles:
+      - ia_account_lifecycle
+    hpc_tailoring_ref: null
+  - control_id: 3.5.3
+    title: IA Control 3.5.3
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.3
+      rev3_id: 03.05.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-3
+    ansible_roles:
+      - ia_breakglass
+      - ia_duo_mfa
+      - ia_ssh_ca
+    hpc_tailoring_ref: mfa-batch-jobs
+  - control_id: 3.5.4
+    title: IA Control 3.5.4
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.4
+      rev3_id: 03.05.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.5.5
+    title: IA Control 3.5.5
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.5
+      rev3_id: 03.05.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-5
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.5.6
+    title: IA Control 3.5.6
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.6
+      rev3_id: 03.05.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-6
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.5.7
+    title: IA Control 3.5.7
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.7
+      rev3_id: 03.05.07
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.7
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-7
+    ansible_roles:
+      - ia_password_policy
+    hpc_tailoring_ref: null
+  - control_id: 3.5.8
+    title: IA Control 3.5.8
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.8
+      rev3_id: 03.05.08
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.8
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-8
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.5.9
+    title: IA Control 3.5.9
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.9
+      rev3_id: 03.05.09
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.9
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-9
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.5.10
+    title: IA Control 3.5.10
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.10
+      rev3_id: 03.05.10
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.10
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-10
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.5.11
+    title: IA Control 3.5.11
+    family: IA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.5.11
+      rev3_id: 03.05.11
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.5.11
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IA-11
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.6.1
+    title: IR Control 3.6.1
+    family: IR
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.6.1
+      rev3_id: 03.06.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.6.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IR-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.6.2
+    title: IR Control 3.6.2
+    family: IR
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.6.2
+      rev3_id: 03.06.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.6.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IR-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.6.3
+    title: IR Control 3.6.3
+    family: IR
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.6.3
+      rev3_id: 03.06.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.6.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - IR-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.7.1
+    title: MA Control 3.7.1
+    family: MA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.7.1
+      rev3_id: 03.07.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.7.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MA-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.7.2
+    title: MA Control 3.7.2
+    family: MA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.7.2
+      rev3_id: 03.07.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.7.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MA-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.7.3
+    title: MA Control 3.7.3
+    family: MA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.7.3
+      rev3_id: 03.07.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.7.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MA-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.7.4
+    title: MA Control 3.7.4
+    family: MA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.7.4
+      rev3_id: 03.07.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.7.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MA-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.7.5
+    title: MA Control 3.7.5
+    family: MA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.7.5
+      rev3_id: 03.07.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.7.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MA-5
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.7.6
+    title: MA Control 3.7.6
+    family: MA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.7.6
+      rev3_id: 03.07.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.7.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MA-6
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.8.1
+    title: MP Control 3.8.1
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.1
+      rev3_id: 03.08.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.8.2
+    title: MP Control 3.8.2
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.2
+      rev3_id: 03.08.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.8.3
+    title: MP Control 3.8.3
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.3
+      rev3_id: 03.08.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-3
+    ansible_roles: []
+    hpc_tailoring_ref: gpu-memory-sanitization
+  - control_id: 3.8.4
+    title: MP Control 3.8.4
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.4
+      rev3_id: 03.08.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.8.5
+    title: MP Control 3.8.5
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.5
+      rev3_id: 03.08.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-5
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.8.6
+    title: MP Control 3.8.6
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.6
+      rev3_id: 03.08.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-6
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.8.7
+    title: MP Control 3.8.7
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.7
+      rev3_id: 03.08.07
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.7
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-7
+    ansible_roles:
+      - ac_usbguard
+    hpc_tailoring_ref: null
+  - control_id: 3.8.8
+    title: MP Control 3.8.8
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.8
+      rev3_id: 03.08.08
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.8
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-8
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.8.9
+    title: MP Control 3.8.9
+    family: MP
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.8.9
+      rev3_id: 03.08.09
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.8.9
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - MP-9
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.9.1
+    title: PS Control 3.9.1
+    family: PS
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.9.1
+      rev3_id: 03.09.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.9.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PS-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.9.2
+    title: PS Control 3.9.2
+    family: PS
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.9.2
+      rev3_id: 03.09.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.9.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PS-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.10.1
+    title: PE Control 3.10.1
+    family: PE
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.10.1
+      rev3_id: 03.10.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.10.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PE-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.10.2
+    title: PE Control 3.10.2
+    family: PE
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.10.2
+      rev3_id: 03.10.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.10.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PE-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.10.3
+    title: PE Control 3.10.3
+    family: PE
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.10.3
+      rev3_id: 03.10.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.10.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PE-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.10.4
+    title: PE Control 3.10.4
+    family: PE
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.10.4
+      rev3_id: 03.10.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.10.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PE-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.10.5
+    title: PE Control 3.10.5
+    family: PE
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.10.5
+      rev3_id: 03.10.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.10.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PE-5
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.10.6
+    title: PE Control 3.10.6
+    family: PE
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.10.6
+      rev3_id: 03.10.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.10.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - PE-6
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.11.1
+    title: RA Control 3.11.1
+    family: RA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.11.1
+      rev3_id: 03.11.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.11.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - RA-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.11.2
+    title: RA Control 3.11.2
+    family: RA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.11.2
+      rev3_id: 03.11.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.11.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - RA-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.11.3
+    title: RA Control 3.11.3
+    family: RA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.11.3
+      rev3_id: 03.11.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.11.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - RA-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.12.1
+    title: CA Control 3.12.1
+    family: CA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.12.1
+      rev3_id: 03.12.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.12.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CA-1
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.12.2
+    title: CA Control 3.12.2
+    family: CA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.12.2
+      rev3_id: 03.12.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.12.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CA-2
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.12.3
+    title: CA Control 3.12.3
+    family: CA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.12.3
+      rev3_id: 03.12.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.12.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - CA-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.12.4
+    title: CA Control 3.12.4
+    family: CA
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.12.4
+      rev3_id: 03.12.04
+      rev3_rationale: null
+      cmmc_l2_id: N/A
+      cmmc_l2_rationale: No direct CMMC L2 practice maps one-to-one to this requirement.
+      nist_800_53_r5_id:
+        - CA-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.1
+    title: SC Control 3.13.1
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.1
+      rev3_id: 03.13.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-1
+    ansible_roles:
+      - sc_nftables
+    hpc_tailoring_ref: null
+  - control_id: 3.13.2
+    title: SC Control 3.13.2
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.2
+      rev3_id: 03.13.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-2
+    ansible_roles: []
+    hpc_tailoring_ref: multi-tenancy-isolation
+  - control_id: 3.13.3
+    title: SC Control 3.13.3
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.3
+      rev3_id: 03.13.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-3
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.4
+    title: SC Control 3.13.4
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.4
+      rev3_id: 03.13.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.5
+    title: SC Control 3.13.5
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.5
+      rev3_id: 03.13.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-5
+    ansible_roles:
+      - sc_network_segmentation
+    hpc_tailoring_ref: null
+  - control_id: 3.13.6
+    title: SC Control 3.13.6
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.6
+      rev3_id: 03.13.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-6
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.7
+    title: SC Control 3.13.7
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.7
+      rev3_id: 03.13.07
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.7
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-7
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.8
+    title: SC Control 3.13.8
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.8
+      rev3_id: 03.13.08
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.8
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-8
+    ansible_roles:
+      - sc_tls_enforcement
+    hpc_tailoring_ref: fips-cryptography-infiniband
+  - control_id: 3.13.9
+    title: SC Control 3.13.9
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.9
+      rev3_id: 03.13.09
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.9
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-9
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.10
+    title: SC Control 3.13.10
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.10
+      rev3_id: 03.13.10
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.10
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-10
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.11
+    title: SC Control 3.13.11
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.11
+      rev3_id: 03.13.11
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.11
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-11
+    ansible_roles:
+      - cm_fips_mode
+    hpc_tailoring_ref: session-timeout-compute-nodes
+  - control_id: 3.13.12
+    title: SC Control 3.13.12
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.12
+      rev3_id: 03.13.12
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.12
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-12
+    ansible_roles: []
+    hpc_tailoring_ref: long-running-job-management
+  - control_id: 3.13.13
+    title: SC Control 3.13.13
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.13
+      rev3_id: 03.13.13
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.13
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-13
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.14
+    title: SC Control 3.13.14
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.14
+      rev3_id: 03.13.14
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.14
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-14
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.15
+    title: SC Control 3.13.15
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.15
+      rev3_id: 03.13.15
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.13.15
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SC-15
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.13.16
+    title: SC Control 3.13.16
+    family: SC
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.13.16
+      rev3_id: 03.13.16
+      rev3_rationale: null
+      cmmc_l2_id: N/A
+      cmmc_l2_rationale: No direct CMMC L2 practice maps one-to-one to this requirement.
+      nist_800_53_r5_id:
+        - SC-16
+    ansible_roles:
+      - sc_luks_verification
+    hpc_tailoring_ref: null
+  - control_id: 3.14.1
+    title: SI Control 3.14.1
+    family: SI
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.14.1
+      rev3_id: 03.14.01
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.14.1
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SI-1
+    ansible_roles:
+      - si_dnf_automatic
+    hpc_tailoring_ref: null
+  - control_id: 3.14.2
+    title: SI Control 3.14.2
+    family: SI
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.14.2
+      rev3_id: 03.14.02
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.14.2
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SI-2
+    ansible_roles:
+      - si_clamav
+    hpc_tailoring_ref: null
+  - control_id: 3.14.3
+    title: SI Control 3.14.3
+    family: SI
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 4
+    automatable: false
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.14.3
+      rev3_id: 03.14.03
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.14.3
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SI-3
+    ansible_roles:
+      - si_openscap_oval
+    hpc_tailoring_ref: null
+  - control_id: 3.14.4
+    title: SI Control 3.14.4
+    family: SI
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 5
+    automatable: true
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.14.4
+      rev3_id: 03.14.04
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.14.4
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SI-4
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.14.5
+    title: SI Control 3.14.5
+    family: SI
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 1
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.14.5
+      rev3_id: 03.14.05
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.14.5
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SI-5
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.14.6
+    title: SI Control 3.14.6
+    family: SI
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 2
+    automatable: true
+    zones:
+      - management
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.14.6
+      rev3_id: 03.14.06
+      rev3_rationale: null
+      cmmc_l2_id: L2-3.14.6
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SI-6
+    ansible_roles: []
+    hpc_tailoring_ref: null
+  - control_id: 3.14.7
+    title: SI Control 3.14.7
+    family: SI
+    plain_language: This requirement protects CUI in university research environments. Teams document implementation steps
+      and apply automated checks when possible.
+    assessment_objectives:
+      - Confirm policy and procedures exist for this requirement.
+      - Verify implementation evidence is retained for audit review.
+    sprs_weight: 3
+    automatable: false
+    zones:
+      - internal
+      - restricted
+    framework_mapping:
+      rev2_id: 3.14.7
+      rev3_id: N/A
+      rev3_rationale: This Rev 2 control was consolidated in Rev 3 and is tracked through related requirements.
+      cmmc_l2_id: L2-3.14.7
+      cmmc_l2_rationale: null
+      nist_800_53_r5_id:
+        - SI-7
+    ansible_roles: []
+    hpc_tailoring_ref: null

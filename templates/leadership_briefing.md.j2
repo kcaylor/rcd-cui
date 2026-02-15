@@ -1,0 +1,14 @@
+{% set title = "Leadership Briefing" %}
+{% set audience = "University Leadership" %}
+{% include "_partials/header.j2" with context %}
+
+## Executive Summary
+- Total mapped controls: {{ controls|length }}
+- Glossary terms available: {{ terms|length }}
+- HPC tailoring decisions: {{ hpc_entries|length }}
+- Defined Rev 3 ODP values: {{ odp_entries|length }}
+
+## Risk and Governance Highlights
+{% for entry in hpc_entries[:5] -%}
+- {{ entry.title }}: risk acceptance is **{{ entry.risk_acceptance }}**.
+{% endfor %}

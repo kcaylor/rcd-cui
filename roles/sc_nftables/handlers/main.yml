@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart sc_nftables services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ sc_nftables_services }}"
+  when: sc_nftables_services | length > 0
+  listen: Restart sc_nftables services
+  tags:
+    - r2_3.13.1
+    - r3_03.13.01
+    - family_SC
+    - zone_{{ cui_zone }}

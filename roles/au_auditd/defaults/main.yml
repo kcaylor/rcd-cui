@@ -1,0 +1,50 @@
+---
+# Enable or disable this role without changing playbook ordering.
+au_auditd_enabled: true
+
+# Package list required by this control implementation.
+au_auditd_packages:
+  - audit
+  - audit-libs
+  - audispd-plugins
+
+# Template files deployed by this role.
+au_auditd_templates:
+  - src: audit.rules.j2
+    dest: /etc/audit/rules.d/99-cui-audit.rules
+    owner: root
+    group: root
+    mode: "0640"
+    validate: "auditctl -R %s"
+  - src: auditd.conf.j2
+    dest: /etc/audit/auditd.conf
+    owner: root
+    group: root
+    mode: "0640"
+
+# Static helper files deployed by this role.
+au_auditd_files:
+  []
+
+# Services managed by this role.
+au_auditd_services:
+  - name: auditd
+    enabled: true
+    state: started
+
+# Read-only verification commands for compliance checks.
+au_auditd_verify_commands:
+  - id: auditd_active
+    command: "systemctl is-active auditd"
+  - id: audit_rules_file
+    command: "test -f /etc/audit/rules.d/99-cui-audit.rules"
+
+# File paths captured as evidence artifacts.
+au_auditd_evidence_files:
+  - /etc/audit/auditd.conf
+  - /etc/audit/rules.d/99-cui-audit.rules
+
+# Read-only commands captured as evidence artifacts.
+au_auditd_evidence_commands:
+  - id: auditd_status
+    command: "systemctl status auditd --no-pager"

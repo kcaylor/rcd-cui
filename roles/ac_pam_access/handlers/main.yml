@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart ac_pam_access services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ ac_pam_access_services }}"
+  when: ac_pam_access_services | length > 0
+  listen: Restart ac_pam_access services
+  tags:
+    - r2_3.1.1
+    - r3_03.01.01
+    - family_AC
+    - zone_{{ cui_zone }}

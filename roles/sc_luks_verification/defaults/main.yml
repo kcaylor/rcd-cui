@@ -1,0 +1,35 @@
+---
+# Enable or disable this role without changing playbook ordering.
+sc_luks_verification_enabled: true
+
+# Verify-only role: no implementation packages are installed.
+sc_luks_verification_packages:
+  []
+
+# Verify-only role: no templates are deployed.
+sc_luks_verification_templates:
+  []
+
+# Verify-only role: no static files are deployed.
+sc_luks_verification_files:
+  []
+
+# Verify-only role: no services are managed.
+sc_luks_verification_services:
+  []
+
+# Read-only verification commands for compliance checks.
+sc_luks_verification_verify_commands:
+  - id: luks_devices
+    command: "lsblk -o NAME,TYPE,MOUNTPOINT"
+  - id: luks_status
+    command: "cryptsetup status luks-data || true"
+
+# File paths captured as evidence artifacts.
+sc_luks_verification_evidence_files:
+  []
+
+# Read-only commands captured as evidence artifacts.
+sc_luks_verification_evidence_commands:
+  - id: cryptsetup_list
+    command: "lsblk -f"

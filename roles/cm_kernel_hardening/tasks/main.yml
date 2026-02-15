@@ -1,0 +1,86 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for cm_kernel_hardening
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.4.8
+    - r3_03.04.08
+    - family_CM
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for cm_kernel_hardening
+  ansible.builtin.package:
+    name: "{{ cm_kernel_hardening_packages }}"
+    state: present
+  when:
+    - cm_kernel_hardening_enabled | bool
+    - cm_kernel_hardening_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for cm_kernel_hardening
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ cm_kernel_hardening_templates }}"
+  notify: Restart cm_kernel_hardening services
+  when:
+    - cm_kernel_hardening_enabled | bool
+    - cm_kernel_hardening_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for cm_kernel_hardening
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ cm_kernel_hardening_files }}"
+  notify: Restart cm_kernel_hardening services
+  when:
+    - cm_kernel_hardening_enabled | bool
+    - cm_kernel_hardening_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for cm_kernel_hardening
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ cm_kernel_hardening_services }}"
+  when:
+    - cm_kernel_hardening_enabled | bool
+    - cm_kernel_hardening_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for cm_kernel_hardening when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "cm_kernel_hardening is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - cm_kernel_hardening_enabled | bool
+    - cm_kernel_hardening_packages | length == 0
+    - cm_kernel_hardening_templates | length == 0
+    - cm_kernel_hardening_files | length == 0
+    - cm_kernel_hardening_services | length == 0
+  tags: *role_tags
+
+# WHY: Apply sysctl settings immediately so kernel hardening is active without reboot.
+- name: Reload sysctl settings
+  ansible.builtin.command: sysctl --system
+  changed_when: false
+  when:
+    - cm_kernel_hardening_enabled | bool
+    - not ansible_check_mode
+  tags: *role_tags

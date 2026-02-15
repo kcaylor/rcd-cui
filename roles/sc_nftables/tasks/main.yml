@@ -1,0 +1,77 @@
+---
+# WHY: Fail fast if zone context is missing so this control is never applied ambiguously.
+- name: Validate CUI zone assignment for sc_nftables
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: validate_zone.yml
+  tags: &role_tags
+    - r2_3.13.1
+    - r3_03.13.01
+    - family_SC
+    - zone_{{ cui_zone }}
+
+# WHY: Install required software components that provide this security capability.
+- name: Install required packages for sc_nftables
+  ansible.builtin.package:
+    name: "{{ sc_nftables_packages }}"
+    state: present
+  when:
+    - sc_nftables_enabled | bool
+    - sc_nftables_packages | length > 0
+  tags: *role_tags
+
+# WHY: Deploy controlled configuration from versioned templates for repeatable compliance state.
+- name: Deploy configuration templates for sc_nftables
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    validate: "{{ item.validate | default(omit) }}"
+  loop: "{{ sc_nftables_templates }}"
+  notify: Restart sc_nftables services
+  when:
+    - sc_nftables_enabled | bool
+    - sc_nftables_templates | length > 0
+  tags: *role_tags
+
+# WHY: Place supporting helper scripts and policy files needed by this control implementation.
+- name: Deploy static helper files for sc_nftables
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default('root') }}"
+    group: "{{ item.group | default('root') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  loop: "{{ sc_nftables_files }}"
+  notify: Restart sc_nftables services
+  when:
+    - sc_nftables_enabled | bool
+    - sc_nftables_files | length > 0
+  tags: *role_tags
+
+# WHY: Ensure security services are continuously enforced after configuration changes.
+- name: Ensure managed services are enabled and running for sc_nftables
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    enabled: "{{ item.enabled }}"
+    state: "{{ item.state }}"
+  loop: "{{ sc_nftables_services }}"
+  when:
+    - sc_nftables_enabled | bool
+    - sc_nftables_services | length > 0
+  tags: *role_tags
+
+# WHY: Mark verify-only controls so implementation runs are explicit and auditable.
+- name: Report verify-only mode for sc_nftables when no stateful tasks apply
+  ansible.builtin.debug:
+    msg: "sc_nftables is configured as verify-heavy for this host and made no direct changes."
+  changed_when: false
+  when:
+    - sc_nftables_enabled | bool
+    - sc_nftables_packages | length == 0
+    - sc_nftables_templates | length == 0
+    - sc_nftables_files | length == 0
+    - sc_nftables_services | length == 0
+  tags: *role_tags

@@ -1,0 +1,404 @@
+version: 1.0.0
+last_updated: '2026-02-15'
+description: Organization-defined parameters for NIST 800-171 Rev 3 controls.
+odp_values:
+- odp_id: ODP-01
+  control: 03.01.01
+  parameter_description: Organization-defined parameter 1 for control 03.01.01.
+  assigned_value: DoD baseline value 1
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 1
+  deviation_rationale: null
+- odp_id: ODP-02
+  control: 03.02.02
+  parameter_description: Organization-defined parameter 2 for control 03.02.02.
+  assigned_value: DoD baseline value 2
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 2
+  deviation_rationale: null
+- odp_id: ODP-03
+  control: 03.03.03
+  parameter_description: Organization-defined parameter 3 for control 03.03.03.
+  assigned_value: University policy value 3
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 3
+  deviation_rationale: University research policy requires a different value to support
+    operational constraints while retaining acceptable risk and documented compensating
+    controls.
+- odp_id: ODP-04
+  control: 03.04.04
+  parameter_description: Organization-defined parameter 4 for control 03.04.04.
+  assigned_value: DoD baseline value 4
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 4
+  deviation_rationale: null
+- odp_id: ODP-05
+  control: 03.05.05
+  parameter_description: Organization-defined parameter 5 for control 03.05.05.
+  assigned_value: DoD baseline value 5
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 5
+  deviation_rationale: null
+- odp_id: ODP-06
+  control: 03.06.06
+  parameter_description: Organization-defined parameter 6 for control 03.06.06.
+  assigned_value: DoD baseline value 6
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 6
+  deviation_rationale: null
+- odp_id: ODP-07
+  control: 03.07.07
+  parameter_description: Organization-defined parameter 7 for control 03.07.07.
+  assigned_value: DoD baseline value 7
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 7
+  deviation_rationale: null
+- odp_id: ODP-08
+  control: 03.08.08
+  parameter_description: Organization-defined parameter 8 for control 03.08.08.
+  assigned_value: DoD baseline value 8
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 8
+  deviation_rationale: null
+- odp_id: ODP-09
+  control: 03.09.09
+  parameter_description: Organization-defined parameter 9 for control 03.09.09.
+  assigned_value: DoD baseline value 9
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 9
+  deviation_rationale: null
+- odp_id: ODP-10
+  control: 03.10.10
+  parameter_description: Organization-defined parameter 10 for control 03.10.10.
+  assigned_value: DoD baseline value 10
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 10
+  deviation_rationale: null
+- odp_id: ODP-11
+  control: 03.11.11
+  parameter_description: Organization-defined parameter 11 for control 03.11.11.
+  assigned_value: DoD baseline value 11
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 11
+  deviation_rationale: null
+- odp_id: ODP-12
+  control: 03.12.12
+  parameter_description: Organization-defined parameter 12 for control 03.12.12.
+  assigned_value: University policy value 12
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 12
+  deviation_rationale: University research policy requires a different value to support
+    operational constraints while retaining acceptable risk and documented compensating
+    controls.
+- odp_id: ODP-13
+  control: 03.13.13
+  parameter_description: Organization-defined parameter 13 for control 03.13.13.
+  assigned_value: DoD baseline value 13
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 13
+  deviation_rationale: null
+- odp_id: ODP-14
+  control: 03.14.14
+  parameter_description: Organization-defined parameter 14 for control 03.14.14.
+  assigned_value: DoD baseline value 14
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 14
+  deviation_rationale: null
+- odp_id: ODP-15
+  control: 03.01.15
+  parameter_description: Organization-defined parameter 15 for control 03.01.15.
+  assigned_value: DoD baseline value 15
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 15
+  deviation_rationale: null
+- odp_id: ODP-16
+  control: 03.02.16
+  parameter_description: Organization-defined parameter 16 for control 03.02.16.
+  assigned_value: DoD baseline value 16
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 16
+  deviation_rationale: null
+- odp_id: ODP-17
+  control: 03.03.01
+  parameter_description: Organization-defined parameter 17 for control 03.03.01.
+  assigned_value: DoD baseline value 17
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 17
+  deviation_rationale: null
+- odp_id: ODP-18
+  control: 03.04.02
+  parameter_description: Organization-defined parameter 18 for control 03.04.02.
+  assigned_value: DoD baseline value 18
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 18
+  deviation_rationale: null
+- odp_id: ODP-19
+  control: 03.05.03
+  parameter_description: Organization-defined parameter 19 for control 03.05.03.
+  assigned_value: DoD baseline value 19
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 19
+  deviation_rationale: null
+- odp_id: ODP-20
+  control: 03.06.04
+  parameter_description: Organization-defined parameter 20 for control 03.06.04.
+  assigned_value: DoD baseline value 20
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 20
+  deviation_rationale: null
+- odp_id: ODP-21
+  control: 03.07.05
+  parameter_description: Organization-defined parameter 21 for control 03.07.05.
+  assigned_value: DoD baseline value 21
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 21
+  deviation_rationale: null
+- odp_id: ODP-22
+  control: 03.08.06
+  parameter_description: Organization-defined parameter 22 for control 03.08.06.
+  assigned_value: DoD baseline value 22
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 22
+  deviation_rationale: null
+- odp_id: ODP-23
+  control: 03.09.07
+  parameter_description: Organization-defined parameter 23 for control 03.09.07.
+  assigned_value: DoD baseline value 23
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 23
+  deviation_rationale: null
+- odp_id: ODP-24
+  control: 03.10.08
+  parameter_description: Organization-defined parameter 24 for control 03.10.08.
+  assigned_value: University policy value 24
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 24
+  deviation_rationale: University research policy requires a different value to support
+    operational constraints while retaining acceptable risk and documented compensating
+    controls.
+- odp_id: ODP-25
+  control: 03.11.09
+  parameter_description: Organization-defined parameter 25 for control 03.11.09.
+  assigned_value: DoD baseline value 25
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 25
+  deviation_rationale: null
+- odp_id: ODP-26
+  control: 03.12.10
+  parameter_description: Organization-defined parameter 26 for control 03.12.10.
+  assigned_value: DoD baseline value 26
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 26
+  deviation_rationale: null
+- odp_id: ODP-27
+  control: 03.13.11
+  parameter_description: Organization-defined parameter 27 for control 03.13.11.
+  assigned_value: DoD baseline value 27
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 27
+  deviation_rationale: null
+- odp_id: ODP-28
+  control: 03.14.12
+  parameter_description: Organization-defined parameter 28 for control 03.14.12.
+  assigned_value: DoD baseline value 28
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 28
+  deviation_rationale: null
+- odp_id: ODP-29
+  control: 03.01.13
+  parameter_description: Organization-defined parameter 29 for control 03.01.13.
+  assigned_value: DoD baseline value 29
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 29
+  deviation_rationale: null
+- odp_id: ODP-30
+  control: 03.02.14
+  parameter_description: Organization-defined parameter 30 for control 03.02.14.
+  assigned_value: DoD baseline value 30
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 30
+  deviation_rationale: null
+- odp_id: ODP-31
+  control: 03.03.15
+  parameter_description: Organization-defined parameter 31 for control 03.03.15.
+  assigned_value: DoD baseline value 31
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 31
+  deviation_rationale: null
+- odp_id: ODP-32
+  control: 03.04.16
+  parameter_description: Organization-defined parameter 32 for control 03.04.16.
+  assigned_value: DoD baseline value 32
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 32
+  deviation_rationale: null
+- odp_id: ODP-33
+  control: 03.05.01
+  parameter_description: Organization-defined parameter 33 for control 03.05.01.
+  assigned_value: DoD baseline value 33
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 33
+  deviation_rationale: null
+- odp_id: ODP-34
+  control: 03.06.02
+  parameter_description: Organization-defined parameter 34 for control 03.06.02.
+  assigned_value: DoD baseline value 34
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 34
+  deviation_rationale: null
+- odp_id: ODP-35
+  control: 03.07.03
+  parameter_description: Organization-defined parameter 35 for control 03.07.03.
+  assigned_value: DoD baseline value 35
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 35
+  deviation_rationale: null
+- odp_id: ODP-36
+  control: 03.08.04
+  parameter_description: Organization-defined parameter 36 for control 03.08.04.
+  assigned_value: DoD baseline value 36
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 36
+  deviation_rationale: null
+- odp_id: ODP-37
+  control: 03.09.05
+  parameter_description: Organization-defined parameter 37 for control 03.09.05.
+  assigned_value: DoD baseline value 37
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 37
+  deviation_rationale: null
+- odp_id: ODP-38
+  control: 03.10.06
+  parameter_description: Organization-defined parameter 38 for control 03.10.06.
+  assigned_value: DoD baseline value 38
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 38
+  deviation_rationale: null
+- odp_id: ODP-39
+  control: 03.11.07
+  parameter_description: Organization-defined parameter 39 for control 03.11.07.
+  assigned_value: DoD baseline value 39
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 39
+  deviation_rationale: null
+- odp_id: ODP-40
+  control: 03.12.08
+  parameter_description: Organization-defined parameter 40 for control 03.12.08.
+  assigned_value: DoD baseline value 40
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 40
+  deviation_rationale: null
+- odp_id: ODP-41
+  control: 03.13.09
+  parameter_description: Organization-defined parameter 41 for control 03.13.09.
+  assigned_value: University policy value 41
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 41
+  deviation_rationale: University research policy requires a different value to support
+    operational constraints while retaining acceptable risk and documented compensating
+    controls.
+- odp_id: ODP-42
+  control: 03.14.10
+  parameter_description: Organization-defined parameter 42 for control 03.14.10.
+  assigned_value: DoD baseline value 42
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 42
+  deviation_rationale: null
+- odp_id: ODP-43
+  control: 03.01.11
+  parameter_description: Organization-defined parameter 43 for control 03.01.11.
+  assigned_value: DoD baseline value 43
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 43
+  deviation_rationale: null
+- odp_id: ODP-44
+  control: 03.02.12
+  parameter_description: Organization-defined parameter 44 for control 03.02.12.
+  assigned_value: DoD baseline value 44
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 44
+  deviation_rationale: null
+- odp_id: ODP-45
+  control: 03.03.13
+  parameter_description: Organization-defined parameter 45 for control 03.03.13.
+  assigned_value: DoD baseline value 45
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 45
+  deviation_rationale: null
+- odp_id: ODP-46
+  control: 03.04.14
+  parameter_description: Organization-defined parameter 46 for control 03.04.14.
+  assigned_value: DoD baseline value 46
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 46
+  deviation_rationale: null
+- odp_id: ODP-47
+  control: 03.05.15
+  parameter_description: Organization-defined parameter 47 for control 03.05.15.
+  assigned_value: DoD baseline value 47
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 47
+  deviation_rationale: null
+- odp_id: ODP-48
+  control: 03.06.16
+  parameter_description: Organization-defined parameter 48 for control 03.06.16.
+  assigned_value: DoD baseline value 48
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 48
+  deviation_rationale: null
+- odp_id: ODP-49
+  control: 03.07.01
+  parameter_description: Organization-defined parameter 49 for control 03.07.01.
+  assigned_value: DoD baseline value 49
+  rationale: Value selected to balance DoD guidance, campus policy, and HPC operational
+    needs.
+  dod_guidance: DoD baseline value 49
+  deviation_rationale: null

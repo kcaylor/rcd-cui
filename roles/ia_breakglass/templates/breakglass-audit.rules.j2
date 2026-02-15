@@ -1,0 +1,6 @@
+# ==============================================
+# Break-glass audit policy
+# Purpose: Log all emergency account usage for rapid security review.
+# ==============================================
+-w /etc/security/opasswd -p wa -k breakglass-auth
+-w /etc/pam.d/cui-breakglass -p wa -k breakglass-auth

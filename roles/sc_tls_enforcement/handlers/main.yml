@@ -1,0 +1,14 @@
+---
+# WHY: Restart managed services only when configuration has changed.
+- name: Restart sc_tls_enforcement services
+  ansible.builtin.systemd:
+    name: "{{ item.name }}"
+    state: restarted
+  loop: "{{ sc_tls_enforcement_services }}"
+  when: sc_tls_enforcement_services | length > 0
+  listen: Restart sc_tls_enforcement services
+  tags:
+    - r2_3.13.8
+    - r3_03.13.08
+    - family_SC
+    - zone_{{ cui_zone }}

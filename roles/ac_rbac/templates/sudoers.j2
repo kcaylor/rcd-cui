@@ -1,0 +1,6 @@
+# ==============================================
+# RBAC sudo policy
+# Purpose: Restrict privileged commands to approved administrative groups.
+# ==============================================
+%cui-admins ALL=(ALL) NOPASSWD: /usr/bin/systemctl, /usr/bin/journalctl, /usr/bin/ausearch
+%cui-auditors ALL=(ALL) NOPASSWD: /usr/sbin/auditctl, /usr/sbin/semanage
