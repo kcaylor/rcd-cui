@@ -25,6 +25,10 @@ jobs:
       - name: Build execution environment
         uses: ./.github/actions/setup-ee
 
+      - name: Install Python dependencies
+        shell: bash
+        run: pip install -r requirements.txt
+
       - name: Generate audience documentation
         shell: bash
         run: make docs
