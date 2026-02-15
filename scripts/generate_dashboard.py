@@ -139,7 +139,7 @@ def _collect_narratives(path: Path) -> list[dict[str, str]]:
 def _collect_evidence_links(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         return []
-    files = [p for p in sorted(path.rglob("*")) if p.is_file()]
+    files = [p for p in sorted(path.rglob("*")) if p.is_file() and not p.name.startswith(".")]
     return [{"label": p.name, "path": str(p)} for p in files[:75]]
 
 
