@@ -40,6 +40,8 @@ jobs:
 
       - name: Run ${{ matrix.job_name }} with annotations
         shell: bash
+        env:
+          CONTAINER_RUNTIME: docker
         run: |
           set +e
           make "${{ matrix.make_target }}" 2>&1 | tee check.log
