@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compliance Dashboard</title>
+  <link rel="stylesheet" href="assets/dashboard.css">
+  <script src="assets/chart.min.js"></script>
+</head>
+<body>
+  <header class="hero">
+    <h1>Compliance Dashboard</h1>
+    <p>Assessment 11111111-1111-1111-1111-111111111111 | 2026-02-15T00:00:00Z</p>
+  </header>
+
+  <nav class="tabs" aria-label="Dashboard views">
+    <button class="tab is-active" data-tab="leadership">Leadership</button>
+    <button class="tab" data-tab="ciso">CISO</button>
+    <button class="tab" data-tab="auditor">Auditor</button>
+  </nav>
+
+  <main>
+    <section id="leadership" class="tab-panel is-active">
+<div class="grid leadership-grid">
+  <article class="card score-card">
+    <h2>SPRS Score</h2>
+    <canvas id="sprsGauge" width="280" height="280"></canvas>
+    <p class="score-number">108 / 110</p>
+  </article>
+
+  <article class="card">
+    <h2>Compliance Snapshot</h2>
+    <p class="metric">50%</p>
+    <p>Controls passing across assessed scope.</p>
+    <p class="hint">First-run snapshot: historical trend is not available yet.</p>
+  </article>
+
+  <article class="card family-status">
+    <h2>Family Status</h2>
+    <ul>
+      <li>
+        <span class="status-dot status-green"></span>
+        AC: 1/1 passing
+      </li>
+      <li>
+        <span class="status-dot status-red"></span>
+        IA: 0/1 passing
+      </li>
+    </ul>
+  </article>
+</div>
+
+<article class="card chart-card">
+  <h2>SPRS Trend</h2>
+  <p>No historical assessments found. Run additional assessments to populate trend charts.</p>
+</article>
+    </section>
+    <section id="ciso" class="tab-panel">
+<div class="grid two-col">
+  <article class="card">
+    <h2>Family Breakdown</h2>
+    <table>
+      <thead>
+        <tr><th>Family</th><th>Total</th><th>Passing</th><th>Failing</th><th>Deductions</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>AC</td>
+          <td>1</td>
+          <td>1</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>IA</td>
+          <td>1</td>
+          <td>0</td>
+          <td>1</td>
+          <td>2</td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+
+  <article class="card">
+    <h2>Remediation Priority</h2>
+    <ol>
+      <li>3.5.3 (4 points, effort medium)</li>
+    </ol>
+  </article>
+</div>
+
+<article class="card">
+  <h2>Control Drill-Down</h2>
+  <table>
+    <thead>
+      <tr><th>Control</th><th>Status</th><th>Explanation</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>3.5.3</td>
+        <td>fail</td>
+        <td>Control 3.5.3 (MFA) is not fully implemented: -4 points</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+    </section>
+    <section id="auditor" class="tab-panel">
+<article class="card">
+  <h2>Control Narratives</h2>
+  <ul>
+  </ul>
+</article>
+
+<article class="card">
+  <h2>Evidence Links</h2>
+  <ul>
+    <li><a href="/home/runner/work/rcd-cui/rcd-cui/docs/auditor_packages/.gitkeep">.gitkeep</a></li>
+  </ul>
+</article>
+
+<article class="card">
+  <h2>Verification Output Highlights</h2>
+  <table>
+    <thead>
+      <tr><th>Control</th><th>Status</th><th>Summary</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>3.5.3</td>
+        <td>fail</td>
+        <td>Control 3.5.3 (MFA) is not fully implemented: -4 points</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.tab');
+      var panels = document.querySelectorAll('.tab-panel');
+
+      function show(id) {
+        tabs.forEach(function (tab) {
+          tab.classList.toggle('is-active', tab.dataset.tab === id);
+        });
+        panels.forEach(function (panel) {
+          panel.classList.toggle('is-active', panel.id === id);
+        });
+        window.location.hash = id;
+      }
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () { show(tab.dataset.tab); });
+      });
+
+      var initialTab = window.location.hash ? window.location.hash.substring(1) : 'leadership';
+      if (!document.getElementById(initialTab)) {
+        initialTab = 'leadership';
+      }
+      show(initialTab);
+
+      var gaugeCanvas = document.getElementById('sprsGauge');
+      if (gaugeCanvas && window.Chart) {
+        new Chart(gaugeCanvas.getContext('2d'), {
+          type: 'doughnut',
+          data: {
+            labels: ['Score', 'Remaining'],
+            datasets: [{
+              data: [108, 2],
+              backgroundColor: ['#1f7a8c', '#d6d8dc']
+            }]
+          },
+          options: {cutout: '70%', responsive: true, plugins: {legend: {display: false}}}
+        });
+      }
+
+      var trendCanvas = document.getElementById('trendChart');
+      if (trendCanvas && window.Chart) {
+        new Chart(trendCanvas.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: [],
+            datasets: [{
+              label: 'SPRS score',
+              data: [],
+              borderColor: '#bf4342',
+              backgroundColor: 'rgba(191,67,66,0.15)',
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {responsive: true}
+        });
+      }
+    }());
+  </script>
+</body>
+</html>

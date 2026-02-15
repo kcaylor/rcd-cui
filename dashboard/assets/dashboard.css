@@ -1,0 +1,120 @@
+:root {
+  --bg: linear-gradient(120deg, #f7f4ea 0%, #e3edf7 100%);
+  --ink: #1d2d3f;
+  --muted: #587087;
+  --card: #ffffffdd;
+  --accent: #1f7a8c;
+  --warn: #f29f05;
+  --bad: #bf4342;
+  --good: #2f9e44;
+  --ring: #d7dfe6;
+  --font: "Source Sans 3", "Avenir Next", "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+}
+
+.hero {
+  padding: 2rem 1.5rem 1rem;
+  background: radial-gradient(circle at top right, #f6d8ae, #f7f4ea 40%);
+  border-bottom: 1px solid #d6d8dc;
+}
+
+.hero h1 { margin: 0 0 .25rem; font-size: 2rem; }
+.hero p { margin: 0; color: var(--muted); }
+
+.tabs {
+  display: flex;
+  gap: .5rem;
+  padding: 1rem 1.5rem;
+}
+
+.tab {
+  border: 1px solid #b7c0c9;
+  background: white;
+  color: var(--ink);
+  border-radius: 999px;
+  padding: .5rem 1rem;
+  cursor: pointer;
+}
+
+.tab.is-active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+}
+
+main { padding: 0 1.5rem 2rem; }
+.tab-panel { display: none; }
+.tab-panel.is-active { display: block; }
+
+.grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.leadership-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.two-col { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+.card {
+  background: var(--card);
+  border: 1px solid #d8dee5;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(29, 45, 63, 0.08);
+  padding: 1rem;
+}
+
+h2 { margin-top: 0; font-size: 1.1rem; }
+.metric { font-size: 2.3rem; font-weight: 700; margin: .2rem 0; }
+.score-number { text-align: center; font-size: 1.4rem; font-weight: 700; }
+.hint { color: var(--muted); }
+
+.family-status ul,
+.card ul,
+.card ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.status-dot {
+  display: inline-block;
+  width: .7rem;
+  height: .7rem;
+  border-radius: 50%;
+  margin-right: .35rem;
+  background: var(--ring);
+}
+.status-green { background: var(--good); }
+.status-yellow { background: var(--warn); }
+.status-red { background: var(--bad); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .92rem;
+}
+th, td {
+  border: 1px solid #dbe2e9;
+  padding: .45rem .55rem;
+  text-align: left;
+}
+th {
+  background: #f0f5fa;
+}
+
+a { color: #004e98; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+  .hero h1 { font-size: 1.6rem; }
+  main { padding: 0 .8rem 1.25rem; }
+  .tabs { padding: .8rem; overflow-x: auto; }
+  table { font-size: .85rem; }
+}
