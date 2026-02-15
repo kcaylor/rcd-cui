@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+
+permissions:
+  contents: read
+
+jobs:
+  validation:
+    name: ${{ matrix.job_name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - job_name: lint
+            make_target: ee-lint
+            parser: lint
+          - job_name: syntax-check
+            make_target: ee-syntax-check
+            parser: syntax
+          - job_name: yaml-validation
+            make_target: ee-yamllint
+            parser: yaml
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build execution environment
+        uses: ./.github/actions/setup-ee
+
+      - name: Run ${{ matrix.job_name }} with annotations
+        shell: bash
+        run: |
+          set +e
+          make "${{ matrix.make_target }}" 2>&1 | tee check.log
+          status=${PIPESTATUS[0]}
+
+          if [[ "${status}" -ne 0 ]]; then
+            case "${{ matrix.parser }}" in
+              lint)
+                while IFS= read -r line; do
+                  if [[ "${line}" =~ ^([^:]+):([0-9]+):([0-9]+):[[:space:]]([^:]+):[[:space:]](.*)$ ]]; then
+                    echo "::error file=${BASH_REMATCH[1]},line=${BASH_REMATCH[2]},col=${BASH_REMATCH[3]}::${BASH_REMATCH[4]} ${BASH_REMATCH[5]}"
+                  fi
+                done < check.log
+                ;;
+              yaml)
+                while IFS= read -r line; do
+                  if [[ "${line}" =~ ^([^:]+):([0-9]+):([0-9]+):[[:space:]]\[(error|warning)\][[:space:]](.*)$ ]]; then
+                    echo "::error file=${BASH_REMATCH[1]},line=${BASH_REMATCH[2]},col=${BASH_REMATCH[3]}::${BASH_REMATCH[4]}: ${BASH_REMATCH[5]}"
+                  fi
+                done < check.log
+                ;;
+              syntax)
+                error_file=""
+                error_line=""
+                error_col=""
+                while IFS= read -r line; do
+                  if [[ "${line}" =~ ^The\ error\ appears\ to\ be\ in\ \'([^\']+)\'\:\ line\ ([0-9]+)\,\ column\ ([0-9]+) ]]; then
+                    error_file="${BASH_REMATCH[1]}"
+                    error_line="${BASH_REMATCH[2]}"
+                    error_col="${BASH_REMATCH[3]}"
+                  fi
+                  if [[ "${line}" =~ ^ERROR!\ (.*)$ ]]; then
+                    message="${BASH_REMATCH[1]}"
+                    if [[ -n "${error_file}" ]]; then
+                      echo "::error file=${error_file},line=${error_line},col=${error_col}::${message}"
+                    else
+                      echo "::error::${message}"
+                    fi
+                  fi
+                done < check.log
+                ;;
+            esac
+          fi
+
+          exit "${status}"
