@@ -1,4 +1,6 @@
 all:
+  vars:
+    ansible_ssh_private_key_file: ${ssh_private_key_path}
   children:
     mgmt:
       hosts:
@@ -21,12 +23,12 @@ all:
         compute01:
           ansible_host: ${compute01_private_ip}
           ansible_user: root
-          ansible_ssh_common_args: '-o ProxyJump=root@${mgmt_public_ip}'
+          ansible_ssh_common_args: '-o ProxyJump=root@${mgmt_public_ip} -o IdentityFile=${ssh_private_key_path}'
           node_role: compute
           zone: restricted
         compute02:
           ansible_host: ${compute02_private_ip}
           ansible_user: root
-          ansible_ssh_common_args: '-o ProxyJump=root@${mgmt_public_ip}'
+          ansible_ssh_common_args: '-o ProxyJump=root@${mgmt_public_ip} -o IdentityFile=${ssh_private_key_path}'
           node_role: compute
           zone: restricted

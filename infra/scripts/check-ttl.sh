@@ -70,15 +70,20 @@ terraform_output_raw() {
 }
 
 to_epoch() {
-  local iso_timestamp="$1"
-  python3 - "${iso_timestamp}" <<'PY'
+  local timestamp="$1"
+  python3 - "${timestamp}" <<'PY'
 from datetime import datetime
 import sys
 
 value = sys.argv[1]
 try:
-    dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    print(int(dt.timestamp()))
+    # Try parsing as Unix timestamp first (integer)
+    if value.isdigit():
+        print(int(value))
+    else:
+        # Parse as ISO 8601 timestamp
+        dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        print(int(dt.timestamp()))
 except Exception:
     print(0)
 PY

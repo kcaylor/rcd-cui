@@ -13,8 +13,8 @@ output "private_ips" {
   value = {
     mgmt01    = hcloud_server_network.mgmt01.ip
     login01   = hcloud_server_network.login01.ip
-    compute01 = hcloud_server_network.compute01.ip
-    compute02 = hcloud_server_network.compute02.ip
+    compute01 = one(hcloud_server.compute01.network).ip
+    compute02 = one(hcloud_server.compute02.network).ip
   }
 }
 

@@ -62,6 +62,15 @@ if [[ $# -eq 0 ]]; then
   exit 0
 fi
 
+# Source .env file if present (same as the shell scripts do)
+ENV_FILE="${REPO_ROOT}/infra/.env"
+if [[ -f "${ENV_FILE}" ]]; then
+  set -a
+  # shellcheck source=/dev/null
+  source "${ENV_FILE}"
+  set +a
+fi
+
 # Prepare environment variables to pass through
 ENV_ARGS=()
 

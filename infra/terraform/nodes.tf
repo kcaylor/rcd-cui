@@ -44,9 +44,17 @@ resource "hcloud_server" "compute01" {
     ipv6_enabled = false
   }
 
+  # Private-only servers need network attached at creation
+  network {
+    network_id = hcloud_network.demo.id
+    ip         = "10.0.0.31"
+  }
+
   labels = merge(local.common_labels, {
     node_role = "compute"
   })
+
+  depends_on = [hcloud_network_subnet.demo]
 }
 
 resource "hcloud_server" "compute02" {
@@ -61,9 +69,17 @@ resource "hcloud_server" "compute02" {
     ipv6_enabled = false
   }
 
+  # Private-only servers need network attached at creation
+  network {
+    network_id = hcloud_network.demo.id
+    ip         = "10.0.0.32"
+  }
+
   labels = merge(local.common_labels, {
     node_role = "compute"
   })
+
+  depends_on = [hcloud_network_subnet.demo]
 }
 
 resource "hcloud_server_network" "mgmt01" {
@@ -82,18 +98,5 @@ resource "hcloud_server_network" "login01" {
   depends_on = [hcloud_network_subnet.demo]
 }
 
-resource "hcloud_server_network" "compute01" {
-  server_id  = hcloud_server.compute01.id
-  network_id = hcloud_network.demo.id
-  ip         = "10.0.0.31"
-
-  depends_on = [hcloud_network_subnet.demo]
-}
-
-resource "hcloud_server_network" "compute02" {
-  server_id  = hcloud_server.compute02.id
-  network_id = hcloud_network.demo.id
-  ip         = "10.0.0.32"
-
-  depends_on = [hcloud_network_subnet.demo]
-}
+# Note: compute01 and compute02 use inline network blocks
+# because private-only servers require network at creation time

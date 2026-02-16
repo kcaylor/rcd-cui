@@ -29,12 +29,13 @@ locals {
 
   effective_ssh_key_path = trimspace(var.ssh_key_path) != "" ? pathexpand(var.ssh_key_path) : local.detected_ssh_key_path
 
-  ssh_public_key = local.effective_ssh_key_path != "" && fileexists(local.effective_ssh_key_path) ? trimspace(file(local.effective_ssh_key_path)) : ""
+  ssh_public_key = local.effective_ssh_key_path != "" ? (fileexists(local.effective_ssh_key_path) ? trimspace(file(local.effective_ssh_key_path)) : "") : ""
 
+  # Hetzner labels don't allow colons, so use Unix timestamp for created_at
   common_labels = {
     cluster    = var.cluster_name
     ttl        = "${var.ttl_hours}h"
-    created_at = time_static.cluster_created_at.rfc3339
+    created_at = time_static.cluster_created_at.unix
     managed_by = "terraform"
   }
 }
@@ -74,8 +75,9 @@ resource "local_file" "ansible_inventory" {
     login_public_ip      = hcloud_server.login01.ipv4_address
     mgmt_private_ip      = hcloud_server_network.mgmt01.ip
     login_private_ip     = hcloud_server_network.login01.ip
-    compute01_private_ip = hcloud_server_network.compute01.ip
-    compute02_private_ip = hcloud_server_network.compute02.ip
+    compute01_private_ip = one(hcloud_server.compute01.network).ip
+    compute02_private_ip = one(hcloud_server.compute02.network).ip
+    ssh_private_key_path = "/workspace/infra/.ssh/demo_ed25519"
   })
   file_permission = "0644"
 }
