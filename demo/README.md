@@ -53,3 +53,12 @@ ANSIBLE_CONFIG=ansible.cfg ansible-playbook ../playbooks/<playbook>.yml -i inven
 - `compute01` `192.168.56.31`
 - `compute02` `192.168.56.32`
 - `compute03` `192.168.56.33` (dormant, lifecycle demo only)
+
+## Testing Status
+
+Validation performed (see `reports/006-vagrant-demo-lab-validation.md`):
+
+- **Passed**: Script executability, playbook syntax, Vagrantfile syntax, air-gapped cached-box startup
+- **Blocked**: Full multi-VM e2e runtime due to environment constraints (Apple Silicon QEMU emulation, RAM limits)
+
+Full end-to-end validation is planned for spec 007 (cloud demo infrastructure) which provisions native x86 VMs on Hetzner Cloud.
