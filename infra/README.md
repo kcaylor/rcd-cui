@@ -25,19 +25,27 @@ This directory provides on-demand cloud infrastructure for the 4-node demo lab u
 ## Hetzner Setup
 
 1. Create a project in [Hetzner Cloud Console](https://console.hetzner.cloud/)
-2. Generate an API token
-3. Export the token:
+2. Generate an API token (Security → API Tokens → Generate API Token)
+3. Configure credentials using `.env` file (recommended):
+
+```bash
+cd infra
+cp .env.example .env
+# Edit .env and add your HCLOUD_TOKEN
+```
+
+Or export directly:
 
 ```bash
 export HCLOUD_TOKEN="<your-token>"
 ```
 
-Optional overrides:
+Optional overrides (in `.env` or environment):
 
 ```bash
-export TF_VAR_location="hil"          # default: hil (Hillsboro)
-export TF_VAR_ttl_hours="4"           # default: 4
-export DEMO_SSH_KEY="$HOME/.ssh/id_ed25519.pub"
+TF_VAR_location="hil"          # default: hil (Hillsboro)
+TF_VAR_ttl_hours="4"           # default: 4
+TF_VAR_ssh_key_path="~/.ssh/id_ed25519.pub"
 ```
 
 ## Commands

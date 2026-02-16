@@ -5,6 +5,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 TF_DIR="${REPO_ROOT}/infra/terraform"
 TTL_CHECK_SCRIPT="${REPO_ROOT}/infra/scripts/check-ttl.sh"
+ENV_FILE="${REPO_ROOT}/infra/.env"
+
+# Source .env if present (fallback to environment variables)
+if [[ -f "${ENV_FILE}" ]]; then
+  set -a
+  # shellcheck source=/dev/null
+  source "${ENV_FILE}"
+  set +a
+fi
 
 COST_PER_HOUR_EUR="0.0296"
 
