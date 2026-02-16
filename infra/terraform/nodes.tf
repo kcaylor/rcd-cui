@@ -39,12 +39,13 @@ resource "hcloud_server" "compute01" {
   location    = var.location
   ssh_keys    = [hcloud_ssh_key.demo.id]
 
+  # Public IP needed for package installation (Hetzner private networks don't NAT)
   public_net {
-    ipv4_enabled = false
+    ipv4_enabled = true
     ipv6_enabled = false
   }
 
-  # Private-only servers need network attached at creation
+  # Private network for cluster communication
   network {
     network_id = hcloud_network.demo.id
     ip         = "10.0.0.31"
@@ -64,12 +65,13 @@ resource "hcloud_server" "compute02" {
   location    = var.location
   ssh_keys    = [hcloud_ssh_key.demo.id]
 
+  # Public IP needed for package installation (Hetzner private networks don't NAT)
   public_net {
-    ipv4_enabled = false
+    ipv4_enabled = true
     ipv6_enabled = false
   }
 
-  # Private-only servers need network attached at creation
+  # Private network for cluster communication
   network {
     network_id = hcloud_network.demo.id
     ip         = "10.0.0.32"

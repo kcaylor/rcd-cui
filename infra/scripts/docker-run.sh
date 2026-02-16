@@ -101,6 +101,13 @@ if [[ -t 0 ]]; then
   TTY_ARGS+=(-it)
 fi
 
+# Use repo's demo SSH key for Terraform (not user's personal SSH keys)
+# The demo key is at infra/.ssh/demo_ed25519.pub
+DEMO_SSH_KEY_PATH="/workspace/infra/.ssh/demo_ed25519.pub"
+if [[ -z "${TF_VAR_ssh_key_path:-}" ]]; then
+  ENV_ARGS+=(-e "TF_VAR_ssh_key_path=${DEMO_SSH_KEY_PATH}")
+fi
+
 exec docker run \
   --rm \
   "${TTY_ARGS[@]+"${TTY_ARGS[@]}"}" \

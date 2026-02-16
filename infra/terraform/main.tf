@@ -73,6 +73,8 @@ resource "local_file" "ansible_inventory" {
   content = templatefile("${path.module}/inventory.tpl", {
     mgmt_public_ip       = hcloud_server.mgmt01.ipv4_address
     login_public_ip      = hcloud_server.login01.ipv4_address
+    compute01_public_ip  = hcloud_server.compute01.ipv4_address
+    compute02_public_ip  = hcloud_server.compute02.ipv4_address
     mgmt_private_ip      = hcloud_server_network.mgmt01.ip
     login_private_ip     = hcloud_server_network.login01.ip
     compute01_private_ip = one(hcloud_server.compute01.network).ip

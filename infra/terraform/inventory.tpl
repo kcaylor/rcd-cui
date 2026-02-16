@@ -21,14 +21,14 @@ all:
     compute:
       hosts:
         compute01:
-          ansible_host: ${compute01_private_ip}
+          ansible_host: ${compute01_public_ip}
           ansible_user: root
-          ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o ProxyCommand="ssh -o StrictHostKeyChecking=no -i ${ssh_private_key_path} -W %h:%p root@${mgmt_public_ip}"'
+          private_ip: ${compute01_private_ip}
           node_role: compute
           zone: restricted
         compute02:
-          ansible_host: ${compute02_private_ip}
+          ansible_host: ${compute02_public_ip}
           ansible_user: root
-          ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o ProxyCommand="ssh -o StrictHostKeyChecking=no -i ${ssh_private_key_path} -W %h:%p root@${mgmt_public_ip}"'
+          private_ip: ${compute02_private_ip}
           node_role: compute
           zone: restricted

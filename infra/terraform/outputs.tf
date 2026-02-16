@@ -8,6 +8,16 @@ output "login01_ip" {
   value       = hcloud_server.login01.ipv4_address
 }
 
+output "compute01_ip" {
+  description = "Public IPv4 address for compute01"
+  value       = hcloud_server.compute01.ipv4_address
+}
+
+output "compute02_ip" {
+  description = "Public IPv4 address for compute02"
+  value       = hcloud_server.compute02.ipv4_address
+}
+
 output "private_ips" {
   description = "Private IP addresses for all nodes"
   value = {
