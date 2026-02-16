@@ -30,3 +30,12 @@ docs/generated/
 Thumbs.db
 .vscode/
 .idea/
+
+# Terraform / cloud demo infra
+infra/terraform/.terraform/
+infra/terraform/.terraform.lock.hcl
+infra/terraform/terraform.tfstate
+infra/terraform/terraform.tfstate.*
+infra/terraform/crash.log
+infra/terraform/*.tfplan
+infra/terraform/inventory.yml
