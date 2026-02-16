@@ -7,6 +7,9 @@ TF_DIR="${REPO_ROOT}/infra/terraform"
 INVENTORY_PATH="${TF_DIR}/inventory.yml"
 TTL_CHECK_SCRIPT="${REPO_ROOT}/infra/scripts/check-ttl.sh"
 ENV_FILE="${REPO_ROOT}/infra/.env"
+DEMO_SSH_DIR="${REPO_ROOT}/infra/.ssh"
+DEMO_SSH_KEY_PATH="${DEMO_SSH_DIR}/demo_ed25519"
+DEMO_SSH_PUBKEY_PATH="${DEMO_SSH_KEY_PATH}.pub"
 
 # Source .env if present (fallback to environment variables)
 if [[ -f "${ENV_FILE}" ]]; then
@@ -39,18 +42,94 @@ require_command() {
   fi
 }
 
+generate_demo_ssh_key() {
+  # Generate a dedicated SSH key for cloud demo infrastructure
+  # This key is gitignored and never committed to the repository
+
+  printf '\n'
+  printf '┌─────────────────────────────────────────────────────────────────┐\n'
+  printf '│                    SSH Key Generation                          │\n'
+  printf '├─────────────────────────────────────────────────────────────────┤\n'
+  printf '│ No SSH key found for cloud demo infrastructure.                │\n'
+  printf '│                                                                 │\n'
+  printf '│ This will generate a NEW Ed25519 SSH keypair:                  │\n'
+  printf '│   Private key: infra/.ssh/demo_ed25519                         │\n'
+  printf '│   Public key:  infra/.ssh/demo_ed25519.pub                     │\n'
+  printf '│                                                                 │\n'
+  printf '│ SECURITY NOTES:                                                 │\n'
+  printf '│   - Keys are stored locally in this repository                 │\n'
+  printf '│   - Keys are gitignored and will NEVER be committed            │\n'
+  printf '│   - Keys are used ONLY for demo cloud VMs                      │\n'
+  printf '│   - Delete infra/.ssh/demo_* to remove them                    │\n'
+  printf '└─────────────────────────────────────────────────────────────────┘\n'
+  printf '\n'
+
+  local reply
+  printf 'Generate dedicated demo SSH key? [Y/n] '
+  read -r reply
+
+  case "${reply}" in
+    n|N|no|NO)
+      return 1
+      ;;
+  esac
+
+  # Ensure directory exists
+  mkdir -p "${DEMO_SSH_DIR}"
+
+  info "Generating Ed25519 SSH keypair..."
+
+  # Generate key with no passphrase, minimal output
+  # The -q flag suppresses the randomart and other output
+  if ! ssh-keygen -t ed25519 -f "${DEMO_SSH_KEY_PATH}" -N "" -C "rcd-demo-cloud" -q; then
+    error "Failed to generate SSH key"
+    return 1
+  fi
+
+  # Set restrictive permissions on private key
+  chmod 600 "${DEMO_SSH_KEY_PATH}"
+  chmod 644 "${DEMO_SSH_PUBKEY_PATH}"
+
+  printf '\n'
+  printf 'SSH keypair generated successfully.\n'
+  printf '  Private key: %s\n' "${DEMO_SSH_KEY_PATH}"
+  printf '  Public key:  %s\n' "${DEMO_SSH_PUBKEY_PATH}"
+  printf '\n'
+  printf 'The private key contents are NOT displayed for security.\n'
+  printf '\n'
+
+  return 0
+}
+
 detect_ssh_key() {
   local key_path="${TF_VAR_ssh_key_path:-}"
 
+  # 1. Check explicit override via TF_VAR_ssh_key_path
   if [[ -n "${key_path}" && -f "${key_path}" ]]; then
     printf '%s\n' "${key_path}"
     return 0
   fi
 
+  # 2. Check legacy DEMO_SSH_KEY variable
   if [[ -n "${DEMO_SSH_KEY:-}" && -f "${DEMO_SSH_KEY}" ]]; then
     printf '%s\n' "${DEMO_SSH_KEY}"
     return 0
   fi
+
+  # 3. Check for dedicated demo key (preferred)
+  if [[ -f "${DEMO_SSH_PUBKEY_PATH}" ]]; then
+    printf '%s\n' "${DEMO_SSH_PUBKEY_PATH}"
+    return 0
+  fi
+
+  # 4. No demo key exists - offer to generate one
+  if generate_demo_ssh_key; then
+    printf '%s\n' "${DEMO_SSH_PUBKEY_PATH}"
+    return 0
+  fi
+
+  # 5. User declined - fall back to system keys
+  info "Falling back to system SSH keys..."
 
   if [[ -f "${HOME}/.ssh/id_ed25519.pub" ]]; then
     printf '%s\n' "${HOME}/.ssh/id_ed25519.pub"
@@ -63,8 +142,10 @@ detect_ssh_key() {
   fi
 
   error "No SSH public key found."
-  error "Expected locations: ~/.ssh/id_ed25519.pub or ~/.ssh/id_rsa.pub"
-  error "Or set DEMO_SSH_KEY=/path/to/key.pub"
+  error "Options:"
+  error "  1. Run this command again and accept SSH key generation"
+  error "  2. Create a key manually: ssh-keygen -t ed25519"
+  error "  3. Set TF_VAR_ssh_key_path=/path/to/key.pub in infra/.env"
   exit 3
 }
 

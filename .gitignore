@@ -39,3 +39,11 @@ infra/terraform/terraform.tfstate.*
 infra/terraform/crash.log
 infra/terraform/*.tfplan
 infra/terraform/inventory.yml
+
+# Demo SSH keys (NEVER commit private keys)
+infra/.ssh/demo_*
+infra/.ssh/id_*
+infra/.ssh/*.pub
+infra/.ssh/*_key
+infra/.ssh/*_key.pub
+!infra/.ssh/.gitkeep
