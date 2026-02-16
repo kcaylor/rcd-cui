@@ -13,14 +13,10 @@ This directory provides on-demand cloud infrastructure for the 4-node demo lab u
 
 ## Prerequisites
 
-- Terraform `1.5+`
-- Ansible `2.15+`
-- Python `3` (used by TTL helper script)
+- **Docker** (only requirement - all tools run inside a container)
 - Hetzner Cloud API token
-- SSH public key at one of:
-  - `~/.ssh/id_ed25519.pub`
-  - `~/.ssh/id_rsa.pub`
-  - or set `DEMO_SSH_KEY=/path/to/key.pub`
+
+All other tools (Terraform, Ansible, hcloud CLI) are bundled in a Docker image that builds automatically on first run.
 
 ## Hetzner Setup
 
@@ -121,20 +117,48 @@ EOF_KEYS
 
 Compute nodes remain private-only and are reached through management/login workflow.
 
+## Docker Image
+
+All tools run inside a Docker container. The image builds automatically on first `make demo-cloud-*` command.
+
+Rebuild the image manually (after Dockerfile changes):
+
+```bash
+make demo-docker-build
+```
+
+Image contents:
+
+- Terraform 1.7.5
+- Ansible 9.x (ansible-core 2.16.x)
+- hcloud CLI 1.42.0
+- Python 3.12
+- ssh-keygen, jq, git
+
 ## Troubleshooting
+
+### `Docker is not installed` or `Docker daemon is not running`
+
+Install and start Docker Desktop, then retry.
 
 ### `HCLOUD_TOKEN is not set`
 
+Add token to `infra/.env`:
+
 ```bash
-export HCLOUD_TOKEN="<your-token>"
+cp infra/.env.example infra/.env
+# Edit .env and add your HCLOUD_TOKEN
 ```
 
 ### `No SSH public key found`
 
+On first run, you'll be prompted to generate a dedicated demo SSH key.
+Accept the prompt, or provide your own key:
+
 ```bash
-ls ~/.ssh/id_ed25519.pub ~/.ssh/id_rsa.pub
-# or
-export DEMO_SSH_KEY=/path/to/key.pub
+# Option 1: Accept the prompt to generate infra/.ssh/demo_ed25519
+# Option 2: Set in .env
+TF_VAR_ssh_key_path=~/.ssh/id_ed25519.pub
 ```
 
 ### `Cluster already exists`
@@ -143,22 +167,14 @@ export DEMO_SSH_KEY=/path/to/key.pub
 make demo-cloud-down
 ```
 
-### Terraform command not found
-
-Install Terraform and verify:
-
-```bash
-terraform version
-```
-
 ### Ansible provisioning fails
 
 Re-run just the provisioning step:
 
 ```bash
-cd /Users/kellycaylor/dev/rcd-cui/demo/vagrant
-ANSIBLE_INVENTORY=../../infra/terraform/inventory.yml \
-  ansible-playbook ../playbooks/provision.yml
+./infra/scripts/docker-run.sh ansible-playbook \
+  -i infra/terraform/inventory.yml \
+  demo/playbooks/provision.yml
 ```
 
 ### Compute nodes are unreachable directly

@@ -9,8 +9,9 @@ CONTAINER_RUNTIME ?= $(shell command -v podman >/dev/null 2>&1 && echo podman ||
 EE_IMAGE ?= rcd-cui-ee:latest
 PROJECT_DIR := $(shell pwd)
 EE_RUN = $(CONTAINER_RUNTIME) run --rm -v $(PROJECT_DIR):/workspace -w /workspace $(EE_IMAGE)
+DEMO_DOCKER = ./infra/scripts/docker-run.sh
 
-.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check assess evidence sprs poam dashboard badge-data report auditor-package site demo-cloud-up demo-cloud-down demo-cloud-status
+.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check assess evidence sprs poam dashboard badge-data report auditor-package site demo-docker-build demo-cloud-up demo-cloud-down demo-cloud-status
 
 env:
 	./scripts/bootstrap-env.sh
@@ -89,11 +90,14 @@ report: sprs poam dashboard
 auditor-package: report
 	$(PYTHON) scripts/generate_auditor_package.py --output-dir docs/auditor_packages
 
+demo-docker-build:
+	$(DEMO_DOCKER) --rebuild echo "Docker image rebuilt successfully"
+
 demo-cloud-up:
-	./infra/scripts/demo-cloud-up.sh
+	$(DEMO_DOCKER) ./infra/scripts/demo-cloud-up.sh
 
 demo-cloud-down:
-	./infra/scripts/demo-cloud-down.sh
+	$(DEMO_DOCKER) ./infra/scripts/demo-cloud-down.sh
 
 demo-cloud-status:
-	./infra/scripts/check-ttl.sh --status
+	$(DEMO_DOCKER) ./infra/scripts/check-ttl.sh --status
