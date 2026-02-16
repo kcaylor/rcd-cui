@@ -183,6 +183,24 @@
       tags:
         - freeipa
 
+    - name: Import Wazuh GPG key
+      ansible.builtin.rpm_key:
+        key: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+        state: present
+      tags:
+        - wazuh
+
+    - name: Add Wazuh repository
+      ansible.builtin.yum_repository:
+        name: wazuh
+        description: Wazuh repository
+        baseurl: https://packages.wazuh.com/4.x/yum/
+        gpgcheck: true
+        gpgkey: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+        enabled: true
+      tags:
+        - wazuh
+
     - name: Install Wazuh manager dependencies
       ansible.builtin.package:
         name:
@@ -308,11 +326,29 @@
       tags:
         - freeipa
 
-- name: Configure Wazuh agent on all nodes
-  hosts: all
+- name: Configure Wazuh agent on all nodes (except manager)
+  hosts: all:!mgmt
   become: true
   gather_facts: true
   tasks:
+    - name: Import Wazuh GPG key
+      ansible.builtin.rpm_key:
+        key: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+        state: present
+      tags:
+        - wazuh
+
+    - name: Add Wazuh repository
+      ansible.builtin.yum_repository:
+        name: wazuh
+        description: Wazuh repository
+        baseurl: https://packages.wazuh.com/4.x/yum/
+        gpgcheck: true
+        gpgkey: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+        enabled: true
+      tags:
+        - wazuh
+
     - name: Install Wazuh agent package
       ansible.builtin.package:
         name: wazuh-agent
