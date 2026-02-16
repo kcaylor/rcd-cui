@@ -82,6 +82,8 @@ make assess           # Run compliance assessment
 - Git repository, `gh-pages` branch for published artifacts, JSON files for badge data (005-ci-cd-dashboard)
 - Bash (orchestration scripts), Ansible 2.15+ (provisioning), Ruby (Vagrantfile) + Vagrant 2.3+, VirtualBox 7.0+ / libvirt / vagrant-qemu, Ansible (006-vagrant-demo-lab)
 - NFS shared storage on mgmt01, local VM disks via Vagran (006-vagrant-demo-lab)
+- Bash (wrapper scripts), HCL (Terraform 1.5+), Python 3.9+ (inventory generation) + Terraform (Hetzner provider), Ansible 2.15+, existing demo/playbooks/* (007-cloud-demo-infra)
+- Terraform state (local file, optional Terraform Cloud remote) (007-cloud-demo-infra)
 
 ## Recent Changes
 - 005-ci-cd-dashboard: Added YAML (GitHub Actions workflows), Bash (scripts), Python 3.9+ (existing tooling) + GitHub Actions, GitHub Pages, shields.io (badges), existing Makefile targets
