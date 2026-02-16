@@ -1,0 +1,61 @@
+---
+- name: Ensure requested node metadata is present
+  ansible.builtin.assert:
+    that:
+      - node_name is defined
+      - node_ip is defined
+
+- name: Provision lifecycle node with Vagrant
+  ansible.builtin.command: "vagrant up {{ node_name }} --provider {{ demo_provider | default('virtualbox') }}"
+  args:
+    chdir: "{{ vagrant_cwd | default(playbook_dir ~ '/../vagrant') }}"
+  delegate_to: localhost
+  run_once: true
+  changed_when: true
+  tags:
+    - add
+
+- name: Add new node to in-memory inventory for this run
+  ansible.builtin.add_host:
+    name: "{{ node_name }}"
+    groups: dynamic_compute
+    ansible_host: "{{ node_ip }}"
+    ansible_user: vagrant
+    ansible_ssh_private_key_file: ~/.vagrant.d/insecure_private_key
+    node_role: compute
+    zone: restricted
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - add
+
+- name: Enroll new node in FreeIPA host records
+  ansible.builtin.command: "ipa host-add {{ node_name }}.demo.lab --ip-address={{ node_ip }}"
+  register: node_provision_ipa_host
+  changed_when: node_provision_ipa_host.rc == 0
+  failed_when: false
+  tags:
+    - add
+
+- name: Register node in Slurm configuration
+  ansible.builtin.lineinfile:
+    path: /etc/slurm/slurm.conf
+    insertafter: '^NodeName=compute02.*$'
+    line: "NodeName={{ node_name }} CPUs=1 State=UNKNOWN"
+  tags:
+    - add
+
+- name: Add node to debug partition
+  ansible.builtin.lineinfile:
+    path: /etc/slurm/slurm.conf
+    regexp: '^PartitionName=debug\s+Nodes=.*$'
+    line: 'PartitionName=debug Nodes=compute01,compute02,compute03 Default=YES MaxTime=INFINITE State=UP'
+  tags:
+    - add
+
+- name: Reload Slurm controller state
+  ansible.builtin.command: scontrol reconfigure
+  changed_when: false
+  failed_when: false
+  tags:
+    - add

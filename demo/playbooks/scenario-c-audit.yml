@@ -1,0 +1,57 @@
+---
+- import_playbook: ../../playbooks/assess.yml
+
+- import_playbook: ../../playbooks/ssp_evidence.yml
+
+- name: Scenario C - Generate auditor package artifacts on controller
+  hosts: localhost
+  gather_facts: false
+  vars:
+    scenario_c_date: "{{ lookup('pipe', 'date +%F') }}"
+    scenario_c_repo_root: "{{ playbook_dir }}/../.."
+  tasks:
+    - name: Generate SPRS report from latest assessment
+      ansible.builtin.command: "{{ ansible_playbook_python }} scripts/generate_sprs_report.py"
+      args:
+        chdir: "{{ scenario_c_repo_root }}"
+      changed_when: true
+
+    - name: Generate auditor package archive
+      ansible.builtin.command: >-
+        {{ ansible_playbook_python }} scripts/generate_auditor_package.py
+        --output-dir docs/auditor_packages
+      args:
+        chdir: "{{ scenario_c_repo_root }}"
+      changed_when: true
+
+    - name: Record generated package paths
+      ansible.builtin.set_fact:
+        scenario_c_local_archive: "{{ scenario_c_repo_root }}/docs/auditor_packages/{{ scenario_c_date }}.tar.gz"
+        scenario_c_local_manifest: "{{ scenario_c_repo_root }}/docs/auditor_packages/{{ scenario_c_date }}/manifest.json"
+
+- name: Scenario C - Publish auditor package into shared lab path
+  hosts: mgmt
+  become: true
+  gather_facts: false
+  vars:
+    output_dir: "{{ output_dir | default('/shared/auditor') }}"
+  tasks:
+    - name: Ensure shared auditor directory exists
+      ansible.builtin.file:
+        path: "{{ output_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Copy auditor archive into shared path
+      ansible.builtin.copy:
+        src: "{{ hostvars['localhost'].scenario_c_local_archive }}"
+        dest: "{{ output_dir }}/"
+        mode: '0644'
+
+    - name: Copy auditor manifest into shared path
+      ansible.builtin.copy:
+        src: "{{ hostvars['localhost'].scenario_c_local_manifest }}"
+        dest: "{{ output_dir }}/manifest.json"
+        mode: '0644'

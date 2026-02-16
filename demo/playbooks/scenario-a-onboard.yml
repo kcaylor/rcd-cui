@@ -1,0 +1,14 @@
+---
+- name: Scenario A - Project Helios onboarding
+  hosts: mgmt
+  become: true
+  gather_facts: true
+  vars:
+    project_name: "{{ project_name | default('helios') }}"
+  roles:
+    - role: project_onboarding
+      vars:
+        project_onboarding_name: "{{ project_name }}"
+        project_onboarding_group: "{{ project_name }}"
+        project_onboarding_qos: "project-{{ project_name }}"
+        project_onboarding_storage_path: "/shared/projects/{{ project_name }}"

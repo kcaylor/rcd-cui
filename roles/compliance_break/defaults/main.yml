@@ -1,0 +1,18 @@
+---
+compliance_break_violations:
+  - id: V001
+    description: SSH permits root login
+    control_id: 3.1.1
+    enabled: true
+  - id: V002
+    description: auditd stopped
+    control_id: 3.3.1
+    enabled: true
+  - id: V003
+    description: /etc/shadow world-readable
+    control_id: 3.1.2
+    enabled: true
+  - id: V004
+    description: firewalld stopped
+    control_id: 3.13.1
+    enabled: true

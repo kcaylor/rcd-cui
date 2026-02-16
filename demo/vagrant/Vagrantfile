@@ -1,0 +1,65 @@
+# frozen_string_literal: true
+
+Vagrant.configure('2') do |config|
+  config.vm.box = 'generic/rocky9'
+  config.vm.box_check_update = false
+  config.ssh.insert_key = false
+
+  nodes = {
+    'mgmt01' => { ip: '192.168.56.10', memory: 4096, cpus: 2, role: 'mgmt', zone: 'management', autostart: true, ssh_port: 2200, mac: '52:54:00:56:00:10' },
+    'login01' => { ip: '192.168.56.20', memory: 2048, cpus: 1, role: 'login', zone: 'internal', autostart: true, ssh_port: 2201, mac: '52:54:00:56:00:20' },
+    'compute01' => { ip: '192.168.56.31', memory: 2048, cpus: 1, role: 'compute', zone: 'restricted', autostart: true, ssh_port: 2202, mac: '52:54:00:56:00:31' },
+    'compute02' => { ip: '192.168.56.32', memory: 2048, cpus: 1, role: 'compute', zone: 'restricted', autostart: true, ssh_port: 2203, mac: '52:54:00:56:00:32' },
+    'compute03' => { ip: '192.168.56.33', memory: 2048, cpus: 1, role: 'compute', zone: 'restricted', autostart: false, ssh_port: 2204, mac: '52:54:00:56:00:33' }
+  }
+
+  nodes.each do |name, settings|
+    config.vm.define name, autostart: settings[:autostart] do |vm|
+      vm.vm.hostname = name
+      vm.vm.network 'private_network', ip: settings[:ip]
+
+      vm.vm.provider 'virtualbox' do |vb|
+        vb.name = "rcd-demo-#{name}"
+        vb.memory = settings[:memory]
+        vb.cpus = settings[:cpus]
+      end
+
+      vm.vm.provider 'libvirt' do |lv|
+        lv.memory = settings[:memory]
+        lv.cpus = settings[:cpus]
+      end
+
+      vm.vm.provider 'qemu' do |qemu|
+        qemu.arch = 'x86_64'
+        qemu.machine = 'q35'
+        qemu.cpu = 'max'
+        qemu.net_device = 'virtio-net-pci'
+        qemu.ssh_port = settings[:ssh_port]
+        qemu.ssh_auto_correct = true
+        # net0: default user-mode NAT + hostfwd for SSH (managed by vagrant-qemu)
+        # net1: vde_switch-backed L2 segment for inter-VM networking without root
+        qemu.extra_qemu_args = [
+          '-accel', 'tcg,thread=multi,tb-size=512',
+          '-netdev', 'vde,id=net1,sock=/tmp/rcd-demo-vde',
+          '-device', "virtio-net-pci,netdev=net1,mac=#{settings[:mac]}"
+        ]
+        qemu.memory = settings[:memory]
+        qemu.smp = settings[:cpus]
+      end
+
+      vm.vm.provision 'ansible' do |ansible|
+        ansible.playbook = '../playbooks/provision.yml'
+        ansible.inventory_path = 'inventory/hosts.yml'
+        ansible.config_file = 'ansible.cfg'
+        ansible.compatibility_mode = '2.0'
+        ansible.limit = 'all'
+        ansible.extra_vars = {
+          freeipa_domain: 'demo.lab',
+          freeipa_realm: 'DEMO.LAB',
+          freeipa_server_ip: '192.168.56.10',
+          freeipa_admin_password: 'DemoPass123!'
+        }
+      end
+    end
+  end
+end

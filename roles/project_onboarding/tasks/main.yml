@@ -1,0 +1,73 @@
+---
+- name: Ensure shared projects root exists
+  ansible.builtin.file:
+    path: /shared/projects
+    state: directory
+    owner: root
+    group: root
+    mode: '0775'
+
+- name: Ensure FreeIPA project group exists
+  ansible.builtin.command: >-
+    ipa group-add {{ project_onboarding_group }}
+    --desc="Project {{ project_onboarding_name }} demo group"
+  register: project_onboarding_group_add
+  changed_when: project_onboarding_group_add.rc == 0
+  failed_when:
+    - project_onboarding_group_add.rc != 0
+    - "'already exists' not in (project_onboarding_group_add.stderr | lower)"
+
+- name: Check if FreeIPA user already exists
+  ansible.builtin.command: "ipa user-show {{ item.username }}"
+  loop: "{{ project_onboarding_users }}"
+  register: project_onboarding_user_lookup
+  changed_when: false
+  failed_when: false
+
+- name: Create FreeIPA users for project
+  ansible.builtin.command: >-
+    ipa user-add {{ item.item.username }}
+    --first={{ item.item.first_name }}
+    --last={{ item.item.last_name }}
+    --email={{ item.item.email }}
+    --password
+  loop: "{{ project_onboarding_user_lookup.results }}"
+  when: item.rc != 0
+  changed_when: true
+  no_log: true
+  args:
+    stdin: "{{ project_onboarding_password }}\n{{ project_onboarding_password }}"
+
+- name: Ensure project users are members of project group
+  ansible.builtin.command: >-
+    ipa group-add-member {{ project_onboarding_group }} --users={{ item.username }}
+  loop: "{{ project_onboarding_users }}"
+  changed_when: "'Number of members added 1' in (stdout | default(''))"
+  failed_when: false
+
+- name: Ensure Slurm QOS exists
+  ansible.builtin.command: "sacctmgr -i add qos {{ project_onboarding_qos }}"
+  changed_when: "' Adding ' in (stdout | default(''))"
+  failed_when: false
+
+- name: Ensure project storage directory exists
+  ansible.builtin.file:
+    path: "{{ project_onboarding_storage_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0770'
+
+- name: Ensure ACL package is installed
+  ansible.builtin.package:
+    name: acl
+    state: present
+
+- name: Apply project storage ACL for FreeIPA group
+  ansible.posix.acl:
+    path: "{{ project_onboarding_storage_path }}"
+    entity: "{{ project_onboarding_group }}"
+    etype: group
+    permissions: rwx
+    default: true
+    state: present
