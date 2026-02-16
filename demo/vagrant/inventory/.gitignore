@@ -1,0 +1,2 @@
+# Generated at runtime by gen-qemu-inventory.sh (contains host-specific paths)
+hosts-qemu-runtime.yml

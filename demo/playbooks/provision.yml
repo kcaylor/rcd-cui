@@ -1,0 +1,447 @@
+---
+- name: Wait for SSH connectivity
+  hosts: all
+  become: false
+  gather_facts: false
+  tasks:
+    - name: Wait for SSH to become available
+      ansible.builtin.wait_for_connection:
+        delay: 2
+        timeout: 300
+      tags:
+        - base
+
+- name: Base packages and host baseline
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    base_packages:
+      - vim
+      - curl
+      - git
+      - rsync
+      - chrony
+      - nfs-utils
+  tasks:
+    - name: Ensure FQDN hostname is set (required by FreeIPA)
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}.{{ freeipa_domain | default('demo.lab') }}"
+      tags:
+        - base
+
+    - name: Configure QEMU internal network (second NIC) for inter-VM connectivity
+      ansible.builtin.shell: |
+        set -euo pipefail
+
+        # vagrant-qemu ignores private_network, so we rely on a second NIC (net1).
+        # Select the first ethernet device that is NOT the default route device.
+        default_dev="$(ip route show default 2>/dev/null | awk '{print $5; exit}')"
+        dev="$(nmcli -t -f DEVICE,TYPE device status | awk -F: -v def="${default_dev}" '$2=="ethernet" && $1!=def {print $1; exit}')"
+        if [[ -z "${dev}" ]]; then
+          exit 0
+        fi
+
+        ip="{{ qemu_internal_ip }}"
+        if [[ -z "${ip}" ]]; then
+          echo "missing qemu_internal_ip for ${HOSTNAME}" >&2
+          exit 1
+        fi
+
+        # If another connection is currently bound to the internal NIC, disable its autoconnect
+        # and disconnect it so demo-internal can be activated.
+        active_conn="$(nmcli -t -f DEVICE,CONNECTION device status | awk -F: -v d="${dev}" '$1==d {print $2; exit}')"
+        if [[ -n "${active_conn}" && "${active_conn}" != "--" && "${active_conn}" != "demo-internal" ]]; then
+          nmcli connection modify "${active_conn}" connection.autoconnect no || true
+          nmcli device disconnect "${dev}" || true
+        fi
+
+        if nmcli -t -f NAME connection show | grep -qx "demo-internal"; then
+          nmcli connection modify demo-internal connection.interface-name "${dev}"
+          nmcli connection modify demo-internal ipv4.addresses "${ip}/24"
+          nmcli connection modify demo-internal ipv4.method manual
+          nmcli connection modify demo-internal ipv4.never-default yes
+          nmcli connection modify demo-internal ipv6.method ignore
+        else
+          nmcli connection add type ethernet ifname "${dev}" con-name demo-internal \
+            ipv4.addresses "${ip}/24" ipv4.method manual ipv4.never-default yes ipv6.method ignore
+        fi
+
+        nmcli connection up demo-internal
+      args:
+        executable: /bin/bash
+      changed_when: true
+      when:
+        - demo_provider | default('') == 'qemu'
+      vars:
+        qemu_internal_ip: >-
+          {{
+            {
+              'mgmt01': '192.168.56.10',
+              'login01': '192.168.56.20',
+              'compute01': '192.168.56.31',
+              'compute02': '192.168.56.32',
+              'compute03': '192.168.56.33'
+            }.get(inventory_hostname, '')
+          }}
+      tags:
+        - base
+
+    - name: Ensure /etc/hosts has lab hostname mappings
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        marker: "# {mark} rcd-demo-lab"
+        block: |
+          192.168.56.10 mgmt01 mgmt01.demo.lab
+          192.168.56.20 login01 login01.demo.lab
+          192.168.56.31 compute01 compute01.demo.lab
+          192.168.56.32 compute02 compute02.demo.lab
+          192.168.56.33 compute03 compute03.demo.lab
+      when:
+        - demo_provider | default('') == 'qemu'
+      tags:
+        - base
+
+    - name: Install base packages
+      ansible.builtin.package:
+        name: "{{ base_packages }}"
+        state: present
+      tags:
+        - base
+
+    - name: Ensure chronyd is running
+      ansible.builtin.service:
+        name: chronyd
+        state: started
+        enabled: true
+      tags:
+        - base
+
+- name: Configure management node services
+  hosts: mgmt
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Install FreeIPA server packages
+      ansible.builtin.dnf:
+        name:
+          - freeipa-server
+          - freeipa-server-dns
+        state: present
+        allowerasing: true
+      tags:
+        - freeipa
+
+    - name: Ensure IPv6 is enabled (required by FreeIPA installer)
+      ansible.builtin.sysctl:
+        name: "{{ item }}"
+        value: "0"
+        state: present
+        sysctl_set: true
+        reload: true
+      loop:
+        - net.ipv6.conf.all.disable_ipv6
+        - net.ipv6.conf.default.disable_ipv6
+        - net.ipv6.conf.lo.disable_ipv6
+      tags:
+        - freeipa
+
+    - name: Check loopback IPv6 address
+      ansible.builtin.command: ip -6 addr show dev lo
+      register: lo_ipv6
+      changed_when: false
+      tags:
+        - freeipa
+
+    - name: Ensure ::1 is assigned to loopback
+      ansible.builtin.command: ip -6 addr add ::1/128 dev lo
+      when: "'::1/128' not in lo_ipv6.stdout"
+      changed_when: true
+      tags:
+        - freeipa
+
+    - name: Ensure ::1 localhost mapping exists
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: '^::1\\s+'
+        line: '::1 localhost localhost.localdomain'
+      tags:
+        - freeipa
+
+    - name: Install and configure FreeIPA server
+      ansible.builtin.command: >-
+        ipa-server-install --unattended
+        --realm={{ freeipa_realm | default('DEMO.LAB') }}
+        --domain={{ freeipa_domain | default('demo.lab') }}
+        --hostname=mgmt01.{{ freeipa_domain | default('demo.lab') }}
+        --setup-dns --auto-forwarders
+        --admin-password={{ freeipa_admin_password | default('DemoPass123!') }}
+        --ds-password={{ freeipa_admin_password | default('DemoPass123!') }}
+      args:
+        creates: /etc/ipa/default.conf
+      when: not ansible_check_mode
+      tags:
+        - freeipa
+
+    - name: Install Wazuh manager dependencies
+      ansible.builtin.package:
+        name:
+          - wazuh-manager
+          - rsyslog
+        state: present
+      tags:
+        - wazuh
+
+    - name: Ensure wazuh manager service is enabled
+      ansible.builtin.service:
+        name: wazuh-manager
+        state: started
+        enabled: true
+      tags:
+        - wazuh
+
+    - name: Install Slurm controller packages
+      ansible.builtin.package:
+        name:
+          - slurm
+          - slurm-slurmctld
+        state: present
+      tags:
+        - slurm
+
+    - name: Deploy Slurm controller configuration
+      ansible.builtin.copy:
+        dest: /etc/slurm/slurm.conf
+        owner: root
+        group: root
+        mode: '0644'
+        content: |
+          ClusterName=demo-lab
+          SlurmctldHost=mgmt01
+          SlurmUser=slurm
+          StateSaveLocation=/var/spool/slurmctld
+          SlurmdSpoolDir=/var/spool/slurmd
+          AuthType=auth/munge
+          CryptoType=crypto/munge
+          MpiDefault=none
+          ProctrackType=proctrack/cgroup
+          ReturnToService=2
+          SchedulerType=sched/backfill
+          SelectType=select/cons_tres
+          SelectTypeParameters=CR_Core
+          NodeName=compute01 CPUs=1 State=UNKNOWN
+          NodeName=compute02 CPUs=1 State=UNKNOWN
+          PartitionName=debug Nodes=compute01,compute02 Default=YES MaxTime=INFINITE State=UP
+      tags:
+        - slurm
+
+    - name: Ensure slurmctld service is enabled
+      ansible.builtin.service:
+        name: slurmctld
+        state: started
+        enabled: true
+      tags:
+        - slurm
+
+    - name: Install NFS server packages
+      ansible.builtin.package:
+        name: nfs-utils
+        state: present
+      tags:
+        - nfs
+
+    - name: Create shared export path
+      ansible.builtin.file:
+        path: /shared
+        state: directory
+        owner: root
+        group: root
+        mode: '0775'
+      tags:
+        - nfs
+
+    - name: Configure NFS export for /shared
+      ansible.builtin.lineinfile:
+        path: /etc/exports
+        line: '/shared 192.168.56.0/24(rw,sync,no_subtree_check,no_root_squash)'
+        regexp: '^/shared\s+'
+      tags:
+        - nfs
+
+    - name: Enable NFS server service
+      ansible.builtin.service:
+        name: nfs-server
+        state: started
+        enabled: true
+      tags:
+        - nfs
+
+    - name: Reload NFS exports
+      ansible.builtin.command: exportfs -ra
+      changed_when: false
+      when: not ansible_check_mode
+      tags:
+        - nfs
+
+- name: Configure FreeIPA clients on non-management nodes
+  hosts: login:compute
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Install FreeIPA client packages
+      ansible.builtin.dnf:
+        name: freeipa-client
+        state: present
+        allowerasing: true
+      tags:
+        - freeipa
+
+    - name: Enroll FreeIPA client
+      ansible.builtin.command: >-
+        ipa-client-install --unattended --mkhomedir
+        --domain={{ freeipa_domain | default('demo.lab') }}
+        --realm={{ freeipa_realm | default('DEMO.LAB') }}
+        --server=mgmt01.{{ freeipa_domain | default('demo.lab') }}
+      args:
+        creates: /etc/ipa/default.conf
+      when: not ansible_check_mode
+      tags:
+        - freeipa
+
+- name: Configure Wazuh agent on all nodes
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Install Wazuh agent package
+      ansible.builtin.package:
+        name: wazuh-agent
+        state: present
+      tags:
+        - wazuh
+
+    - name: Configure Wazuh manager endpoint
+      ansible.builtin.lineinfile:
+        path: /var/ossec/etc/ossec.conf
+        regexp: '<address>.*</address>'
+        line: '    <address>192.168.56.10</address>'
+      tags:
+        - wazuh
+
+    - name: Ensure Wazuh agent service is enabled
+      ansible.builtin.service:
+        name: wazuh-agent
+        state: started
+        enabled: true
+      tags:
+        - wazuh
+
+- name: Configure Slurm compute nodes
+  hosts: compute
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Install Slurm compute packages
+      ansible.builtin.package:
+        name:
+          - slurm
+          - slurm-slurmd
+        state: present
+      tags:
+        - slurm
+
+    - name: Ensure slurmd service is running
+      ansible.builtin.service:
+        name: slurmd
+        state: started
+        enabled: true
+      tags:
+        - slurm
+
+- name: Configure Slurm submit host
+  hosts: login
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Install Slurm submit client packages
+      ansible.builtin.package:
+        name: slurm
+        state: present
+      tags:
+        - slurm
+
+- name: Configure NFS clients on all non-management nodes
+  hosts: login:compute
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Ensure shared mount point exists
+      ansible.builtin.file:
+        path: /shared
+        state: directory
+        owner: root
+        group: root
+        mode: '0775'
+      tags:
+        - nfs
+
+    - name: Configure fstab mount for /shared
+      ansible.builtin.mount:
+        path: /shared
+        src: 192.168.56.10:/shared
+        fstype: nfs
+        opts: defaults
+        state: mounted
+      tags:
+        - nfs
+
+- name: Verify management services
+  hosts: mgmt
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Collect service facts on management node
+      ansible.builtin.service_facts:
+      tags:
+        - verify
+
+    - name: Assert critical management services are running
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['slurmctld.service'].state == 'running'
+          - ansible_facts.services['nfs-server.service'].state == 'running'
+          - ansible_facts.services['wazuh-manager.service'].state == 'running'
+        fail_msg: "One or more management services are not running."
+        success_msg: "Management services are running."
+      tags:
+        - verify
+
+- name: Verify login and compute services
+  hosts: login:compute
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Collect service facts on login and compute nodes
+      ansible.builtin.service_facts:
+      tags:
+        - verify
+
+    - name: Assert Slurm service on login node
+      ansible.builtin.assert:
+        that:
+          - "'slurm.service' in ansible_facts.services or 'slurmd.service' in ansible_facts.services"
+        fail_msg: "No Slurm service found on login node."
+        success_msg: "Slurm service present on login node."
+      when: inventory_hostname in groups['login']
+      tags:
+        - verify
+
+    - name: Assert slurmd service on compute nodes
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['slurmd.service'].state == 'running'
+        fail_msg: "slurmd is not running on compute node."
+        success_msg: "slurmd is running on compute node."
+      when: inventory_hostname in groups['compute']
+      tags:
+        - verify

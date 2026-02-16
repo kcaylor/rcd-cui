@@ -1,0 +1,34 @@
+---
+- name: Scenario D - Add compute node
+  hosts: mgmt
+  become: true
+  gather_facts: false
+  vars:
+    node_name: "{{ node_name | default('compute03') }}"
+    node_ip: "{{ node_ip | default('192.168.56.33') }}"
+    vagrant_cwd: "{{ playbook_dir }}/../vagrant"
+  roles:
+    - role: node_provision
+      tags:
+        - add
+
+- name: Scenario D - Compliance gate for new node
+  hosts: dynamic_compute
+  become: true
+  gather_facts: false
+  roles:
+    - role: compliance_gate
+      tags:
+        - verify
+
+- name: Scenario D - Remove compute node
+  hosts: mgmt
+  become: true
+  gather_facts: false
+  vars:
+    node_name: "{{ node_name | default('compute03') }}"
+    vagrant_cwd: "{{ playbook_dir }}/../vagrant"
+  roles:
+    - role: node_decommission
+      tags:
+        - remove

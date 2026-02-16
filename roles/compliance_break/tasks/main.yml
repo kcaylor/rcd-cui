@@ -1,0 +1,39 @@
+---
+- name: Violation V001 - Enable SSH root login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin\s+'
+    line: PermitRootLogin yes
+  when: (compliance_break_violations | selectattr('id', 'equalto', 'V001') | map(attribute='enabled') | first) | bool
+  tags:
+    - break
+    - v001
+
+- name: Violation V002 - Stop auditd service
+  ansible.builtin.service:
+    name: auditd
+    state: stopped
+    enabled: false
+  when: (compliance_break_violations | selectattr('id', 'equalto', 'V002') | map(attribute='enabled') | first) | bool
+  tags:
+    - break
+    - v002
+
+- name: Violation V003 - Make /etc/shadow world-readable
+  ansible.builtin.file:
+    path: /etc/shadow
+    mode: '0644'
+  when: (compliance_break_violations | selectattr('id', 'equalto', 'V003') | map(attribute='enabled') | first) | bool
+  tags:
+    - break
+    - v003
+
+- name: Violation V004 - Stop firewalld service
+  ansible.builtin.service:
+    name: firewalld
+    state: stopped
+    enabled: false
+  when: (compliance_break_violations | selectattr('id', 'equalto', 'V004') | map(attribute='enabled') | first) | bool
+  tags:
+    - break
+    - v004

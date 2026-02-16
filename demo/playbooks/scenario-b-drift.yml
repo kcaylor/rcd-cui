@@ -1,0 +1,141 @@
+---
+- name: Scenario B - Introduce compliance drift
+  hosts: all
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Introduce configured demo violations
+      ansible.builtin.include_role:
+        name: compliance_break
+      tags:
+        - break
+
+- name: Scenario B - Detect compliance drift
+  hosts: all
+  become: true
+  gather_facts: false
+  vars:
+    assessment_inventory_path: "{{ lookup('env', 'DEMO_ASSESS_INVENTORY') | default('demo/vagrant/inventory/hosts.yml', true) }}"
+  tasks:
+    - name: Detect V001 - PermitRootLogin setting
+      ansible.builtin.command: grep -E '^PermitRootLogin' /etc/ssh/sshd_config
+      register: detect_v001
+      changed_when: false
+      failed_when: false
+      tags:
+        - detect
+
+    - name: Detect V002 - auditd status
+      ansible.builtin.command: systemctl is-active auditd
+      register: detect_v002
+      changed_when: false
+      failed_when: false
+      tags:
+        - detect
+
+    - name: Detect V003 - /etc/shadow mode
+      ansible.builtin.command: stat -c %a /etc/shadow
+      register: detect_v003
+      changed_when: false
+      failed_when: false
+      tags:
+        - detect
+
+    - name: Detect V004 - firewalld status
+      ansible.builtin.command: systemctl is-active firewalld
+      register: detect_v004
+      changed_when: false
+      failed_when: false
+      tags:
+        - detect
+
+    - name: Build control findings summary
+      ansible.builtin.set_fact:
+        scenario_b_findings:
+          - id: 3.1.1
+            status: "{{ 'fail' if 'PermitRootLogin yes' in (detect_v001.stdout | default('')) else 'pass' }}"
+            finding: "{{ detect_v001.stdout | default('missing') }}"
+          - id: 3.3.1
+            status: "{{ 'fail' if (detect_v002.stdout | default('unknown')) != 'active' else 'pass' }}"
+            finding: "auditd is {{ detect_v002.stdout | default('unknown') }}"
+          - id: 3.1.2
+            status: "{{ 'fail' if (detect_v003.stdout | default('000')) == '644' else 'pass' }}"
+            finding: "/etc/shadow mode {{ detect_v003.stdout | default('unknown') }}"
+          - id: 3.13.1
+            status: "{{ 'fail' if (detect_v004.stdout | default('unknown')) != 'active' else 'pass' }}"
+            finding: "firewalld is {{ detect_v004.stdout | default('unknown') }}"
+      tags:
+        - detect
+
+    - name: Show control findings
+      ansible.builtin.debug:
+        var: scenario_b_findings
+      tags:
+        - detect
+
+    - name: Run repository assessment playbook for reporting data
+      ansible.builtin.command: >-
+        ansible-playbook playbooks/assess.yml -i {{ assessment_inventory_path }}
+      delegate_to: localhost
+      run_once: true
+      args:
+        chdir: "{{ playbook_dir }}/../.."
+      changed_when: false
+      failed_when: false
+      when: not ansible_check_mode
+      tags:
+        - detect
+
+- name: Scenario B - Remediate compliance drift
+  hosts: all
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Apply SSH hardening role
+      ansible.builtin.include_role:
+        name: ac_ssh_hardening
+      tags:
+        - fix
+
+    - name: Apply auditd role
+      ansible.builtin.include_role:
+        name: au_auditd
+      tags:
+        - fix
+
+    - name: Apply firewall role
+      ansible.builtin.include_role:
+        name: sc_nftables
+      tags:
+        - fix
+
+    - name: Remediate V001 - disable root SSH login
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin\s+'
+        line: PermitRootLogin no
+      tags:
+        - fix
+
+    - name: Remediate V002 - start auditd
+      ansible.builtin.service:
+        name: auditd
+        state: started
+        enabled: true
+      tags:
+        - fix
+
+    - name: Remediate V003 - protect /etc/shadow
+      ansible.builtin.file:
+        path: /etc/shadow
+        mode: '000'
+      tags:
+        - fix
+
+    - name: Remediate V004 - start firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: true
+      tags:
+        - fix

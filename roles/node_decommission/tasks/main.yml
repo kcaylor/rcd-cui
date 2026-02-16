@@ -1,0 +1,59 @@
+---
+- name: Remove node from Slurm node definitions
+  ansible.builtin.lineinfile:
+    path: /etc/slurm/slurm.conf
+    regexp: '^NodeName={{ node_name }}\s+.*$'
+    state: absent
+  tags:
+    - remove
+
+- name: Remove node from debug partition
+  ansible.builtin.lineinfile:
+    path: /etc/slurm/slurm.conf
+    regexp: '^PartitionName=debug\s+Nodes=.*$'
+    line: 'PartitionName=debug Nodes=compute01,compute02 Default=YES MaxTime=INFINITE State=UP'
+  tags:
+    - remove
+
+- name: Reload Slurm after node removal
+  ansible.builtin.command: scontrol reconfigure
+  changed_when: false
+  failed_when: false
+  tags:
+    - remove
+
+- name: Revoke FreeIPA host credentials
+  ansible.builtin.command: "ipa host-disable {{ node_name }}.demo.lab"
+  register: node_decommission_host_disable
+  changed_when: node_decommission_host_disable.rc == 0
+  failed_when: false
+  tags:
+    - remove
+
+- name: Remove FreeIPA host entry
+  ansible.builtin.command: "ipa host-del {{ node_name }}.demo.lab"
+  register: node_decommission_host_del
+  changed_when: node_decommission_host_del.rc == 0
+  failed_when: false
+  tags:
+    - remove
+
+- name: Halt decommissioned node VM
+  ansible.builtin.command: "vagrant halt {{ node_name }}"
+  args:
+    chdir: "{{ vagrant_cwd | default(playbook_dir ~ '/../vagrant') }}"
+  delegate_to: localhost
+  run_once: true
+  changed_when: true
+  tags:
+    - remove
+
+- name: Destroy decommissioned node VM
+  ansible.builtin.command: "vagrant destroy -f {{ node_name }}"
+  args:
+    chdir: "{{ vagrant_cwd | default(playbook_dir ~ '/../vagrant') }}"
+  delegate_to: localhost
+  run_once: true
+  changed_when: true
+  tags:
+    - remove
