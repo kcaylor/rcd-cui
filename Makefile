@@ -11,7 +11,7 @@ PROJECT_DIR := $(shell pwd)
 EE_RUN = $(CONTAINER_RUNTIME) run --rm -v $(PROJECT_DIR):/workspace -w /workspace $(EE_IMAGE)
 DEMO_DOCKER = ./infra/scripts/docker-run.sh
 
-.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check assess evidence sprs poam dashboard badge-data report auditor-package site demo-docker-build demo-cloud-up demo-cloud-down demo-cloud-status
+.PHONY: docs validate crosswalk clean test validate-schemas env collections container-check lint-ansible lint-yaml syntax-check ee-build ee-shell ee-lint ee-yamllint ee-syntax-check assess evidence sprs poam dashboard badge-data report auditor-package site demo-docker-build demo-cloud-up demo-cloud-down demo-cloud-status demo-snapshot demo-warm demo-cool demo-health demo-e2e-test
 
 env:
 	./scripts/bootstrap-env.sh
@@ -101,3 +101,18 @@ demo-cloud-down:
 
 demo-cloud-status:
 	$(DEMO_DOCKER) ./infra/scripts/check-ttl.sh --status
+
+demo-snapshot:
+	$(DEMO_DOCKER) ./infra/scripts/demo-cloud-snapshot.sh $(ARGS)
+
+demo-warm:
+	$(DEMO_DOCKER) ./infra/scripts/demo-cloud-warm.sh $(ARGS)
+
+demo-cool:
+	$(DEMO_DOCKER) ./infra/scripts/demo-cloud-cool.sh $(ARGS)
+
+demo-health:
+	$(DEMO_DOCKER) ./infra/scripts/demo-cloud-health.sh $(ARGS)
+
+demo-e2e-test:
+	$(DEMO_DOCKER) ./infra/scripts/demo-cloud-e2e-test.sh $(ARGS)
