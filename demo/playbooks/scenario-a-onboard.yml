@@ -4,7 +4,7 @@
   become: true
   gather_facts: true
   vars:
-    project_name: "{{ project_name | default('helios') }}"
+    project_name: helios
   roles:
     - role: project_onboarding
       vars:
