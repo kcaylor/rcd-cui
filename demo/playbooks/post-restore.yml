@@ -1,0 +1,87 @@
+---
+- name: Post-restore hostname and service reconciliation
+  hosts: all
+  become: true
+  gather_facts: false
+  vars:
+    fqdn_domain: demo.lab
+  tasks:
+    - name: Set FQDN hostname after snapshot restore
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}.{{ fqdn_domain }}"
+
+    - name: Ensure /etc/hosts contains private IP to FQDN mapping
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        regexp: "^{{ private_ip | default('') | regex_escape }}\\s+"
+        line: "{{ private_ip }} {{ inventory_hostname }}.{{ fqdn_domain }} {{ inventory_hostname }}"
+      when:
+        - private_ip is defined
+        - private_ip | length > 0
+
+    - name: Gather service facts for conditional restarts
+      ansible.builtin.service_facts:
+
+    - name: Restart FreeIPA server service on management node
+      ansible.builtin.service:
+        name: ipa
+        state: restarted
+      when:
+        - node_role | default('') == 'mgmt'
+        - "'ipa.service' in ansible_facts.services"
+
+    - name: Restart SSSD on non-management nodes
+      ansible.builtin.service:
+        name: sssd
+        state: restarted
+      when:
+        - node_role | default('') != 'mgmt'
+        - "'sssd.service' in ansible_facts.services"
+
+    - name: Restart NFS server on management node
+      ansible.builtin.service:
+        name: nfs-server
+        state: restarted
+      when:
+        - node_role | default('') == 'mgmt'
+        - "'nfs-server.service' in ansible_facts.services"
+
+    - name: Restart munge on all nodes
+      ansible.builtin.service:
+        name: munge
+        state: restarted
+      when:
+        - "'munge.service' in ansible_facts.services"
+
+    - name: Wait for NFS server to be ready
+      ansible.builtin.pause:
+        seconds: 5
+      when:
+        - node_role | default('') == 'mgmt'
+
+    - name: Remount /shared on non-management nodes
+      ansible.builtin.shell: |
+        mkdir -p /shared
+        mountpoint -q /shared && umount /shared || true
+        mount /shared || mount -t nfs mgmt01.demo.lab:/shared /shared
+      args:
+        executable: /bin/bash
+      when:
+        - node_role | default('') != 'mgmt'
+      changed_when: true
+
+    - name: Restart Slurm controller on management node
+      ansible.builtin.service:
+        name: slurmctld
+        state: restarted
+      when:
+        - node_role | default('') == 'mgmt'
+        - "'slurmctld.service' in ansible_facts.services"
+
+    - name: Restart Slurm daemons on compute nodes
+      ansible.builtin.service:
+        name: slurmd
+        state: restarted
+      when:
+        - node_role | default('') == 'compute'
+        - "'slurmd.service' in ansible_facts.services"

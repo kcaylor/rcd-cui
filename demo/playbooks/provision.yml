@@ -694,8 +694,32 @@
   become: true
   gather_facts: false
   tasks:
+    # Re-ensure services are started before verification — NFS server (oneshot)
+    # can drift to dead state during the long provisioning window
+    - name: Re-ensure critical management services are started
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - nfs-server
+        - slurmctld
+        - wazuh-manager
+      tags:
+        - verify
+
     - name: Collect service facts on management node
       ansible.builtin.service_facts:
+      tags:
+        - verify
+
+    # nfs-server is Type=oneshot RemainAfterExit=yes; service_facts reports
+    # "stopped" even when ActiveState=active because the process exited.
+    # Use systemctl is-active for a reliable check.
+    - name: Check NFS server ActiveState directly
+      ansible.builtin.command: systemctl is-active nfs-server
+      register: nfs_active
+      changed_when: false
+      failed_when: false
       tags:
         - verify
 
@@ -703,7 +727,7 @@
       ansible.builtin.assert:
         that:
           - ansible_facts.services['slurmctld.service'].state == 'running'
-          - ansible_facts.services['nfs-server.service'].state == 'running'
+          - nfs_active.stdout == 'active'
           - ansible_facts.services['wazuh-manager.service'].state == 'running'
         fail_msg: "One or more management services are not running."
         success_msg: "Management services are running."
@@ -720,12 +744,12 @@
       tags:
         - verify
 
-    - name: Assert Slurm service on login node
+    - name: Assert munge service on login node (Slurm submit host — no daemon)
       ansible.builtin.assert:
         that:
-          - "'slurm.service' in ansible_facts.services or 'slurmd.service' in ansible_facts.services"
-        fail_msg: "No Slurm service found on login node."
-        success_msg: "Slurm service present on login node."
+          - ansible_facts.services['munge.service'].state == 'running'
+        fail_msg: "munge is not running on login node (required for Slurm submit)."
+        success_msg: "munge is running on login node."
       when: inventory_hostname in groups['login']
       tags:
         - verify

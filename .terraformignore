@@ -1,0 +1,30 @@
+# Terraform local state
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# Variables and plans
+*.tfvars
+*.tfvars.json
+*.tfplan
+
+# VCS and editor
+.git/
+.gitignore
+.vscode/
+.idea/
+.DS_Store
+
+# Logs and temp
+*.log
+*.tmp
+*.swp
+
+# Environment/secrets
+.env
+.env.*
+
+# Project-specific generated files
+inventory.yml
+snapshot-manifest.json

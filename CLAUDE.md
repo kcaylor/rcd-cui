@@ -84,6 +84,8 @@ make assess           # Run compliance assessment
 - NFS shared storage on mgmt01, local VM disks via Vagran (006-vagrant-demo-lab)
 - Bash (wrapper scripts), HCL (Terraform 1.5+), Python 3.9+ (inventory generation) + Terraform (Hetzner provider), Ansible 2.15+, existing demo/playbooks/* (007-cloud-demo-infra)
 - Terraform state (local file, optional Terraform Cloud remote) (007-cloud-demo-infra)
+- Bash (POSIX-compatible with Bash extensions, matching existing scripts), Ansible 2.16+ (post-restore playbook), Python 3.9+ (date parsing helper, inline) + hcloud CLI 1.42+, Terraform 1.7+ (for cold-build only), Ansible 2.16+, jq (JSON parsing), openssh-clien (008-cloud-snapshot-lifecycle)
+- Local JSON manifest file (`infra/terraform/snapshot-manifest.json`), Hetzner Cloud snapshot storage (remote) (008-cloud-snapshot-lifecycle)
 
 ## Recent Changes
 - 005-ci-cd-dashboard: Added YAML (GitHub Actions workflows), Bash (scripts), Python 3.9+ (existing tooling) + GitHub Actions, GitHub Pages, shields.io (badges), existing Makefile targets
