@@ -51,17 +51,35 @@ if [[ "${DEMO_SKIP_TTL_CHECK:-0}" == "1" ]]; then
   exit 0
 fi
 
-if ! command -v terraform >/dev/null 2>&1; then
+if ! command -v terraform >/dev/null 2>&1 && ! command -v hcloud >/dev/null 2>&1; then
   if [[ "${MODE}" == "status" ]]; then
-    printf 'Terraform is not installed; cannot determine cluster status.\n'
+    printf 'Neither terraform nor hcloud is installed; cannot determine cluster status.\n'
   fi
   exit 0
 fi
 
 cluster_exists() {
-  local resources
-  resources="$(terraform -chdir="${TF_DIR}" state list 2>/dev/null || true)"
-  [[ -n "${resources}" ]]
+  local resources cluster_name api_count
+
+  resources=""
+  if command -v terraform >/dev/null 2>&1; then
+    resources="$(terraform -chdir="${TF_DIR}" state list 2>/dev/null || true)"
+  fi
+  if [[ -n "${resources}" ]]; then
+    return 0
+  fi
+
+  if ! command -v hcloud >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1 || [[ -z "${HCLOUD_TOKEN:-}" ]]; then
+    return 1
+  fi
+
+  cluster_name="rcd-demo"
+  if command -v terraform >/dev/null 2>&1; then
+    cluster_name="$(terraform -chdir="${TF_DIR}" output -raw cluster_name 2>/dev/null || printf 'rcd-demo')"
+  fi
+
+  api_count="$(hcloud server list --selector "cluster=${cluster_name}" -o json 2>/dev/null | jq 'length' 2>/dev/null)" || api_count="0"
+  [[ "${api_count}" -gt 0 ]]
 }
 
 terraform_output_raw() {
@@ -173,7 +191,7 @@ read_ttl_hours() {
 
 if ! cluster_exists; then
   if [[ "${MODE}" == "status" ]]; then
-    printf 'No cloud demo cluster is currently tracked in Terraform state.\n'
+    printf 'No cloud demo cluster is currently detected.\n'
   fi
   exit 0
 fi

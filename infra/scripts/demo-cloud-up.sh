@@ -180,6 +180,31 @@ run_ansible_provision() {
   )
 }
 
+prompt_snapshot_after_provisioning() {
+  local reply
+  local snapshot_script="${REPO_ROOT}/infra/scripts/demo-cloud-snapshot.sh"
+
+  if [[ ! -x "${snapshot_script}" ]]; then
+    warn "Snapshot script not found or not executable at ${snapshot_script}; skipping snapshot prompt."
+    return 0
+  fi
+
+  printf '\nSnapshot this cluster for future fast starts? [Y/n] '
+  read -r reply || true
+
+  case "${reply}" in
+    n|N|no|NO)
+      info "Skipping snapshot creation."
+      return 0
+      ;;
+  esac
+
+  info "Creating snapshot set..."
+  if ! "${snapshot_script}"; then
+    warn "Snapshot creation failed. You can retry with: make demo-snapshot"
+  fi
+}
+
 main() {
   local ssh_key_path
   local start_epoch
@@ -231,6 +256,8 @@ main() {
     error "Ansible provisioning failed."
     exit 2
   fi
+
+  prompt_snapshot_after_provisioning
 
   end_epoch="$(date +%s)"
   elapsed="$((end_epoch - start_epoch))"

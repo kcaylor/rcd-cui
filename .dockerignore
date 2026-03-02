@@ -1,0 +1,36 @@
+# VCS
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+
+# Terraform state and local metadata
+infra/terraform/.terraform/
+infra/terraform/*.tfstate*
+infra/terraform/*.tfplan
+infra/terraform/inventory.yml
+
+# Generated and runtime artifacts
+docs/generated/
+reports/dashboard/
+*.log
+*.log*
+*.tmp
+.env
+.env.*
+
+# Editor/OS
+.DS_Store
+.vscode/
+.idea/
+
+# Docker
+Dockerfile*
+.dockerignore

@@ -39,6 +39,10 @@ infra/terraform/terraform.tfstate.*
 infra/terraform/crash.log
 infra/terraform/*.tfplan
 infra/terraform/inventory.yml
+infra/terraform/snapshot-manifest.json
+
+# E2E test logs
+infra/e2e-logs/
 
 # Demo SSH keys (NEVER commit private keys)
 infra/.ssh/demo_*
