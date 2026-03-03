@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 Vagrant.configure('2') do |config|
-  config.vm.box = 'generic/rocky9'
+  baked = ENV['RCD_PREBAKED'] == '1'
+  config.vm.box = 'generic/rocky9' unless baked
   config.vm.box_check_update = false
   config.ssh.insert_key = false
 
@@ -15,6 +16,7 @@ Vagrant.configure('2') do |config|
 
   nodes.each do |name, settings|
     config.vm.define name, autostart: settings[:autostart] do |vm|
+      vm.vm.box = "rcd-cui-#{name}" if baked
       vm.vm.hostname = name
       vm.vm.network 'private_network', ip: settings[:ip]
 
@@ -47,18 +49,20 @@ Vagrant.configure('2') do |config|
         qemu.smp = settings[:cpus]
       end
 
-      vm.vm.provision 'ansible' do |ansible|
-        ansible.playbook = '../playbooks/provision.yml'
-        ansible.inventory_path = 'inventory/hosts.yml'
-        ansible.config_file = 'ansible.cfg'
-        ansible.compatibility_mode = '2.0'
-        ansible.limit = 'all'
-        ansible.extra_vars = {
-          freeipa_domain: 'demo.lab',
-          freeipa_realm: 'DEMO.LAB',
-          freeipa_server_ip: '192.168.56.10',
-          freeipa_admin_password: 'DemoPass123!'
-        }
+      unless baked
+        vm.vm.provision 'ansible' do |ansible|
+          ansible.playbook = '../playbooks/provision.yml'
+          ansible.inventory_path = 'inventory/hosts.yml'
+          ansible.config_file = 'ansible.cfg'
+          ansible.compatibility_mode = '2.0'
+          ansible.limit = 'all'
+          ansible.extra_vars = {
+            freeipa_domain: 'demo.lab',
+            freeipa_realm: 'DEMO.LAB',
+            freeipa_server_ip: '192.168.56.10',
+            freeipa_admin_password: 'DemoPass123!'
+          }
+        end
       end
     end
   end

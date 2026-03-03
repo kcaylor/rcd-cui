@@ -86,6 +86,8 @@ make assess           # Run compliance assessment
 - Terraform state (local file, optional Terraform Cloud remote) (007-cloud-demo-infra)
 - Bash (POSIX-compatible with Bash extensions, matching existing scripts), Ansible 2.16+ (post-restore playbook), Python 3.9+ (date parsing helper, inline) + hcloud CLI 1.42+, Terraform 1.7+ (for cold-build only), Ansible 2.16+, jq (JSON parsing), openssh-clien (008-cloud-snapshot-lifecycle)
 - Local JSON manifest file (`infra/terraform/snapshot-manifest.json`), Hetzner Cloud snapshot storage (remote) (008-cloud-snapshot-lifecycle)
+- Bash (POSIX-compatible with Bash extensions, matching existing scripts), Ruby (Vagrantfile) + Vagrant 2.3+, vagrant-libvirt (libvirt provider), vagrant-qemu (QEMU provider), `jq` (JSON parsing), `qemu-img` (QEMU disk operations) (009-vagrant-prebaked-boxes)
+- Local filesystem (`demo/vagrant/boxes/`), JSON manifest file (009-vagrant-prebaked-boxes)
 
 ## Recent Changes
 - 005-ci-cd-dashboard: Added YAML (GitHub Actions workflows), Bash (scripts), Python 3.9+ (existing tooling) + GitHub Actions, GitHub Pages, shields.io (badges), existing Makefile targets
