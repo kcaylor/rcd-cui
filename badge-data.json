@@ -1,8 +1,8 @@
 {
-  "sprs_score": 0,
-  "sprs_color": "red",
-  "last_assessment": "2026-03-02",
-  "controls_passing": 0,
-  "controls_total": 110,
-  "generated_at": "2026-03-02T18:42:54Z"
+  "sprs_score": 104,
+  "sprs_color": "green",
+  "last_assessment": "2026-03-03",
+  "controls_passing": 1,
+  "controls_total": 2,
+  "generated_at": "2026-03-03T03:04:41Z"
 }
