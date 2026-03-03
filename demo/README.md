@@ -1,64 +1,41 @@
-# Demo Lab Reference
+# Demo Lab
 
-This directory contains the Vagrant demo environment for feature `006-vagrant-demo-lab`.
+Local and cloud demo environments for the RCD-CUI framework.
 
-## Quick Start
+## Pre-Baked Vagrant Boxes
 
-```bash
-cd /path/to/rcd-cui
-./demo/scripts/demo-setup.sh
-```
+Pre-baked boxes allow you to boot a fully provisioned demo cluster in under 5 minutes instead of the usual 20-30 minute provisioning cycle.
 
-## Main Scripts
+See `specs/009-vagrant-prebaked-boxes/quickstart.md` for detailed workflows.
 
-- `demo/scripts/demo-setup.sh`: bring up/provision VMs and create baseline snapshot
-- `demo/scripts/demo-break.sh`: introduce compliance violations
-- `demo/scripts/demo-fix.sh`: remediate violations
-- `demo/scripts/demo-reset.sh`: restore baseline snapshot
-
-Provider override for any script:
+### Quick Start
 
 ```bash
-DEMO_PROVIDER=virtualbox ./demo/scripts/demo-setup.sh
-DEMO_PROVIDER=libvirt ./demo/scripts/demo-setup.sh
-DEMO_PROVIDER=qemu ./demo/scripts/demo-setup.sh
+# First time: provision and bake
+./demo/scripts/demo-setup.sh        # Provisions from scratch, offers to bake at end
+./demo/scripts/demo-bake.sh --list  # Verify baked boxes
+
+# Subsequent runs: boot from baked boxes
+./demo/scripts/demo-setup.sh        # Detects boxes, offers fast boot
+
+# Refresh boxes after code changes
+./demo/scripts/demo-refresh.sh      # Destroy → provision → bake
 ```
 
-## Playbooks
+### QEMU Provider Limitations
 
-- `demo/playbooks/provision.yml`
-- `demo/playbooks/scenario-a-onboard.yml`
-- `demo/playbooks/scenario-b-drift.yml`
-- `demo/playbooks/scenario-c-audit.yml`
-- `demo/playbooks/scenario-d-lifecycle.yml`
+QEMU (vagrant-qemu) is supported on a **best-effort** basis for box baking. Key differences from VirtualBox and libvirt:
 
-Run pattern:
+- **Packaging method**: QEMU uses raw disk image export (`qemu-img convert`) rather than native `vagrant package`, since vagrant-qemu does not support the package command.
+- **Box file size**: QEMU boxes may be larger than VirtualBox or libvirt equivalents due to the disk conversion process, even with qcow2 compression.
+- **Additional prerequisites**: QEMU baking requires `qemu-img` and `jq` to be installed on the host.
+- **VM halt/restart**: During baking, QEMU VMs are halted for disk export and restarted afterward. This adds time compared to other providers.
+- **Disk location**: The script locates QEMU disk images at `.vagrant/machines/<vm>/qemu/vq_*/linked-box.img`. If your vagrant-qemu version stores disks elsewhere, baking may fail.
 
-```bash
-cd /path/to/rcd-cui/demo/vagrant
-ANSIBLE_CONFIG=ansible.cfg ansible-playbook ../playbooks/<playbook>.yml -i inventory/hosts.yml
-```
+### Environment Variables
 
-## Narratives
-
-- `demo/narratives/scenario-a.md`
-- `demo/narratives/scenario-b.md`
-- `demo/narratives/scenario-c.md`
-- `demo/narratives/scenario-d.md`
-
-## VM Topology
-
-- `mgmt01` `192.168.56.10`
-- `login01` `192.168.56.20`
-- `compute01` `192.168.56.31`
-- `compute02` `192.168.56.32`
-- `compute03` `192.168.56.33` (dormant, lifecycle demo only)
-
-## Testing Status
-
-Validation performed (see `reports/006-vagrant-demo-lab-validation.md`):
-
-- **Passed**: Script executability, playbook syntax, Vagrantfile syntax, air-gapped cached-box startup
-- **Blocked**: Full multi-VM e2e runtime due to environment constraints (Apple Silicon QEMU emulation, RAM limits)
-
-Full end-to-end validation is planned for spec 007 (cloud demo infrastructure) which provisions native x86 VMs on Hetzner Cloud.
+| Variable | Values | Default | Description |
+|----------|--------|---------|-------------|
+| `DEMO_USE_BAKED` | `0`, `1`, unset | unset | Force fresh (`0`), force baked (`1`), or prompt (unset) |
+| `DEMO_PROVIDER` | `virtualbox`, `libvirt`, `qemu` | auto-detect | Override provider detection |
+| `DEMO_STALE_DAYS` | integer | `7` | Staleness threshold in days |

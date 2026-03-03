@@ -1,2 +1,3 @@
-# Vagrant runtime state (never commit)
-.vagrant/
+# Pre-baked box files
+boxes/
+*.box

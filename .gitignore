@@ -51,3 +51,6 @@ infra/.ssh/*.pub
 infra/.ssh/*_key
 infra/.ssh/*_key.pub
 !infra/.ssh/.gitkeep
+
+# Vagrant pre-baked boxes
+demo/vagrant/boxes/
